@@ -6,11 +6,13 @@ import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Category;
 import com.kakuritsu.kaku_shops.response.ApiResponse;
 import com.kakuritsu.kaku_shops.service.category.ICategoryService;
+import com.kakuritsu.kaku_shops.service.converter.ICategoryConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -19,10 +21,11 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping("${api.prefix}/categories")
 public class CategoryController {
     private final ICategoryService categoryService;
+    private final ICategoryConverter categoryConverter;
      @GetMapping
     public ResponseEntity<ApiResponse> getAllCategories(){
         try {
-            List<CategoryDto> categories = categoryService.getAllCategories();
+            List<CategoryDto> categories = categoryService.getAllCategories().stream().map(categoryConverter::convertCategoryToCategoryDto).collect(Collectors.toList());
             return ResponseEntity.ok().body(new ApiResponse("Found!",categories));
         } catch (Exception e) {
            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error:", INTERNAL_SERVER_ERROR));

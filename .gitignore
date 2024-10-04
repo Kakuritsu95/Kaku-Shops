@@ -1,33 +1,39 @@
-HELP.md
+# Compiled class files
+*.class
+
+# Log files
+*.log
+logs/
+*.log.*
+
+# Spring Boot specific files
+spring-boot-devtools.jar
+
+# Build directories
+/build/
 target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# Maven files
+.mvn/
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+!.mvn/wrapper/maven-wrapper.properties
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+# Gradle files (if using Gradle)
+.gradle/
 build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
 
-### VS Code ###
-.vscode/
+# IDE specific files
+/.idea/
+/*.iml
+/.classpath
+/.project
+/.settings/
+/target/
+/out/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db

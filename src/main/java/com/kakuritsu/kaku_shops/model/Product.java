@@ -26,7 +26,7 @@ public class Product {
     private BigDecimal price;
     private int inventory;
     private String description;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonBackReference
     @JoinColumn(name = "category_id")
     private Category category;

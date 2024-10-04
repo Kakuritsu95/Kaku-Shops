@@ -19,7 +19,7 @@ public class Category {
     private Long id;
     private String name;
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonBackReference
     private List<Product> products;
 
     public Category(String name) {

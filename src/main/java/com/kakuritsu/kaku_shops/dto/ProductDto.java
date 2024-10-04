@@ -1,16 +1,20 @@
-package com.kakuritsu.kaku_shops.request;
+package com.kakuritsu.kaku_shops.dto;
 
 import com.kakuritsu.kaku_shops.model.Category;
+import com.kakuritsu.kaku_shops.model.Image;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
-public class ProductUpdateRequest {
+public class ProductDto {
+    private long id;
     private String name;
     private String brand;
     private BigDecimal price;
     private int inventory;
     private String description;
     private Category category;
+    private List<Image> images;
 }

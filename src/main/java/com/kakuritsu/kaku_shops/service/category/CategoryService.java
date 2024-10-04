@@ -4,8 +4,8 @@ import com.kakuritsu.kaku_shops.dto.CategoryDto;
 import com.kakuritsu.kaku_shops.exceptions.AlreadyExistsException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Category;
-import com.kakuritsu.kaku_shops.model.Product;
 import com.kakuritsu.kaku_shops.repository.CategoryRepository;
+import com.kakuritsu.kaku_shops.service.converter.ICategoryConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CategoryService implements ICategoryService {
     private final CategoryRepository categoryRepository;
+    private final ICategoryConverter categoryConverter;
     @Override
     public Category getCategoryById(Long id) {
         return categoryRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Category not found!"));
@@ -28,16 +29,9 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public List<CategoryDto> getAllCategories() {
-        List<Category> categories = categoryRepository.findAll();
-             return categories.stream()
-                .map(category -> {
-                    CategoryDto categoryDto = new CategoryDto();
-                    categoryDto.setId(category.getId());
-                    categoryDto.setName(category.getName());
-                    return categoryDto;
-                        }
-                ).collect(Collectors.toList());
+    public List<Category> getAllCategories() {
+       return categoryRepository.findAll();
+
     }
 
     @Override
@@ -47,7 +41,7 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public Category updateCategory(Category category,Long id) {
+    public Category updateCategory(Category category, Long id) {
         return Optional.ofNullable(getCategoryById(id))
                 .map(oldCategory->{
                     oldCategory.setName(category.getName());

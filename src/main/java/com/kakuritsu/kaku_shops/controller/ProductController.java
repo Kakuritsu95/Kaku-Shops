@@ -1,12 +1,13 @@
 package com.kakuritsu.kaku_shops.controller;
 
+import com.kakuritsu.kaku_shops.dto.ProductDto;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Product;
 import com.kakuritsu.kaku_shops.request.AddProductRequest;
 import com.kakuritsu.kaku_shops.request.ProductUpdateRequest;
 import com.kakuritsu.kaku_shops.response.ApiResponse;
+import com.kakuritsu.kaku_shops.service.converter.IProductConverter;
 import com.kakuritsu.kaku_shops.service.product.IProductService;
-import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("${api.prefix}/products")
 public class ProductController {
     private final IProductService productService;
+    private final IProductConverter productConverter;
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> getAllProducts(){
         List<Product> products =  productService.getAllProducts();
@@ -31,8 +33,10 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getProductById(@PathVariable Long id){
         try {
-            Product product =  productService.getProductById(id);
-            return ResponseEntity.ok().body(new ApiResponse("Success", product));
+            Product product = productService.getProductById(id);
+            ProductDto productDto = productConverter.convertProductToProductDto(product);
+            productDto.setImages(product.getImages());
+            return ResponseEntity.ok().body(new ApiResponse("Success", productDto));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),NOT_FOUND));
         }
@@ -47,7 +51,7 @@ public class ProductController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(),null));
         }
     }
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse> updateProduct(@RequestBody ProductUpdateRequest product, @PathVariable Long id){
         try {
             Product updatedProduct = productService.updateProduct(product,id);

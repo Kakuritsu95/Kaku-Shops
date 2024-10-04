@@ -1,6 +1,7 @@
 package com.kakuritsu.kaku_shops.service.product;
 
 
+import com.kakuritsu.kaku_shops.service.converter.IProductConverter;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Category;
 import com.kakuritsu.kaku_shops.model.Product;
@@ -9,6 +10,7 @@ import com.kakuritsu.kaku_shops.repository.ProductRepository;
 import com.kakuritsu.kaku_shops.request.AddProductRequest;
 import com.kakuritsu.kaku_shops.request.ProductUpdateRequest;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +22,8 @@ public class ProductService implements IProductService{
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final IProductConverter productConverter;
+
     @Override
     public Product addProduct(AddProductRequest request) {
       // check if the category is found in the DB
@@ -31,28 +35,10 @@ public class ProductService implements IProductService{
             return categoryRepository.save(newCategory);
         });
         request.setCategory(category);
-        return productRepository.save(createProduct(request));
+        return productRepository.save(productConverter.convertAddProductRequestToProduct(request));
     }
-    private Product createProduct(AddProductRequest request){
-        return new Product(
-                request.getName(),
-                request.getBrand(),
-                request.getPrice(),
-                request.getInventory(),
-                request.getDescription(),
-                request.getCategory()
-        );
-    }
-    private Product updateExistingProduct(Product existingProduct, ProductUpdateRequest request){
-        existingProduct.setName(request.getName());
-        existingProduct.setBrand(request.getBrand());
-        existingProduct.setPrice(request.getPrice());
-        existingProduct.setInventory(request.getInventory());
-        existingProduct.setDescription(request.getDescription());
-        Category category = categoryRepository.findByName(request.getCategory().getName());
-        existingProduct.setCategory(category);
-        return existingProduct;
-    }
+
+
     @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Product id: " + id + " not found found"));
@@ -67,10 +53,15 @@ public class ProductService implements IProductService{
 
     @Override
     public Product updateProduct(ProductUpdateRequest request, Long productId) {
+
         return productRepository.findById(productId)
-                .map(existingProduct -> updateExistingProduct(existingProduct,request))
+                .map(existingProduct -> {
+                    Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName())).orElse(request.getCategory());
+                    request.setCategory(category);
+                    return productConverter.convertProductUpdateRequestToProduct(request, existingProduct);
+                })
                 .map(productRepository :: save)
-                .orElseThrow(()-> new ResourceNotFoundException("Product id:  + id +  not found found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Product id:"  + productId + "not found found"));
     }
 
     @Override
