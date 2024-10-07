@@ -1,11 +1,13 @@
 package com.kakuritsu.kaku_shops.controller;
 
+import com.kakuritsu.kaku_shops.dto.ImageDto;
 import com.kakuritsu.kaku_shops.dto.ProductDto;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Product;
 import com.kakuritsu.kaku_shops.request.AddProductRequest;
 import com.kakuritsu.kaku_shops.request.ProductUpdateRequest;
 import com.kakuritsu.kaku_shops.response.ApiResponse;
+import com.kakuritsu.kaku_shops.service.converter.IImageConverter;
 import com.kakuritsu.kaku_shops.service.converter.IProductConverter;
 import com.kakuritsu.kaku_shops.service.product.IProductService;
 import jakarta.validation.Valid;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -24,9 +27,16 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class ProductController {
     private final IProductService productService;
     private final IProductConverter productConverter;
+    private final IImageConverter imageConverter;
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> getAllProducts(){
-        List<Product> products =  productService.getAllProducts();
+        List<ProductDto> products =  productService.getAllProducts().stream().map(product -> {
+           ProductDto productDto =  productConverter.convertProductToProductDto(product);
+           List<ImageDto> imagesDto = product.getImages().stream().map(imageConverter::convertImageToImageDto).toList();
+           productDto.setImages(imagesDto);
+           return productDto;
+        }).toList();
+
         return ResponseEntity.ok().body(new ApiResponse("Success", products));
     }
 
@@ -35,7 +45,7 @@ public class ProductController {
         try {
             Product product = productService.getProductById(id);
             ProductDto productDto = productConverter.convertProductToProductDto(product);
-            productDto.setImages(product.getImages());
+            productDto.setImages(product.getImages().stream().map(imageConverter::convertImageToImageDto).toList());
             return ResponseEntity.ok().body(new ApiResponse("Success", productDto));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),NOT_FOUND));

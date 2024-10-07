@@ -19,7 +19,6 @@ public class Image {
     private String fileName;
     private String fileType;
     @Lob
-    @JsonIgnore
     private Blob image;
     private String downloadUrl;
     @ManyToOne
