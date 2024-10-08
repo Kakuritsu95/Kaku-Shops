@@ -1,6 +1,8 @@
 package com.kakuritsu.kaku_shops.service.converter;
 
+import com.kakuritsu.kaku_shops.dto.ImageDto;
 import com.kakuritsu.kaku_shops.dto.ProductDto;
+import com.kakuritsu.kaku_shops.model.Image;
 import com.kakuritsu.kaku_shops.model.Product;
 import com.kakuritsu.kaku_shops.request.AddProductRequest;
 import com.kakuritsu.kaku_shops.request.ProductUpdateRequest;
@@ -11,6 +13,7 @@ import org.modelmapper.TypeMap;
 import org.springframework.stereotype.Service;
 
 
+import java.util.List;
 
 import static org.modelmapper.Conditions.isNotNull;
 
@@ -37,11 +40,19 @@ public class ProductConverter implements IProductConverter {
 
     }
 
+
     @Override
     public ProductDto convertProductToProductDto(Product product) {
-        TypeMap<Product, ProductDto> typeMap = mapper.typeMap(Product.class, ProductDto.class);
-        typeMap.addMappings(mapper->mapper.skip(ProductDto::setImages));
+        ProductDto productDto = mapper.map(product, ProductDto.class);
+        List<Image>images = product.getImages();
+        List<ImageDto> imageDtos = images.stream().map(image->mapper.map(image, ImageDto.class)).toList();
+        productDto.setImages(imageDtos);
+        return productDto;
 
-        return typeMap.map(product);
+    }
+
+    @Override
+    public List<ProductDto> convertProductsToProductDtos(List<Product> products) {
+        return products.stream().map(this::convertProductToProductDto).toList();
     }
 }
