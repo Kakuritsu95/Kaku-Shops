@@ -1,5 +1,6 @@
 package com.kakuritsu.kaku_shops.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,8 +19,9 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private BigDecimal totalAmount = BigDecimal.ZERO;
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<CartItem> cartItems;
+    @OneToMany(mappedBy = "cart",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private Set<CartItem> cartItems = new HashSet<>();
 
     public void addItem(CartItem item){
         if(this.cartItems==null){

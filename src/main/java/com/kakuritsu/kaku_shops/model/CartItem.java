@@ -1,5 +1,6 @@
 package com.kakuritsu.kaku_shops.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class CartItem {
     private BigDecimal totalPrice;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
+    @JsonBackReference
     private Cart cart;
 
     public void updateTotalPrice(){

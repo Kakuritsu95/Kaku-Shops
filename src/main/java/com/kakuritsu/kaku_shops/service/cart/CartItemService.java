@@ -53,7 +53,8 @@ public class CartItemService implements ICartItemService {
     public void updateItemQuantity(Long cartId, Long productId, int quantity) {
         Cart cart = cartService.getCartById(cartId);
         CartItem cartItem = this.getCartItem(cart,productId);
-        cart.updateTotalAmount();
+        cartItem.setQuantity(quantity);
+        cartItemRepository.save(cartItem);
         cartRepository.save(cart);
     }
     @Override
