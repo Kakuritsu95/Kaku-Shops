@@ -1,6 +1,8 @@
 package com.kakuritsu.kaku_shops.service.cart;
 
+import com.kakuritsu.kaku_shops.dto.CartDto;
 import com.kakuritsu.kaku_shops.model.Cart;
+import com.kakuritsu.kaku_shops.model.User;
 
 import java.math.BigDecimal;
 
@@ -10,5 +12,9 @@ public interface ICartService {
 
     BigDecimal getTotalPrice(Long id);
 
-    Long initializeNewCart();
+    Cart initializeNewCart(User user);
+
+    Cart getCartByUserId(Long userId);
+
+    CartDto convertToDto(Cart cart);
 }

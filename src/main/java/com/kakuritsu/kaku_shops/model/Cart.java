@@ -23,6 +23,10 @@ public class Cart {
     @JsonManagedReference
     private Set<CartItem> cartItems = new HashSet<>();
 
+    @OneToOne
+    @JoinColumn(name = "userId")
+    private User user;
+
     public void addItem(CartItem item){
         if(this.cartItems==null){
             this.cartItems= new HashSet<CartItem>();

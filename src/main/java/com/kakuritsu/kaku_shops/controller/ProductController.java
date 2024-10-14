@@ -27,7 +27,6 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class ProductController {
     private final IProductService productService;
     private final IProductConverter productConverter;
-    private final IImageConverter imageConverter;
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> getAllProducts(){
         List<Product> products = productService.getAllProducts();

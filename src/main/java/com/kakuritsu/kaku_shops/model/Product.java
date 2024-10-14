@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 @Getter
 @Setter
@@ -32,7 +33,7 @@ public class Product {
     private Category category;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<Image> images;
+    private List<Image> images = new ArrayList<>();
 
 
     public Product(String name, String brand, BigDecimal price, int inventory, String description, Category category) {

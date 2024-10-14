@@ -1,12 +1,15 @@
 package com.kakuritsu.kaku_shops.service.cart;
 
+import com.kakuritsu.kaku_shops.dto.CartDto;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Cart;
+import com.kakuritsu.kaku_shops.model.User;
 import com.kakuritsu.kaku_shops.repository.CartItemRepository;
 import com.kakuritsu.kaku_shops.repository.CartRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -15,6 +18,7 @@ import java.math.BigDecimal;
 public class CartService implements ICartService{
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
+    private final ModelMapper mapper;
 
     @Override
     public Cart getCartById(Long id) {
@@ -26,11 +30,11 @@ public class CartService implements ICartService{
 
     @Override
     @Transactional
-    public void clearCart(Long id) {
-        Cart cart = getCartById(id);
-        cartItemRepository.deleteAllByCartId(id);
+       public void clearCart(Long cartId) {
+        Cart cart = getCartById(cartId);
+        cartItemRepository.deleteAllByCartId(cartId);
         cart.getCartItems().clear();
-        cartRepository.deleteById(id);
+        cart.setTotalAmount(BigDecimal.ZERO);
     }
 
     @Override
@@ -39,8 +43,17 @@ public class CartService implements ICartService{
       return cart.getTotalAmount();
     }
     @Override
-    public Long initializeNewCart(){
+    public Cart initializeNewCart(User user){
         Cart newCart = new Cart();
-        return cartRepository.save(newCart).getId();
+        newCart.setUser(user);
+        return cartRepository.save(newCart);
+    }
+    @Override
+    public Cart getCartByUserId(Long userId) {
+        return cartRepository.findByUserId(userId).orElseThrow(()-> new ResourceNotFoundException("Cart not found"));
+    }
+    @Override
+    public CartDto convertToDto(Cart cart){
+       return mapper.map(cart, CartDto.class);
     }
 }
