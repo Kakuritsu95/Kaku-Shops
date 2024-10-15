@@ -8,6 +8,7 @@ import com.kakuritsu.kaku_shops.response.ApiResponse;
 import com.kakuritsu.kaku_shops.service.cart.CartItemService;
 import com.kakuritsu.kaku_shops.service.cart.CartService;
 import com.kakuritsu.kaku_shops.service.user.IUserService;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestController
 @RequestMapping("${api.prefix}/cart-items")
@@ -29,7 +31,7 @@ public class CartItemController {
     @PostMapping
     public ResponseEntity<ApiResponse> addItemToCart(@RequestParam Long userId, @RequestParam Long productId, @RequestParam int quantity){
         try {
-            User user = userService.getUserById(userId);
+            User user = userService.getAuthenticatedUser();
             Cart cart = Optional.ofNullable(user.getCart()).orElseGet(()->cartService.initializeNewCart(user));
             Cart updatedCart = cartItemService.addItemToCart(cart.getId(),productId,quantity);
             CartDto cartDto = cartService.convertToDto(updatedCart);
@@ -37,6 +39,9 @@ public class CartItemController {
         } catch (CartOperationException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
         }
+          catch(JwtException e){
+            return ResponseEntity.status(UNAUTHORIZED).body(new ApiResponse(e.getMessage(),null));
+          }
     }
     @DeleteMapping
     public ResponseEntity<ApiResponse> removeItemFromCart(@RequestParam Long cartId, @RequestParam Long productId){

@@ -1,16 +1,14 @@
 package com.kakuritsu.kaku_shops.service.product;
-
-
-import com.kakuritsu.kaku_shops.service.converter.IProductConverter;
+import com.kakuritsu.kaku_shops.exceptions.AlreadyExistsException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Category;
 import com.kakuritsu.kaku_shops.model.Product;
 import com.kakuritsu.kaku_shops.repository.CategoryRepository;
 import com.kakuritsu.kaku_shops.repository.ProductRepository;
 import com.kakuritsu.kaku_shops.request.AddProductRequest;
-import com.kakuritsu.kaku_shops.request.ProductUpdateRequest;
+import com.kakuritsu.kaku_shops.request.UpdateProductRequest;
+import com.kakuritsu.kaku_shops.service.converter.IProductConverter;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +28,9 @@ public class ProductService implements IProductService{
       // If Yes, set it as the new product category
       // If No, then save it as a new category
       // Then set as the new product category
+        if(productExists(request)){
+            throw new AlreadyExistsException(request.getBrand() + " " + request.getName() + " Already exists, you may update this product instead!");
+        }
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName())).orElseGet(()->{
             Category newCategory = new Category(request.getCategory().getName());
             return categoryRepository.save(newCategory);
@@ -52,12 +53,12 @@ public class ProductService implements IProductService{
     }
 
     @Override
-    public Product updateProduct(ProductUpdateRequest request, Long productId) {
+    public Product updateProduct(UpdateProductRequest request, Long productId) {
 
         return productRepository.findById(productId)
                 .map(existingProduct -> {
-                    Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName())).orElse(request.getCategory());
-                    request.setCategory(category);
+                    Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory())).orElse(new Category(request.getCategory()));
+                    if(category.getName()!=null) existingProduct.setCategory(category);
                     return productConverter.convertProductUpdateRequestToProduct(request, existingProduct);
                 })
                 .map(productRepository :: save)
@@ -97,5 +98,8 @@ public class ProductService implements IProductService{
     @Override
     public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand,name);
+    }
+    boolean productExists(AddProductRequest product){
+     return productRepository.existsByNameAndBrand(product.getName(),product.getBrand());
     }
 }

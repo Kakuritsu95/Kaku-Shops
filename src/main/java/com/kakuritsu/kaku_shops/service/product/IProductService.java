@@ -2,7 +2,7 @@ package com.kakuritsu.kaku_shops.service.product;
 
 import com.kakuritsu.kaku_shops.model.Product;
 import com.kakuritsu.kaku_shops.request.AddProductRequest;
-import com.kakuritsu.kaku_shops.request.ProductUpdateRequest;
+import com.kakuritsu.kaku_shops.request.UpdateProductRequest;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface IProductService {
 
     void deleteProductById(Long id);
 
-    Product updateProduct(ProductUpdateRequest product, Long productId);
+    Product updateProduct(UpdateProductRequest product, Long productId);
 
     List<Product> getAllProducts();
 

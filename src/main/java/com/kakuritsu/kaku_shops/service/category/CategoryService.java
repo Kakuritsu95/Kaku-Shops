@@ -1,23 +1,20 @@
 package com.kakuritsu.kaku_shops.service.category;
 
-import com.kakuritsu.kaku_shops.dto.CategoryDto;
 import com.kakuritsu.kaku_shops.exceptions.AlreadyExistsException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Category;
 import com.kakuritsu.kaku_shops.repository.CategoryRepository;
-import com.kakuritsu.kaku_shops.service.converter.ICategoryConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CategoryService implements ICategoryService {
     private final CategoryRepository categoryRepository;
-    private final ICategoryConverter categoryConverter;
+
     @Override
     public Category getCategoryById(Long id) {
         return categoryRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Category not found!"));
