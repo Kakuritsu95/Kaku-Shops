@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -25,11 +26,13 @@ import java.util.List;
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     private final ShopUserDetailsService userDetailsService;
     private final JwtAuthEntryPoint authEntryPoint;
     private final JwtUtils jwtUtils;
-    private static final List<String> SECURED_URLS = List.of("/api/v1/carts/**","/api/v1/cart-items/**");
+    private static final List<String> SECURED_USER_URLS = List.of("/api/v1/carts/**","/api/v1/cart-items/**");
+    private static final List<String> SECURED_ADMIN_URLS = List.of("/api/v1/images/**");
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable)
@@ -38,8 +41,11 @@ public class SecurityConfig {
                 //specify that the session is stateless server doesn't need to store it locally.
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 //set matched urls to require authorization
-                .authorizeHttpRequests(auth -> auth.requestMatchers(SECURED_URLS.toArray(String[]::new))
+                .authorizeHttpRequests(auth-> auth.requestMatchers(SECURED_ADMIN_URLS.toArray(String[]::new)).hasRole("ADMIN"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(SECURED_USER_URLS.toArray(String[]::new))
                 .authenticated().anyRequest().permitAll());
+
+
 
         http.authenticationProvider(daoAuthenticationProvider());
         http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);

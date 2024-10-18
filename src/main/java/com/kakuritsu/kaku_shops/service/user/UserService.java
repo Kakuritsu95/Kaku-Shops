@@ -32,7 +32,7 @@ public class UserService implements IUserService{
     @Override
     public User createUser(CreateUserRequest request) {
           return Optional.of(request)
-                  .filter(user->!userRepository.existsByEmail(request.getEmail()))
+                  .filter(req->!userRepository.existsByEmail(req.getEmail()))
                   .map(req->{
                       User user = new User();
                       user.setFirstName(req.getFirstName());

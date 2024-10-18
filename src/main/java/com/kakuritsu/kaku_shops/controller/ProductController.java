@@ -12,6 +12,9 @@ import com.kakuritsu.kaku_shops.service.product.IProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,6 +47,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse> addNewProduct(@Valid @RequestBody AddProductRequest product){
         try {
             Product newProduct = productService.addProduct(product);
@@ -54,6 +58,7 @@ public class ProductController {
         }
     }
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse> updateProduct(@RequestBody @Valid UpdateProductRequest product, @PathVariable Long id){
         try {
             Product updatedProduct = productService.updateProduct(product,id);
@@ -64,6 +69,7 @@ public class ProductController {
         }
     }
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse> deleteProduct(@PathVariable Long id ){
         try {
             productService.deleteProductById(id);

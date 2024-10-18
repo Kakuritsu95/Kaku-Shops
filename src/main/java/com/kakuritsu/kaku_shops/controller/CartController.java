@@ -1,10 +1,12 @@
 package com.kakuritsu.kaku_shops.controller;
 
+import com.kakuritsu.kaku_shops.dto.CartDto;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Cart;
 import com.kakuritsu.kaku_shops.response.ApiResponse;
 import com.kakuritsu.kaku_shops.service.cart.ICartService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +19,14 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("${api.prefix}/carts")
 public class CartController {
     private final ICartService cartService;
+    private final ModelMapper mapper;
 
     @GetMapping("{cartId}")
     public ResponseEntity<ApiResponse> getCart(@PathVariable Long cartId){
         try {
             Cart cart = cartService.getCartById(cartId);
-            return ResponseEntity.ok().body(new ApiResponse("Success", cart));
+            CartDto cartDto = mapper.map(cart,CartDto.class);
+            return ResponseEntity.ok().body(new ApiResponse("Success", cartDto));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
         }
