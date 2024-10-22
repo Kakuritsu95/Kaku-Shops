@@ -28,7 +28,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class ProductController {
     private final IProductService productService;
     private final IProductConverter productConverter;
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<ApiResponse> getAllProducts(){
         List<Product> products = productService.getAllProducts();
         List <ProductDto> productDtos = productConverter.convertProductsToProductDtos(products);
@@ -79,9 +79,9 @@ public class ProductController {
         }
     }
     @GetMapping("/by-brand-and-name")
-    public ResponseEntity<ApiResponse> getProductsByBrandAndName(@RequestParam String brandName, @RequestParam String productName){
+    public ResponseEntity<ApiResponse> getProductsByBrandAndName(@RequestParam String brand, @RequestParam String name){
         try {
-            List<Product> products = productService.getProductsByBrandAndName(brandName,productName);
+            List<Product> products = productService.getProductsByBrandAndName(brand,name);
             List<ProductDto> productDtos = productConverter.convertProductsToProductDtos(products);
             if(products.isEmpty()){
                return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("No products found",null));

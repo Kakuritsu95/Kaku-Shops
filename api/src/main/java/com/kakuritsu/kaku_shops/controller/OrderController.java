@@ -18,7 +18,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("${api.prefix}/orders")
 public class OrderController {
     private final IOrderService orderService;
-    @PostMapping
+    @PostMapping("/{userId}")
     public ResponseEntity<ApiResponse> createOrder(@RequestParam Long userId){
         try {
             Order order = orderService.placeOrder(userId);
@@ -28,8 +28,8 @@ public class OrderController {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
         }
     }
-    @GetMapping
-    public ResponseEntity<ApiResponse> getOrderById(@RequestParam Long orderId){
+    @GetMapping("/{orderId}")
+    public ResponseEntity<ApiResponse> getOrderById(@PathVariable Long orderId){
         try {
             OrderDto order = orderService.getOrderById(orderId);
             return ResponseEntity.ok().body(new ApiResponse("Found!", order));

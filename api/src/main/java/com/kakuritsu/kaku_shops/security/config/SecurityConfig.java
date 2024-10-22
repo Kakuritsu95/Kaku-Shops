@@ -20,6 +20,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
@@ -36,6 +38,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable)
+                .cors(cors->cors.configurationSource(apiConfiguration()))
                 //Add custom exception handling class (authEntryPoint)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint))
                 //specify that the session is stateless server doesn't need to store it locally.
@@ -47,9 +50,20 @@ public class SecurityConfig {
 
 
 
+
         http.authenticationProvider(daoAuthenticationProvider());
         http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    UrlBasedCorsConfigurationSource apiConfiguration(){
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedMethods(List.of("GET","POST","DELETE","PUT","PATCH"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source =  new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**",configuration);
+        return source;
     }
     @Bean
     public PasswordEncoder passwordEncoder(){

@@ -31,7 +31,7 @@ public class CategoryController {
            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error:", INTERNAL_SERVER_ERROR));
         }
     }
-   @PostMapping("/add")
+   @PostMapping
    public ResponseEntity<ApiResponse> addCategory(@RequestBody Category category){
        try {
            Category savedCategory = categoryService.addCategory(category);
@@ -52,8 +52,8 @@ public class CategoryController {
        }
 
    }
-    @GetMapping("/name/{name}")
-    public ResponseEntity<ApiResponse> getCategoryByName(@PathVariable String name){
+    @GetMapping("/by-name")
+    public ResponseEntity<ApiResponse> getCategoryByName(@RequestParam String name){
         try {
             Category category = categoryService.getCategoryByName(name);
             return ResponseEntity.ok().body(new ApiResponse("Found!",category));

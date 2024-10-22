@@ -29,7 +29,7 @@ public class CartItemController {
 
 
     @PostMapping
-    public ResponseEntity<ApiResponse> addItemToCart(@RequestParam Long userId, @RequestParam Long productId, @RequestParam int quantity){
+    public ResponseEntity<ApiResponse> addItemToCart(@RequestParam Long productId, @RequestParam int quantity){
         try {
             User user = userService.getAuthenticatedUser();
             Cart cart = Optional.ofNullable(user.getCart()).orElseGet(()->cartService.initializeNewCart(user));

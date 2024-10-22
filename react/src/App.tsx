@@ -1,13 +1,8 @@
-import { useState } from 'react'
+import { productService } from "./service/service";
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <p className="text-blue-200">
-      his
-    </p>
-  )
+  productService.getAll;
+  return <p className="text-blue-200">his</p>;
 }
 
-export default App
+export default App;

@@ -43,7 +43,7 @@ public class UserController {
          }
      }
     @PutMapping("/{userId}")
-    public ResponseEntity<ApiResponse> updateUser(@RequestBody @Valid UpdateUserRequest request, @PathVariable Long userId){
+    public ResponseEntity<ApiResponse> updateUser(@PathVariable Long userId, @RequestBody @Valid UpdateUserRequest request){
         try {
             User user = userService.updateUser(request, userId);
             UserDto userDto = userService.convertUserToDto(user);
