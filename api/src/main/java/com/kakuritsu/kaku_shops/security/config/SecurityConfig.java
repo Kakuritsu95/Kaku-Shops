@@ -55,12 +55,12 @@ public class SecurityConfig {
         http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
+    
     UrlBasedCorsConfigurationSource apiConfiguration(){
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:5173"));
         configuration.setAllowedMethods(List.of("GET","POST","DELETE","PUT","PATCH"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(true);       
         UrlBasedCorsConfigurationSource source =  new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",configuration);
         return source;
