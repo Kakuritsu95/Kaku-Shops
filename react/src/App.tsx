@@ -1,12 +1,11 @@
 import { useEffect } from "react";
-import { productService } from "./service/productService";
 import { Product } from "./types/productInterface";
+import cartService from "./service/cartService";
 
 function App() {
   useEffect(() => {
     async function getById() {
-      const product: Product = await productService.getById(1);
-      console.log(product.id);
+      const product: Product = await cartService.addItem(3, 1);
     }
     getById();
   }, []);

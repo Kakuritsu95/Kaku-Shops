@@ -31,10 +31,7 @@ public class OrderService implements IOrderService {
     @Override
             public Order placeOrder(Long userId) {
             Cart cart = cartService.getCartByUserId(userId);
-            System.out.println(cart.getTotalAmount());
-             System.out.println(cart.getTotalAmount());
             if(cart.getTotalAmount().compareTo(BigDecimal.ZERO)==0) {throw new RuntimeException("Cart is empty!");};
-            System.out.println(cart.getTotalAmount().compareTo(BigDecimal.ZERO)==0);
             Order order = createOrder(cart);
             List<OrderItem> orderItems = createOrderItems(order,cart);
             order.setOrderItems(new HashSet<>(orderItems));

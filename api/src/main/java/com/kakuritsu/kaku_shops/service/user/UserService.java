@@ -63,7 +63,7 @@ public class UserService implements IUserService{
         return mapper.map(user, UserDto.class);
     }
 
-    public User getAuthenticatedUser(){
+    public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         return userRepository.findByEmail(email);

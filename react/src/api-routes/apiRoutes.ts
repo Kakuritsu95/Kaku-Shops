@@ -59,17 +59,17 @@ const API_ROUTES = {
     getTotalPrice: (cartId: number) => `${BASE_PATHS.cart}/${cartId}`,
     getByUserId: (userId: number) => `${BASE_PATHS.cart}/${userId}`,
     addItemToCart: (productId: number, quantity: number) =>
-      `${BASE_PATHS.cartItem}/${createSearchQuery(
+      `${BASE_PATHS.cartItem}${createSearchQuery(
         [{ productId }, { quantity }],
         true
       )}`,
     removeItemToCart: (cartId: number, productId: number) =>
-      `${BASE_PATHS.cartItem}/${createSearchQuery(
+      `${BASE_PATHS.cartItem}${createSearchQuery(
         [{ cartId }, { productId }],
         true
       )}`,
     updateItemQuantity: (cartId: number, productId: number, quantity: number) =>
-      `${BASE_PATHS.cartItem}/${createSearchQuery(
+      `${BASE_PATHS.cartItem}${createSearchQuery(
         [{ cartId }, { productId }, { quantity }],
         true
       )}`,

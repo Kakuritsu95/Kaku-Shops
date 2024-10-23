@@ -30,23 +30,23 @@ public class CartItemService implements ICartItemService {
             cartItem.setUnitPrice(product.getPrice());
             cart.addItem(cartItem);
         }
-         else {
-             cartItem.setQuantity(cartItem.getQuantity() + quantity);
+        else {
+            cartItem.setQuantity(cartItem.getQuantity() + quantity);
         }
-         cartItem.updateTotalPrice();
+        cartItem.updateTotalPrice();
 
-         cartItemRepository.save(cartItem);
-         cart.updateTotalAmount();
-         cartRepository.save(cart);
+        cartItemRepository.save(cartItem);
+        cart.updateTotalAmount();
+        cartRepository.save(cart);
 
-         return cart;
+        return cart;
     }
     @Override
     public void removeItemFromCart(Long cartId, Long productId) {
-      Cart cart = cartService.getCartById(cartId);
-      CartItem cartToToRemove = this.getCartItem(cart,productId);
-      cart.removeItem(cartToToRemove);
-      cartRepository.save(cart);
+        Cart cart = cartService.getCartById(cartId);
+        CartItem cartToToRemove = this.getCartItem(cart,productId);
+        cart.removeItem(cartToToRemove);
+        cartRepository.save(cart);
     }
 
     @Override
