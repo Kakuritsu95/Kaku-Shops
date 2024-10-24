@@ -1,9 +1,9 @@
 package com.kakuritsu.kaku_shops.service.cart;
 
 import com.kakuritsu.kaku_shops.dto.CartDto;
+import com.kakuritsu.kaku_shops.exceptions.CartOperationException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Cart;
-import com.kakuritsu.kaku_shops.model.User;
 import com.kakuritsu.kaku_shops.repository.CartItemRepository;
 import com.kakuritsu.kaku_shops.repository.CartRepository;
 import jakarta.servlet.http.Cookie;
@@ -16,7 +16,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Optional;
@@ -70,24 +69,28 @@ public class CartService implements ICartService{
     public CartDto convertToDto(Cart cart){
        return mapper.map(cart, CartDto.class);
     }
+    @Override
+    public void checkIfUserHasCartCookie(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null || Arrays.stream(cookies).noneMatch(cookie -> "cart".equals(cookie.getName()))) {
+            throw new CartOperationException("Cart cookie not found");
+        }
+    }
+    public String generateCartCookieOrGetIfExists(HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
 
-    public String generateCartCookieOrGetIfExists(HttpServletRequest request, HttpServletResponse response){
-        Cookie [] cookies = request.getCookies();
-
-            Cookie getCookie = Arrays.stream(cookies)
-                    .filter(cookie -> "cart".equals(cookie.getName()))
-                    .findFirst()
-                    .orElseGet(() -> {
-                        String cartSessionId = UUID.randomUUID().toString();
-                        Cookie newCookie = new Cookie("cart", cartSessionId);
-                        newCookie.setHttpOnly(true);
-                        newCookie.setMaxAge(7 * 24 * 60 * 60);
-                        response.addCookie(newCookie);
-                        return newCookie;
-                    });
-            return getCookie.getValue();
-
-
+        return Arrays.stream(Optional.ofNullable(cookies).orElse(new Cookie[0]))
+                .filter(cookie -> "cart".equals(cookie.getName()))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElseGet(() -> {
+                    String cartSessionId = UUID.randomUUID().toString();
+                    Cookie newCookie = new Cookie("cart", cartSessionId);
+                    newCookie.setHttpOnly(true);
+                    newCookie.setMaxAge(7 * 24 * 60 * 60);
+                    response.addCookie(newCookie);
+                    return cartSessionId;
+                });
     }
 
     @Scheduled(cron = "0 0 0 * * ?")

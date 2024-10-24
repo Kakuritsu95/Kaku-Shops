@@ -1,6 +1,7 @@
 package com.kakuritsu.kaku_shops.service.cart;
 
 import com.kakuritsu.kaku_shops.exceptions.CartOperationException;
+import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Cart;
 import com.kakuritsu.kaku_shops.model.CartItem;
 import com.kakuritsu.kaku_shops.model.Product;
@@ -19,8 +20,8 @@ public class CartItemService implements ICartItemService {
     private final ICartService cartService;
 
     @Override
-    public Cart addItemToCart(Long cartId, Long productId, int quantity) {
-        Cart cart = cartService.getCartById(cartId);
+    public Cart addItemToCart(String cartSessionId, Long productId, int quantity) {
+        Cart cart = cartService.getCartBySessionId(cartSessionId).orElseGet(()->cartService.initializeNewCart(cartSessionId));
         Product product = productService.getProductById(productId);
         CartItem cartItem = cart.getCartItems().stream().filter(item -> item.getProduct().getId().equals(productId)).findFirst().orElse(new CartItem());
         if(cartItem.getId()==null){
@@ -42,18 +43,19 @@ public class CartItemService implements ICartItemService {
         return cart;
     }
     @Override
-    public void removeItemFromCart(Long cartId, Long productId) {
-        Cart cart = cartService.getCartById(cartId);
+    public void removeItemFromCart(String cartSessionId, Long productId) {
+        Cart cart = cartService.getCartBySessionId(cartSessionId).orElseThrow(()->new ResourceNotFoundException("Cart was not found"));
         CartItem cartToToRemove = this.getCartItem(cart,productId);
         cart.removeItem(cartToToRemove);
         cartRepository.save(cart);
     }
 
     @Override
-    public void updateItemQuantity(Long cartId, Long productId, int quantity) {
-        Cart cart = cartService.getCartById(cartId);
+    public void updateItemQuantity(String cartSessionId, Long productId, int quantity) {
+        Cart cart = cartService.getCartBySessionId(cartSessionId).orElseThrow(()-> new ResourceNotFoundException("Cart was not found"));
         CartItem cartItem = this.getCartItem(cart,productId);
         cartItem.setQuantity(quantity);
+        cartItem.updateTotalPrice();
         cartItemRepository.save(cartItem);
         cartRepository.save(cart);
     }

@@ -1,7 +1,10 @@
-export interface CreateUser {
+export interface User {
   firstName: string;
   lastName: string;
   email: string;
+}
+
+export interface CreateUser extends User {
   password: string;
 }
 

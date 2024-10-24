@@ -54,9 +54,11 @@ const API_ROUTES = {
   },
 
   cart: {
-    getById: (cartId: number) => `${BASE_PATHS.cart}/total-price/${cartId}`,
+    getById: (cartId: number) => `${BASE_PATHS.cart}/${cartId}`,
+    getBySessionId: BASE_PATHS.cart,
     deleteCartById: (cartId: number) => `${BASE_PATHS.cart}/${cartId}`,
-    getTotalPrice: (cartId: number) => `${BASE_PATHS.cart}/${cartId}`,
+    getTotalPrice: (cartId: number) =>
+      `${BASE_PATHS.cart}/total-price/${cartId}`,
     getByUserId: (userId: number) => `${BASE_PATHS.cart}/${userId}`,
     addItemToCart: (productId: number, quantity: number) =>
       `${BASE_PATHS.cartItem}${createSearchQuery(
@@ -89,7 +91,7 @@ const API_ROUTES = {
   order: {
     getById: (orderId: number) => `${BASE_PATHS.order}/${orderId}`,
     getByUserId: (userId: number) => `${BASE_PATHS.order}/user/${userId}`,
-    placeOrder: (userId: number) => `${BASE_PATHS.order}/${userId}`,
+    placeOrder: BASE_PATHS.order,
   },
 };
 

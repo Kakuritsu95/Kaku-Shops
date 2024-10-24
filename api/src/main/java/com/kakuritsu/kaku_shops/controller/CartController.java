@@ -5,6 +5,8 @@ import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Cart;
 import com.kakuritsu.kaku_shops.response.ApiResponse;
 import com.kakuritsu.kaku_shops.service.cart.ICartService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +23,16 @@ public class CartController {
     private final ICartService cartService;
     private final ModelMapper mapper;
 
-    @GetMapping("{cartId}")
-    public ResponseEntity<ApiResponse> getCart(@PathVariable Long cartId){
+    @GetMapping
+    public ResponseEntity<ApiResponse> getCartByCookieSession(
+           HttpServletRequest request,
+            HttpServletResponse response
+    )
+    {
         try {
-            Cart cart = cartService.getCartById(cartId);
+            cartService.checkIfUserHasCartCookie(request);
+            String cartSessionId = cartService.generateCartCookieOrGetIfExists(request,response);
+            Cart cart = cartService.getCartBySessionId(cartSessionId).orElseThrow(()->new ResourceNotFoundException("Cart was not found"));
             CartDto cartDto = mapper.map(cart,CartDto.class);
             return ResponseEntity.ok().body(new ApiResponse("Success", cartDto));
         } catch (ResourceNotFoundException e) {
