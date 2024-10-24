@@ -2,13 +2,13 @@ package com.kakuritsu.kaku_shops.service.order;
 
 import com.kakuritsu.kaku_shops.dto.OrderDto;
 import com.kakuritsu.kaku_shops.model.Order;
-import com.kakuritsu.kaku_shops.model.OrderItem;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface IOrderService {
-    Order placeOrder(Long userId);
+    Order placeOrder(HttpServletRequest request, HttpServletResponse response);
     OrderDto getOrderById(Long orderId);
     List<OrderDto> getUserOrders(Long id);
 

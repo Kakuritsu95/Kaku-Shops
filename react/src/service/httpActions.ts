@@ -1,6 +1,7 @@
 import axios from "axios";
 import API_ROUTES from "../api-routes/apiRoutes";
 axios.defaults.baseURL = API_ROUTES.base;
+axios.defaults.withCredentials = true;
 
 export default {
   get: (url: string) => axios.get(url).then((res) => res.data.data),

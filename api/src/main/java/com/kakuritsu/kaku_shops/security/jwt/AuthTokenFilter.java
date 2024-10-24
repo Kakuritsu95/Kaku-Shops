@@ -23,6 +23,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @RequiredArgsConstructor
+
 public class AuthTokenFilter extends OncePerRequestFilter {
     private final JwtUtils jwtUtils;
     private final ShopUserDetailsService userDetailsService;

@@ -33,7 +33,8 @@ public class SecurityConfig {
     private final ShopUserDetailsService userDetailsService;
     private final JwtAuthEntryPoint authEntryPoint;
     private final JwtUtils jwtUtils;
-    private static final List<String> SECURED_USER_URLS = List.of("/api/v1/carts/**","/api/v1/cart-items/**");
+//    private static final List<String> SECURED_USER_URLS = List.of("/api/v1/carts/**","/api/v1/cart-items/**");
+private static final List<String> SECURED_USER_URLS = List.of("/asd");
     private static final List<String> SECURED_ADMIN_URLS = List.of("/api/v1/images/**");
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -60,7 +61,8 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:5173"));
         configuration.setAllowedMethods(List.of("GET","POST","DELETE","PUT","PATCH"));
-        configuration.setAllowCredentials(true);       
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source =  new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",configuration);
         return source;
@@ -73,6 +75,7 @@ public class SecurityConfig {
     public AuthTokenFilter authTokenFilter(){
         return new AuthTokenFilter(jwtUtils, userDetailsService);
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();

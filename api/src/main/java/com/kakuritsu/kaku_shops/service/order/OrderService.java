@@ -2,18 +2,18 @@ package com.kakuritsu.kaku_shops.service.order;
 
 import com.kakuritsu.kaku_shops.dto.OrderDto;
 import com.kakuritsu.kaku_shops.enums.OrderStatus;
+import com.kakuritsu.kaku_shops.exceptions.CartOperationException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
-import com.kakuritsu.kaku_shops.model.Cart;
-import com.kakuritsu.kaku_shops.model.Order;
-import com.kakuritsu.kaku_shops.model.OrderItem;
-import com.kakuritsu.kaku_shops.model.Product;
+import com.kakuritsu.kaku_shops.model.*;
 import com.kakuritsu.kaku_shops.repository.OrderRepository;
 import com.kakuritsu.kaku_shops.repository.ProductRepository;
-import com.kakuritsu.kaku_shops.service.cart.CartService;
+import com.kakuritsu.kaku_shops.service.cart.ICartService;
+import com.kakuritsu.kaku_shops.service.user.IUserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,16 +25,18 @@ import java.util.List;
 public class OrderService implements IOrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
-    private final CartService cartService;
+    private final ICartService cartService;
     private final ModelMapper mapper;
+    private final IUserService userService;
 
     @Override
-            public Order placeOrder(Long userId) {
-            Cart cart = cartService.getCartByUserId(userId);
-            System.out.println(cart.getTotalAmount());
-             System.out.println(cart.getTotalAmount());
+            public Order placeOrder(HttpServletRequest request, HttpServletResponse response) {
+            cartService.checkIfUserHasCartCookie(request);
+            String  cartSessionCookie = cartService.generateCartCookieOrGetIfExists(request,response);
+            User user = userService.getAuthenticatedUser();
+            Cart cart = cartService.getCartBySessionId(cartSessionCookie).orElseThrow(()->new CartOperationException("Cart doesn't exist please add items"));
             if(cart.getTotalAmount().compareTo(BigDecimal.ZERO)==0) {throw new RuntimeException("Cart is empty!");};
-            System.out.println(cart.getTotalAmount().compareTo(BigDecimal.ZERO)==0);
+            cart.setUser(user);
             Order order = createOrder(cart);
             List<OrderItem> orderItems = createOrderItems(order,cart);
             order.setOrderItems(new HashSet<>(orderItems));
