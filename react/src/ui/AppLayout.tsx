@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 
 export function AppLayout() {
   return (
-    <div className="container mx-auto">
+    <div>
       <Navbar />
       <main>
         <Outlet />
