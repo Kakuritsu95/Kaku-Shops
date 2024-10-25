@@ -5,9 +5,6 @@ export default {
     boxShadow: {
       outer: "0px 0px 0.5px 0.2px rgba(0,72,255,1)",
     },
-    // borderWidth: {
-    //   sm: "1px",
-    // },
     extend: {},
   },
   plugins: [],
