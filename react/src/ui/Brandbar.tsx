@@ -1,7 +1,7 @@
 import { RxHamburgerMenu } from "react-icons/rx";
 import Logo from "./Logo";
-import Searchbar from "./SearchBar";
-import CartIcon from "../features/CartIcon";
+import Searchbar from "./Searchbar";
+import CartIcon from "../features/cart/CartIcon";
 
 export default function Brandbar() {
   return (

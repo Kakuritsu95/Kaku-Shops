@@ -1,4 +1,4 @@
-import CategoryList from "../categories/CategoryList";
+import CategoryList from "../features/categories/CategoryList";
 import SectionHeader from "../ui/SectionHeader";
 
 export default function Homepage() {
