@@ -4,20 +4,27 @@ import com.kakuritsu.kaku_shops.dto.ProductDto;
 import com.kakuritsu.kaku_shops.exceptions.AlreadyExistsException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Product;
+import com.kakuritsu.kaku_shops.repository.ProductRepository;
 import com.kakuritsu.kaku_shops.request.AddProductRequest;
+import com.kakuritsu.kaku_shops.request.FilterSortProductRequest;
 import com.kakuritsu.kaku_shops.request.UpdateProductRequest;
 import com.kakuritsu.kaku_shops.response.ApiResponse;
-import com.kakuritsu.kaku_shops.service.converter.IProductConverter;
+import com.kakuritsu.kaku_shops.response.SearchProductResultsResponse;
+import com.kakuritsu.kaku_shops.service.converter.ProductConverter;
 import com.kakuritsu.kaku_shops.service.product.IProductService;
+import com.kakuritsu.kaku_shops.specificiation.ProductSpecs;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -27,7 +34,9 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("${api.prefix}/products")
 public class ProductController {
     private final IProductService productService;
-    private final IProductConverter productConverter;
+    private final ProductConverter productConverter;
+    private final ProductRepository productRepository;
+    private final ModelMapper mapper;
     @GetMapping
     public ResponseEntity<ApiResponse> getAllProducts(){
         List<Product> products = productService.getAllProducts();
@@ -151,5 +160,18 @@ public class ProductController {
         } catch (Exception e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
         }
+    }
+    @GetMapping("/brands/{categoryId}")
+    public ResponseEntity<ApiResponse> getDistinctBrand(@PathVariable Long categoryId){
+        Set<String> associatedBrands = productRepository.getDistinctBrands(categoryId);
+        return ResponseEntity.ok().body(new ApiResponse("ok", associatedBrands));
+    }
+
+    @GetMapping("/search/{categoryId}")
+    public ResponseEntity<ApiResponse> getProductsByCategoryAndSearchParams(@PathVariable Long categoryId, @ModelAttribute FilterSortProductRequest request){
+        Set<String> associatedBrands = productRepository.getDistinctBrands(categoryId);
+        Page<ProductDto> productDtos = productService.getProductsByCategoryIdAndSearchParams(categoryId,request);
+        SearchProductResultsResponse result = new SearchProductResultsResponse(associatedBrands, productDtos);
+        return ResponseEntity.ok().body(new ApiResponse("ok",result));
     }
 }

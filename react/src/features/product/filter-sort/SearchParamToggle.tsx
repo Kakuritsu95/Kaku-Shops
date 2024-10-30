@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { FaCheck } from "react-icons/fa6";
+
 import { useSearchParams } from "react-router-dom";
+import FilterSortSectionLabel from "./FilterSortLabel";
 
 interface UrlParamsLabelProps {
   name: string;
@@ -8,7 +9,7 @@ interface UrlParamsLabelProps {
   type: "radio" | "checkbox";
 }
 
-export default function UrlParamsLabel({
+export default function SearchParamToggle({
   name,
   type,
   urlParam,
@@ -45,22 +46,7 @@ export default function UrlParamsLabel({
         name={urlParam}
         onChange={(e) => setUrlParams(e, urlParam)}
       />
-      <label
-        htmlFor={name}
-        className="flex cursor-pointer items-center gap-2.5"
-      >
-        <div
-          className={`flex h-[18px] w-[18px] items-center border border-gray-400 ${type == "radio" ? "rounded-full" : "rounded"} ${isChecked && "border-none bg-gray-800"}`}
-        >
-          {isChecked &&
-            (type == "radio" ? (
-              <div className="ms-1.5 h-1.5 w-1.5 rounded-full bg-white" />
-            ) : (
-              <FaCheck size={13} className="ms-0.5 font-bold text-white" />
-            ))}
-        </div>
-        <span>{name}</span>
-      </label>
+      <FilterSortSectionLabel isChecked={isChecked} name={name} type={type} />
     </li>
   );
 }

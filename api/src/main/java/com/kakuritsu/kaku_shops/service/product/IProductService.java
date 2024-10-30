@@ -1,8 +1,11 @@
 package com.kakuritsu.kaku_shops.service.product;
 
+import com.kakuritsu.kaku_shops.dto.ProductDto;
 import com.kakuritsu.kaku_shops.model.Product;
 import com.kakuritsu.kaku_shops.request.AddProductRequest;
+import com.kakuritsu.kaku_shops.request.FilterSortProductRequest;
 import com.kakuritsu.kaku_shops.request.UpdateProductRequest;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -17,6 +20,8 @@ public interface IProductService {
 
     List<Product> getAllProducts();
 
+    Page<ProductDto> getProductsByCategoryIdAndSearchParams(Long categoryId, FilterSortProductRequest request);
+
     List<Product> getProductsByCategory(String category);
 
     List<Product> getProductsByBrand(String brand);
@@ -28,5 +33,7 @@ public interface IProductService {
     List<Product> getProductsByBrandAndName(String brand, String name);
 
     Long countProductsByBrandAndName(String brand, String name);
+
+
 
 }

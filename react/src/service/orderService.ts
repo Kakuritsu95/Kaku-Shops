@@ -1,9 +1,10 @@
-import axios from "axios";
 import API_ROUTES from "../api-routes/apiRoutes";
+import httpActions from "./httpActions";
 
 export default {
-  getById: (orderId: number) => axios.get(API_ROUTES.order.getById(orderId)),
+  getById: (orderId: number) =>
+    httpActions.get(API_ROUTES.order.getById(orderId)),
   getByUserId: (orderId: number) =>
-    axios.get(API_ROUTES.order.getByUserId(orderId)),
-  placeOrder: () => axios.post(API_ROUTES.order.placeOrder),
+    httpActions.get(API_ROUTES.order.getByUserId(orderId)),
+  placeOrder: () => httpActions.post(API_ROUTES.order.placeOrder),
 };

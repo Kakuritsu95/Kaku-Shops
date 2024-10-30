@@ -1,4 +1,6 @@
 package com.kakuritsu.kaku_shops.service.product;
+
+import com.kakuritsu.kaku_shops.dto.ProductDto;
 import com.kakuritsu.kaku_shops.exceptions.AlreadyExistsException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Category;
@@ -6,9 +8,14 @@ import com.kakuritsu.kaku_shops.model.Product;
 import com.kakuritsu.kaku_shops.repository.CategoryRepository;
 import com.kakuritsu.kaku_shops.repository.ProductRepository;
 import com.kakuritsu.kaku_shops.request.AddProductRequest;
+import com.kakuritsu.kaku_shops.request.FilterSortProductRequest;
 import com.kakuritsu.kaku_shops.request.UpdateProductRequest;
-import com.kakuritsu.kaku_shops.service.converter.IProductConverter;
+import com.kakuritsu.kaku_shops.service.converter.ProductConverter;
+import com.kakuritsu.kaku_shops.specificiation.ProductSpecs;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,15 +27,12 @@ public class ProductService implements IProductService{
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    private final IProductConverter productConverter;
+
+    private final ProductConverter productConverter;
 
     @Override
     public Product addProduct(AddProductRequest request) {
-      // check if the category is found in the DB
-      // If Yes, set it as the new product category
-      // If No, then save it as a new category
-      // Then set as the new product category
-        if(productExists(request)){
+         if(productExists(request)){
             throw new AlreadyExistsException(request.getBrand() + " " + request.getName() + " Already exists, you may update this product instead!");
         }
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName())).orElseGet(()->{
@@ -69,6 +73,16 @@ public class ProductService implements IProductService{
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
+    @Override
+    public Page<ProductDto> getProductsByCategoryIdAndSearchParams(Long categoryId, FilterSortProductRequest request){
+        Sort sort = Sort.by("price").ascending();
+        if(request.getPriceSortBy()!=null && request.getPriceSortBy().equals("Descending")){
+            sort.descending();
+        }
+        PageRequest pageRequest = PageRequest.of(request.getPage(), request.getSize());
+        Page<Product> products = productRepository.findAll(ProductSpecs.ProductFilterSpecification(request, categoryId), pageRequest);
+        return products.map(productConverter::convertProductToProductDto);
+    }
 
     @Override
     public List<Product> getProductsByCategory(String category) {
@@ -99,6 +113,8 @@ public class ProductService implements IProductService{
     public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand,name);
     }
+
+
     boolean productExists(AddProductRequest product){
      return productRepository.existsByNameAndBrand(product.getName(),product.getBrand());
     }
