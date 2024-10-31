@@ -20,20 +20,20 @@ const API_ROUTES = {
   },
 
   user: {
-    getUserById: (userId: number) => `${BASE_PATHS.user}/${userId}`,
+    getUserById: (userId: string) => `${BASE_PATHS.user}/${userId}`,
     createUser: `${BASE_PATHS.user}`,
-    updateUser: (userId: number) => `${BASE_PATHS.user}/${userId}`,
-    deleteUser: (userId: number) => `${BASE_PATHS.user}/${userId}`,
+    updateUser: (userId: string) => `${BASE_PATHS.user}/${userId}`,
+    deleteUser: (userId: string) => `${BASE_PATHS.user}/${userId}`,
   },
 
   product: {
     getAll: `${BASE_PATHS.product}`,
-    getBySearchQuery: (categoryId: number, searchParams: string) =>
+    getBySearchQuery: (categoryId: string, searchParams: string) =>
       `${BASE_PATHS.product}/search/${categoryId}?${searchParams}`,
     add: `${BASE_PATHS.product}`,
-    getById: (id: number) => `${BASE_PATHS.product}/${id}`,
-    update: (id: number) => `${BASE_PATHS.product}/${id}`,
-    delete: (id: number) => `${BASE_PATHS.product}/${id}`,
+    getById: (id: string) => `${BASE_PATHS.product}/${id}`,
+    update: (id: string) => `${BASE_PATHS.product}/${id}`,
+    delete: (id: string) => `${BASE_PATHS.product}/${id}`,
     searchByName: (productName: string) =>
       `${BASE_PATHS.product}/${createSearchQuery([{ productName }])}`,
     searchByBrand: (productBrand: string) =>
@@ -53,28 +53,28 @@ const API_ROUTES = {
 
   image: {
     upload: `${BASE_PATHS.image}/upload`,
-    download: (imageId: number) => `${BASE_PATHS.image}/download/${imageId}`,
-    update: (imageId: number) => `${BASE_PATHS.image}/update/${imageId}`,
+    download: (imageId: string) => `${BASE_PATHS.image}/download/${imageId}`,
+    update: (imageId: string) => `${BASE_PATHS.image}/update/${imageId}`,
   },
 
   cart: {
-    getById: (cartId: number) => `${BASE_PATHS.cart}/${cartId}`,
+    getById: (cartId: string) => `${BASE_PATHS.cart}/${cartId}`,
     getBySessionId: BASE_PATHS.cart,
-    deleteCartById: (cartId: number) => `${BASE_PATHS.cart}/${cartId}`,
-    getTotalPrice: (cartId: number) =>
+    deleteCartById: (cartId: string) => `${BASE_PATHS.cart}/${cartId}`,
+    getTotalPrice: (cartId: string) =>
       `${BASE_PATHS.cart}/total-price/${cartId}`,
-    getByUserId: (userId: number) => `${BASE_PATHS.cart}/${userId}`,
-    addItemToCart: (productId: number, quantity: number) =>
+    getByUserId: (userId: string) => `${BASE_PATHS.cart}/${userId}`,
+    addItemToCart: (productId: string, quantity: number) =>
       `${BASE_PATHS.cartItem}${createSearchQuery(
         [{ productId }, { quantity }],
         true,
       )}`,
-    removeItemToCart: (cartId: number, productId: number) =>
+    removeItemToCart: (cartId: string, productId: string) =>
       `${BASE_PATHS.cartItem}${createSearchQuery(
         [{ cartId }, { productId }],
         true,
       )}`,
-    updateItemQuantity: (cartId: number, productId: number, quantity: number) =>
+    updateItemQuantity: (cartId: string, productId: string, quantity: number) =>
       `${BASE_PATHS.cartItem}${createSearchQuery(
         [{ cartId }, { productId }, { quantity }],
         true,

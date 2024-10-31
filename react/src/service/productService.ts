@@ -4,17 +4,17 @@ import { AddProduct, UpdateProduct } from "../types/productInterface";
 
 export default {
   getAll: () => httpActions.get(API_ROUTES.product.getAll),
-  getByCategoryIdAndSearchQuery: (categoryId: number, searchParams: string) =>
+  getByCategoryIdAndSearchQuery: (categoryId: string, searchParams: string) =>
     httpActions.get(
       API_ROUTES.product.getBySearchQuery(categoryId, searchParams),
     ),
   add: (product: AddProduct) =>
     httpActions.post(API_ROUTES.product.add, product),
-  getById: (productId: number) =>
+  getById: (productId: string) =>
     httpActions.get(API_ROUTES.product.getById(productId)),
-  update: (productId: number, product: UpdateProduct) =>
+  update: (productId: string, product: UpdateProduct) =>
     httpActions.patch(API_ROUTES.product.update(productId), product),
-  delete: (productId: number) =>
+  delete: (productId: string) =>
     httpActions.get(API_ROUTES.product.delete(productId)),
   searchByName: (name: string) =>
     httpActions.get(API_ROUTES.product.searchByName(name)),

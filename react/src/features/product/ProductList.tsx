@@ -1,3 +1,16 @@
-export default function ProductList() {
-  return <ul></ul>;
+import { Product } from "../../types/productInterface";
+import ProductCard from "./ProductCard";
+
+export default function ProductList({
+  products,
+}: {
+  products: Array<Product>;
+}) {
+  return (
+    <ul className="flex flex-wrap gap-3">
+      {products.map((product) => (
+        <ProductCard product={product} />
+      ))}
+    </ul>
+  );
 }

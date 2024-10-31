@@ -169,9 +169,7 @@ public class ProductController {
 
     @GetMapping("/search/{categoryId}")
     public ResponseEntity<ApiResponse> getProductsByCategoryAndSearchParams(@PathVariable Long categoryId, @ModelAttribute FilterSortProductRequest request){
-        Set<String> associatedBrands = productRepository.getDistinctBrands(categoryId);
         Page<ProductDto> productDtos = productService.getProductsByCategoryIdAndSearchParams(categoryId,request);
-        SearchProductResultsResponse result = new SearchProductResultsResponse(associatedBrands, productDtos);
-        return ResponseEntity.ok().body(new ApiResponse("ok",result));
+        return ResponseEntity.ok().body(new ApiResponse("ok",productDtos));
     }
 }

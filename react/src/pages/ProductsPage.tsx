@@ -1,12 +1,11 @@
-import { useParams } from "react-router";
 import ProductFilterSection from "../features/product/ProductFilterSortSection";
+import ProductsDisplay from "../features/product/ProductsDisplay";
 
 export default function ProductsPage() {
-  const { categoryId } = useParams();
-
   return (
-    <div>
+    <div className="flex gap-5">
       <ProductFilterSection />
+      <ProductsDisplay />
     </div>
   );
 }

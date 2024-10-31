@@ -5,25 +5,28 @@ import SearchParamToggle from "./SearchParamToggle";
 
 export default function FilterByBrand() {
   const { categoryId } = useParams();
-  const { data: brands } = useQuery({
+  const { data: brands, isLoading } = useQuery({
     queryKey: [categoryId, "brands"],
     queryFn: () =>
       productService.getUniqueBrandsByCategoryId(String(categoryId)),
   });
+
   return (
     <div className="space-y-5">
       <h3 className="font-semibold">Brands</h3>
-      <ul>
-        {brands &&
-          brands.map((brand) => (
-            <SearchParamToggle
-              key={brand}
-              name={brand}
-              urlParam="brand"
-              type="checkbox"
-            />
-          ))}
-      </ul>
+      {!isLoading && (
+        <ul>
+          {brands &&
+            brands.map((brand) => (
+              <SearchParamToggle
+                key={brand}
+                name={brand}
+                urlParam="brand"
+                type="checkbox"
+              />
+            ))}
+        </ul>
+      )}
     </div>
   );
 }
