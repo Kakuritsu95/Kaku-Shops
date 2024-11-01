@@ -14,7 +14,7 @@ public class ProductSpecs {
         return ((root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
              if(categoryId!=null){
-                predicates.add(criteriaBuilder.equal(root.get("category").get("id"),categoryId));
+                predicates.add(criteriaBuilder.equal(root.get("category").get("id"),categoryId));            
             }
             if(request.getBrand()!=null){
                 predicates.add(criteriaBuilder.equal(root.get("brand"),request.getBrand()));
@@ -25,7 +25,7 @@ public class ProductSpecs {
             if(request.getMaxPrice()!=null){
                 predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("price"),request.getMaxPrice()));
             }
-            if(request.getInStock()!=null && request.getInStock().equals("true")){
+            if(request.isInStock()){
                 predicates.add(criteriaBuilder.greaterThan(root.get("inventory"),0));
             }
 

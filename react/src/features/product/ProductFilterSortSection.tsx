@@ -12,15 +12,13 @@ export default function ProductFilterSortSection() {
   };
 
   return (
-    <aside>
-      <form className="space-y-10" onChange={handleChange}>
-        <h2 className="text-lg">Filters</h2>
-        <FilterByCategory />
-        <FilterByBrand />
-        <SortByPrice />
-        <ExtraFilters />
-        <PriceRangeInput />
-      </form>
-    </aside>
+    <form className="space-y-10" onChange={handleChange}>
+      <h2 className="text-lg">Filters</h2>
+      <FilterByCategory />
+      <FilterByBrand />
+      <SortByPrice />
+      <ExtraFilters />
+      <PriceRangeInput />
+    </form>
   );
 }

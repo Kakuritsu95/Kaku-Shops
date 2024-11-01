@@ -3,8 +3,8 @@ import { useSearchParams } from "react-router-dom";
 
 export default function PriceRangeInput() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [minPrice, setMinPrice] = useState<string>("0");
-  const [maxPrice, setMaxPrice] = useState<string>("500");
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(1000);
 
   return (
     <div className="flex flex-col">
@@ -19,10 +19,10 @@ export default function PriceRangeInput() {
         id="range"
         name="min"
         value={minPrice}
-        min="12"
-        max="100"
+        min={0}
+        max={maxPrice - 1}
         onChange={(e) => {
-          if (+minPrice < +maxPrice - 1) setMinPrice(e.target.value);
+          if (maxPrice - 60 > minPrice) setMinPrice(+e.target.value);
         }}
         className="range-min"
       />
@@ -31,8 +31,10 @@ export default function PriceRangeInput() {
         id="range"
         name="max"
         onChange={(e) => {
-          if (+minPrice < +maxPrice - 1) setMaxPrice(e.target.value);
+          if (maxPrice - 60 > minPrice) setMaxPrice(+e.target.value);
         }}
+        min={1}
+        max={2000}
         value={maxPrice}
         className="range-max"
       />

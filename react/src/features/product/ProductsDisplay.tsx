@@ -20,7 +20,8 @@ export default function ProductsDisplay() {
         searchParams.toString(),
       ),
   });
-  if (!products) return;
+
+  if (products == undefined) return;
 
   const selectedCategory = products.content[0].category.name;
   return (

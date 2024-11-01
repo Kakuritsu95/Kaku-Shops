@@ -34,8 +34,8 @@ public class SecurityConfig {
     private final JwtAuthEntryPoint authEntryPoint;
     private final JwtUtils jwtUtils;
 //    private static final List<String> SECURED_USER_URLS = List.of("/api/v1/carts/**","/api/v1/cart-items/**");
-private static final List<String> SECURED_USER_URLS = List.of("/asd");
-    private static final List<String> SECURED_ADMIN_URLS = List.of("/api/v1/images/**");
+    private static final List<String> SECURED_USER_URLS = List.of("/asd");
+    private static final List<String> SECURED_ADMIN_URLS = List.of("/api/v1/imagee/**");
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable)

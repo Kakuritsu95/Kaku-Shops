@@ -7,30 +7,32 @@ interface UrlParamsLabelProps {
   name: string;
   urlParam: string;
   type: "radio" | "checkbox";
+  value: string;
 }
 
 export default function SearchParamToggle({
   name,
-  type,
   urlParam,
+  type,
+  value,
 }: UrlParamsLabelProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isChecked, setIsChecked] = useState<boolean>(false);
   useEffect(() => {
     const currentValue = searchParams.get(urlParam);
-    setIsChecked(currentValue === name || currentValue === "true");
-  }, [searchParams, urlParam, name]);
+    setIsChecked(currentValue === value);
+  }, [searchParams, urlParam, name, value]);
 
   function setUrlParams(
     e: React.ChangeEvent<HTMLInputElement>,
-    filterName: string,
+    searchParam: string,
   ) {
     const currentParams = Object.fromEntries(searchParams);
 
     if (e.target.checked) {
-      setSearchParams({ ...currentParams, [filterName]: e.target.value });
+      setSearchParams({ ...currentParams, [searchParam]: e.target.value });
     } else {
-      const { [filterName]: _, ...rest } = currentParams;
+      const { [searchParam]: _, ...rest } = currentParams;
       setSearchParams(rest);
     }
   }
@@ -40,7 +42,7 @@ export default function SearchParamToggle({
       <input
         id={name}
         type={type}
-        value={name == urlParam ? "true" : name}
+        value={value}
         className="hidden"
         checked={isChecked}
         name={urlParam}

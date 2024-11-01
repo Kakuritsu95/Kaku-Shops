@@ -75,14 +75,17 @@ public class ProductService implements IProductService{
     }
     @Override
     public Page<ProductDto> getProductsByCategoryIdAndSearchParams(Long categoryId, FilterSortProductRequest request){
-        Sort sort = Sort.by("price").ascending();
-        if(request.getPriceSortBy()!=null && request.getPriceSortBy().equals("Descending")){
-            sort.descending();
+        Sort sort = Sort.by(Sort.Direction.ASC,"price");
+        if(request.getSortBy()!=null) {
+            String[] sortParts = request.getSortBy().split("-");
+            String sortField = sortParts[0];
+
+            Sort.Direction sortDirection = sortParts.length > 1 && sortParts[1].equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+             sort = Sort.by(sortDirection, sortField);
         }
-        PageRequest pageRequest = PageRequest.of(request.getPage(), request.getSize());
+        PageRequest pageRequest = PageRequest.of(request.getPage(), request.getSize(),sort);
         Page<Product> products = productRepository.findAll(ProductSpecs.ProductFilterSpecification(request, categoryId), pageRequest);
-        return products.map(productConverter::convertProductToProductDto);
-    }
+        return products.map(productConverter::convertProductToProductDto);    }
 
     @Override
     public List<Product> getProductsByCategory(String category) {

@@ -5,7 +5,7 @@ import SearchParamToggle from "./SearchParamToggle";
 
 export default function FilterByBrand() {
   const { categoryId } = useParams();
-  const { data: brands, isLoading } = useQuery({
+  const { data: brands, isLoading } = useQuery<Array<string>>({
     queryKey: [categoryId, "brands"],
     queryFn: () =>
       productService.getUniqueBrandsByCategoryId(String(categoryId)),
@@ -23,6 +23,7 @@ export default function FilterByBrand() {
                 name={brand}
                 urlParam="brand"
                 type="checkbox"
+                value={brand}
               />
             ))}
         </ul>

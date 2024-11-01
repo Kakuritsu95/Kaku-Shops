@@ -7,13 +7,15 @@ export default function SortByPrice() {
       <ul>
         <SearchParamToggle
           name="Ascending"
-          urlParam="SortPriceBy"
+          urlParam="sortBy"
           type="radio"
+          value="price-asc"
         />
         <SearchParamToggle
           name="Descending"
-          urlParam="SortPriceBy"
+          urlParam="sortBy"
           type="radio"
+          value="price-desc"
         />
       </ul>
     </div>

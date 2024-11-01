@@ -7,7 +7,7 @@ export default function ProductList({
   products: Array<Product>;
 }) {
   return (
-    <ul className="flex flex-wrap gap-3">
+    <ul className="flex flex-wrap sm:gap-3">
       {products.map((product) => (
         <ProductCard product={product} />
       ))}
