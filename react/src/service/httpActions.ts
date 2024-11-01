@@ -5,11 +5,11 @@ axios.defaults.withCredentials = true;
 
 export default {
   get: (url: string) => axios.get(url).then((res) => res.data.data),
-  post: (url: string, data: object) =>
+  post: (url: string, data?: object | string) =>
     axios.post(url, data).then((res) => res.data.data),
   put: (url: string, data: object) =>
     axios.put(url, data).then((res) => res.data.data),
-  patch: (url: string, data: object) =>
+  patch: (url: string, data: object | string) =>
     axios.patch(url, data).then((res) => res.data.data),
   delete: (url: string) => axios.delete(url).then((res) => res.data.data),
 };

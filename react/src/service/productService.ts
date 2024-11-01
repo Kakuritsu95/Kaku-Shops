@@ -4,13 +4,17 @@ import { AddProduct, UpdateProduct } from "../types/productInterface";
 
 export default {
   getAll: () => httpActions.get(API_ROUTES.product.getAll),
+  getByCategoryIdAndSearchQuery: (categoryId: string, searchParams: string) =>
+    httpActions.get(
+      API_ROUTES.product.getBySearchQuery(categoryId, searchParams),
+    ),
   add: (product: AddProduct) =>
     httpActions.post(API_ROUTES.product.add, product),
-  getById: (productId: number) =>
+  getById: (productId: string) =>
     httpActions.get(API_ROUTES.product.getById(productId)),
-  update: (productId: number, product: UpdateProduct) =>
+  update: (productId: string, product: UpdateProduct) =>
     httpActions.patch(API_ROUTES.product.update(productId), product),
-  delete: (productId: number) =>
+  delete: (productId: string) =>
     httpActions.get(API_ROUTES.product.delete(productId)),
   searchByName: (name: string) =>
     httpActions.get(API_ROUTES.product.searchByName(name)),
@@ -20,10 +24,12 @@ export default {
     httpActions.get(API_ROUTES.product.searchByCategory(category)),
   searchByBrandAndName: (brand: string, productName: string) =>
     httpActions.get(
-      API_ROUTES.product.searchByBrandAndName(brand, productName)
+      API_ROUTES.product.searchByBrandAndName(brand, productName),
     ),
   searchByCategoryAndBrand: (category: string, brand: string) =>
     httpActions.get(
-      API_ROUTES.product.searchByCategoryAndBrand(category, brand)
+      API_ROUTES.product.searchByCategoryAndBrand(category, brand),
     ),
+  getUniqueBrandsByCategoryId: (categoryId: string) =>
+    httpActions.get(API_ROUTES.product.getUniqueBrands(categoryId)),
 };

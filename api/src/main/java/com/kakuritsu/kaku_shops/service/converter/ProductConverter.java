@@ -15,9 +15,9 @@ import static org.modelmapper.Conditions.isNotNull;
 
 @RequiredArgsConstructor
 @Service
-public class ProductConverter implements IProductConverter {
+public class ProductConverter {
     private final ModelMapper mapper;
-    @Override
+
     public Product convertProductUpdateRequestToProduct(UpdateProductRequest request, Product product) {
         TypeMap<UpdateProductRequest, Product> typeMap = mapper.typeMap(UpdateProductRequest.class, Product.class);
         typeMap.addMappings(mapper -> mapper.when(isNotNull()).map(UpdateProductRequest::getName, Product::setName));
@@ -32,19 +32,19 @@ public class ProductConverter implements IProductConverter {
 
     }
 
-    @Override
+
     public Product convertAddProductRequestToProduct(AddProductRequest request) {
       return mapper.map(request, Product.class);
 
     }
 
 
-    @Override
+
     public ProductDto convertProductToProductDto(Product product) {
         return mapper.map(product, ProductDto.class);
     }
 
-    @Override
+
     public List<ProductDto> convertProductsToProductDtos(List<Product> products) {
         return products.stream().map(this::convertProductToProductDto).toList();
     }

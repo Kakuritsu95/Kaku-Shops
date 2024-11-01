@@ -1,4 +1,4 @@
-import Searchbar from "./SearchBar";
+import Searchbar from "./Searchbar";
 import Topbar from "./Topbar";
 import Brandbar from "./Brandbar";
 

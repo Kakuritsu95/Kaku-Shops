@@ -1,16 +1,19 @@
-import axios from "axios";
 import API_ROUTES from "../api-routes/apiRoutes";
+import httpActions from "./httpActions";
 
 export default {
-  getAll: () => axios.get(API_ROUTES.category.getAll),
+  getAll: () => httpActions.get(API_ROUTES.category.getAll),
   getById: (categoryId: number) =>
-    axios.get(API_ROUTES.category.getById(categoryId)),
+    httpActions.get(API_ROUTES.category.getById(categoryId)),
   add: (categoryName: string) =>
-    axios.post(API_ROUTES.category.add, categoryName),
+    httpActions.post(API_ROUTES.category.add, categoryName),
   deleteById: (categoryId: number) =>
-    axios.delete(API_ROUTES.category.deleteById(categoryId)),
+    httpActions.delete(API_ROUTES.category.deleteById(categoryId)),
   searchByName: (categoryName: string) =>
-    axios.delete(API_ROUTES.category.searchByName(categoryName)),
+    httpActions.delete(API_ROUTES.category.searchByName(categoryName)),
   update: (categoryId: number, categoryName: string) =>
-    axios.patch(API_ROUTES.category.updateCategory(categoryId), categoryName),
+    httpActions.patch(
+      API_ROUTES.category.updateCategory(categoryId),
+      categoryName,
+    ),
 };
