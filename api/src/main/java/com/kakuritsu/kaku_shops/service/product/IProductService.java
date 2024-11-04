@@ -2,6 +2,7 @@ package com.kakuritsu.kaku_shops.service.product;
 
 import com.kakuritsu.kaku_shops.dto.ProductDto;
 import com.kakuritsu.kaku_shops.model.Product;
+import com.kakuritsu.kaku_shops.model.User;
 import com.kakuritsu.kaku_shops.request.AddProductRequest;
 import com.kakuritsu.kaku_shops.request.FilterSortProductRequest;
 import com.kakuritsu.kaku_shops.request.UpdateProductRequest;
@@ -34,6 +35,6 @@ public interface IProductService {
 
     Long countProductsByBrandAndName(String brand, String name);
 
-
+    float addRating(Long productId, User user, float rating);
 
 }

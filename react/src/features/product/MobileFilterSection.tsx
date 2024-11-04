@@ -3,15 +3,16 @@ import ProductFilterSortSection from "./ProductFilterSortSection";
 
 export default function MobileFilterSection() {
   const [areFiltersOpen, setAreFiltersOpen] = useState<boolean>(false);
-  //   useEffect(() => {
-  //     if (areFiltersOpen) document.body.style.overflow = "hidden";
-  //     else document.body.style.overflow = "scroll";
-  //   }, [areFiltersOpen]);
+  useEffect(() => {
+    if (areFiltersOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "scroll";
+  }, [areFiltersOpen]);
+
   return (
     <>
       {
         <div
-          className={`shadow fixed bottom-0 left-0 z-10 h-screen w-full bg-stone-50 px-3 py-3 duration-300 md:hidden ${areFiltersOpen ? "bottom-0" : "-bottom-full"}`}
+          className={`shadow fixed left-0 z-10 h-screen w-full bg-stone-50 px-3 py-3 duration-300 md:hidden ${areFiltersOpen ? "bottom-0" : "-bottom-full"}`}
         >
           <ProductFilterSortSection />
           <button

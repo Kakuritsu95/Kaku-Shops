@@ -4,6 +4,8 @@ import com.kakuritsu.kaku_shops.dto.ProductDto;
 import com.kakuritsu.kaku_shops.exceptions.AlreadyExistsException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Product;
+import com.kakuritsu.kaku_shops.model.ProductRating;
+import com.kakuritsu.kaku_shops.model.User;
 import com.kakuritsu.kaku_shops.repository.ProductRepository;
 import com.kakuritsu.kaku_shops.request.AddProductRequest;
 import com.kakuritsu.kaku_shops.request.FilterSortProductRequest;
@@ -11,6 +13,7 @@ import com.kakuritsu.kaku_shops.request.UpdateProductRequest;
 import com.kakuritsu.kaku_shops.response.ApiResponse;
 import com.kakuritsu.kaku_shops.service.converter.ProductConverter;
 import com.kakuritsu.kaku_shops.service.product.IProductService;
+import com.kakuritsu.kaku_shops.service.user.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -32,6 +35,7 @@ public class ProductController {
     private final IProductService productService;
     private final ProductConverter productConverter;
     private final ProductRepository productRepository;
+    private final IUserService userService;
     private final ModelMapper mapper;
     @GetMapping
     public ResponseEntity<ApiResponse> getAllProducts(){
@@ -73,6 +77,13 @@ public class ProductController {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
         }
     }
+    @PostMapping("/{id}/rate")
+    public ResponseEntity<ApiResponse> rateProduct(@PathVariable Long id, @RequestBody float userRating){
+        User user = userService.getAuthenticatedUser();
+        float rating = productService.addRating(id,user,userRating);
+        return ResponseEntity.ok().body(new ApiResponse("good", rating));
+    }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse> deleteProduct(@PathVariable Long id ){

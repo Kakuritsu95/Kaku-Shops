@@ -34,6 +34,7 @@ public class OrderService implements IOrderService {
             cartService.checkIfUserHasCartCookie(request);
             String  cartSessionCookie = cartService.generateCartCookieOrGetIfExists(request,response);
             User user = userService.getAuthenticatedUser();
+
             Cart cart = cartService.getCartBySessionId(cartSessionCookie).orElseThrow(()->new CartOperationException("Cart doesn't exist please add items"));
             if(cart.getTotalAmount().compareTo(BigDecimal.ZERO)==0) {throw new RuntimeException("Cart is empty!");};
             cart.setUser(user);
@@ -62,6 +63,7 @@ public class OrderService implements IOrderService {
         return cart.getCartItems().stream().map(item -> {
             Product product = item.getProduct();
             product.setInventory(product.getInventory()-item.getQuantity());
+            product.setSellCount(product.getSellCount() + item.getQuantity());
             productRepository.save(product);
             OrderItem newOrderItem = new OrderItem();
             newOrderItem.setOrder(order);
