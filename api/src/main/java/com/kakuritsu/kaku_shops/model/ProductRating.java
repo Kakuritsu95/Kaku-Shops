@@ -17,5 +17,5 @@ public class ProductRating {
     private User user;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Product product;
-    private float rating;
+    private double rating;
 }

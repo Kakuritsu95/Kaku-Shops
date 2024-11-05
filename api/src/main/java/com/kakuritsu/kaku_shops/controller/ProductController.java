@@ -15,6 +15,7 @@ import com.kakuritsu.kaku_shops.service.converter.ProductConverter;
 import com.kakuritsu.kaku_shops.service.product.IProductService;
 import com.kakuritsu.kaku_shops.service.user.IUserService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -78,9 +80,9 @@ public class ProductController {
         }
     }
     @PostMapping("/{id}/rate")
-    public ResponseEntity<ApiResponse> rateProduct(@PathVariable Long id, @RequestBody float userRating){
+    public ResponseEntity<ApiResponse> rateProduct(@PathVariable Long id, @Digits(integer = 1 ,fraction = 1) @DecimalMin("1.0") @DecimalMax("5.0") @RequestBody BigDecimal userRating){
         User user = userService.getAuthenticatedUser();
-        float rating = productService.addRating(id,user,userRating);
+        double rating = productService.addRating(id,user,userRating.doubleValue());
         return ResponseEntity.ok().body(new ApiResponse("good", rating));
     }
 

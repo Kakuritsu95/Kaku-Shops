@@ -10,7 +10,7 @@ export function AppLayout() {
     <QueryClientProvider client={queryClient}>
       <div className="space-y-5">
         <Navbar />
-        <main className="px-5 xl:mx-auto xl:w-3/4">
+        <main className="px-2.5 xl:mx-auto xl:w-3/4">
           <Outlet />
         </main>
         <Footer />

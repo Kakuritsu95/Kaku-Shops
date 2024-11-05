@@ -3,6 +3,7 @@ package com.kakuritsu.kaku_shops.service.product;
 import com.kakuritsu.kaku_shops.dto.ProductDto;
 import com.kakuritsu.kaku_shops.exceptions.AlreadyExistsException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
+import com.kakuritsu.kaku_shops.exceptions.UnauthorizedActionException;
 import com.kakuritsu.kaku_shops.model.Category;
 import com.kakuritsu.kaku_shops.model.Product;
 import com.kakuritsu.kaku_shops.model.ProductRating;
@@ -75,11 +76,11 @@ public class ProductService implements IProductService{
     }
 
     @Override
-    public float addRating(Long productId, User user, float userRating) {
-        Long order = orderRepository.userHasPurchasedAndReceivedTheProduct(user.getId(),productId);
-//        if(!userHasPurchasedProduct){
-//            throw new RuntimeException("CANT RATE");
-//        }
+    public double addRating(Long productId, User user, double userRating) {
+        Long userHasPurchasedAndReceivedTheProduct = orderRepository.userHasPurchasedAndReceivedTheProduct(user.getId(),productId);
+        if(userHasPurchasedAndReceivedTheProduct < 1){
+            throw new UnauthorizedActionException("User has not received the product");
+        }
         Product product = this.getProductById(productId);
         ProductRating rating = productRatingRepository.findByProductIdAndUserId(productId,user.getId()).orElseGet(()-> {
             ProductRating newRating = new ProductRating();
@@ -89,6 +90,7 @@ public class ProductService implements IProductService{
             return newRating;
         });
         rating.setRating(userRating);
+        product.updateAverageRating();
         productRatingRepository.save(rating);
         return rating.getRating();
     }

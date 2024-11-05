@@ -8,6 +8,7 @@ export interface Product {
   price: number;
   inventory: number;
   description: string;
+  averageRating: number;
   category: Category;
   images: Array<Image>;
 }

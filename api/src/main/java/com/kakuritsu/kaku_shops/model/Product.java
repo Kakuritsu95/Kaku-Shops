@@ -1,6 +1,7 @@
 package com.kakuritsu.kaku_shops.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -24,8 +25,10 @@ public class Product {
     private int inventory;
     private String description;
     private int sellCount;
+    @JsonIgnore
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
     private List<ProductRating> ratings;
+    private double averageRating;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonBackReference
     @JoinColumn(name = "category_id")
@@ -43,4 +46,12 @@ public class Product {
         this.description = description;
         this.category = category;
     }
+
+    public void updateAverageRating(){
+        double totalRating = ratings.stream()
+                .map(ProductRating::getRating)
+                .reduce(0.0, Double::sum);
+        this.setAverageRating(totalRating / ratings.size());
+    }
+
 }

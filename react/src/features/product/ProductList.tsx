@@ -1,5 +1,5 @@
 import { Product } from "../../types/productInterface";
-import ProductCard from "./ProductCard";
+import ProductListCard from "./ProductListCard";
 
 export default function ProductList({
   products,
@@ -9,7 +9,7 @@ export default function ProductList({
   return (
     <ul className="flex flex-wrap sm:gap-3">
       {products.map((product) => (
-        <ProductCard product={product} />
+        <ProductListCard product={product} />
       ))}
     </ul>
   );

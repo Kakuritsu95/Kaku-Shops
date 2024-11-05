@@ -35,6 +35,6 @@ public interface IProductService {
 
     Long countProductsByBrandAndName(String brand, String name);
 
-    float addRating(Long productId, User user, float rating);
+    double addRating(Long productId, User user, double rating);
 
 }

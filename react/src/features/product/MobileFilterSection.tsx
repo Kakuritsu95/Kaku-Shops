@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ProductFilterSortSection from "./ProductFilterSortSection";
-
+import { IoOptionsOutline } from "react-icons/io5";
 export default function MobileFilterSection() {
   const [areFiltersOpen, setAreFiltersOpen] = useState<boolean>(false);
   useEffect(() => {
@@ -25,9 +25,9 @@ export default function MobileFilterSection() {
       }
       <button
         onClick={() => setAreFiltersOpen((open) => !open)}
-        className="fixed bottom-3 left-1/2 block -translate-x-1/2 rounded-full bg-rose-300 p-3 px-8 md:hidden"
+        className="fixed bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-orange-600 p-3 text-white md:hidden"
       >
-        Filters
+        <IoOptionsOutline size={20} />
       </button>
     </>
   );
