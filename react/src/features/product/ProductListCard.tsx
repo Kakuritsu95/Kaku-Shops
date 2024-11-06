@@ -21,7 +21,7 @@ export default function ProductListCard({ product }: { product: Product }) {
           {product.name}
         </Link>
         <span>Made by {product.brand}</span>
-        <span className="text-lg font-bold">{product.price}€</span>
+        <span className="text-lg font-bold">{product.price} €</span>
       </div>
     </li>
   );

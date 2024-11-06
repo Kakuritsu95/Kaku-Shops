@@ -11,15 +11,18 @@ export default function RatingStars({ quantity = 5, rating = 0 }: starProps) {
   return (
     <div className="flex">
       {starsArray.map((_, i) => {
-        console.log(rating);
         if (rating <= 0)
-          return <IoIosStarOutline className="text-orange-600" size={20} />;
+          return (
+            <IoIosStarOutline key={i} className="text-orange-600" size={20} />
+          );
         if (rating >= 1) {
           --rating;
-          return <IoIosStar className="text-orange-600" size={20} />;
+          return <IoIosStar key={i} className="text-orange-600" size={20} />;
         } else {
           --rating;
-          return <IoIosStarHalf className="text-orange-600" size={20} />;
+          return (
+            <IoIosStarHalf key={i} className="text-orange-600" size={20} />
+          );
         }
       })}
     </div>

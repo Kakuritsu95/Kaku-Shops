@@ -12,9 +12,9 @@ export default function Breadcrumb({
         Homepage
       </Link>
       <MdKeyboardArrowRight size={16} className="mt-0.5" />
-      {routes.map((route) => {
+      {routes.map((route, i) => {
         return (
-          <>
+          <div key={i} className="flex items-center">
             {route?.path ? (
               <>
                 <Link className="hover:text-black" to={"/" + route.path}>
@@ -27,7 +27,7 @@ export default function Breadcrumb({
                 {routes.at(-1)?.name}
               </span>
             )}
-          </>
+          </div>
         );
       })}
     </ul>

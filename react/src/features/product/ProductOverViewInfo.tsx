@@ -7,7 +7,7 @@ export default function ProductOverviewInfo({ product }: { product: Product }) {
   return (
     <div className="space-y-2">
       <h1 className="mb-3 text-3xl font-semibold">{product?.name}</h1>
-      <span className="text-2xl font-medium">${product?.price}</span>
+      <span className="text-2xl font-medium">{product?.price} €</span>
       <RatingStars rating={product.averageRating} />
       <InfoMessageTip type={isProductAvailable ? "success" : "fail"}>
         {isProductAvailable

@@ -9,7 +9,7 @@ export default function ProductList({
   return (
     <ul className="flex flex-wrap sm:gap-3">
       {products.map((product) => (
-        <ProductListCard product={product} />
+        <ProductListCard product={product} key={product.id} />
       ))}
     </ul>
   );

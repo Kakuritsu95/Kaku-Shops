@@ -1,17 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
-import categoryService from "../../../service/categoryService";
 import { Category } from "../../../types/categoryInterface";
 import FilterSortLabel from "./FilterSortLabel";
 import { Link } from "react-router-dom";
+import useCategories from "../../../hooks/useCategories";
 
 export default function FilterByCategory() {
   const { categoryId } = useParams();
-  const { data: categories } = useQuery({
-    queryKey: ["categories"],
-    queryFn: categoryService.getAll,
-  });
-
+  const categories = useCategories();
   return (
     <div className="space-y-5">
       <h3 className="font-semibold">Categories</h3>

@@ -69,11 +69,8 @@ const API_ROUTES = {
         [{ productId }, { quantity }],
         true,
       )}`,
-    removeItemToCart: (cartId: string, productId: string) =>
-      `${BASE_PATHS.cartItem}${createSearchQuery(
-        [{ cartId }, { productId }],
-        true,
-      )}`,
+    removeItemToCart: (productId: number) =>
+      `${BASE_PATHS.cartItem}${createSearchQuery([{ productId }], true)}`,
     updateItemQuantity: (cartId: string, productId: string, quantity: number) =>
       `${BASE_PATHS.cartItem}${createSearchQuery(
         [{ cartId }, { productId }, { quantity }],

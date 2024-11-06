@@ -19,7 +19,7 @@ export default function ProductsDisplay() {
       ),
   });
 
-  if (products == undefined) return;
+  if (!products) return;
 
   const selectedCategory = products.content[0].category.name;
   return (
