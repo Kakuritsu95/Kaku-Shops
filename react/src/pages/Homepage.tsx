@@ -1,4 +1,4 @@
-import CategoryList from "../features/categories/CategoryList";
+import CategoriesPreviewList from "../features/categories/CategoiesPreviewList";
 import SectionHeader from "../ui/SectionHeader";
 
 export default function Homepage() {
@@ -6,7 +6,7 @@ export default function Homepage() {
     <>
       <section>
         <SectionHeader title="Explore Categories" />
-        <CategoryList />
+        <CategoriesPreviewList />
       </section>
     </>
   );

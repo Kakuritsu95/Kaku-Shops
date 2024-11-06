@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import ProductFilterSortSection from "./ProductFilterSortSection";
-
+import { IoOptionsOutline } from "react-icons/io5";
 export default function MobileFilterSection() {
   const [areFiltersOpen, setAreFiltersOpen] = useState<boolean>(false);
-  //   useEffect(() => {
-  //     if (areFiltersOpen) document.body.style.overflow = "hidden";
-  //     else document.body.style.overflow = "scroll";
-  //   }, [areFiltersOpen]);
+  useEffect(() => {
+    if (areFiltersOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "scroll";
+  }, [areFiltersOpen]);
+
   return (
     <>
       {
         <div
-          className={`shadow fixed bottom-0 left-0 z-10 h-screen w-full bg-stone-50 px-3 py-3 duration-300 md:hidden ${areFiltersOpen ? "bottom-0" : "-bottom-full"}`}
+          className={`shadow fixed left-0 z-10 h-screen w-full bg-stone-50 px-3 py-3 duration-300 md:hidden ${areFiltersOpen ? "bottom-0" : "-bottom-full"}`}
         >
           <ProductFilterSortSection />
           <button
@@ -24,9 +25,9 @@ export default function MobileFilterSection() {
       }
       <button
         onClick={() => setAreFiltersOpen((open) => !open)}
-        className="fixed bottom-3 left-1/2 block -translate-x-1/2 rounded-full bg-rose-300 p-3 px-8 md:hidden"
+        className="fixed bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-orange-600 p-3 text-white md:hidden"
       >
-        Filters
+        <IoOptionsOutline size={20} />
       </button>
     </>
   );

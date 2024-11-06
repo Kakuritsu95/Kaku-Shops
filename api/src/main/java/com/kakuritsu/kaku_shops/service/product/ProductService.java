@@ -3,9 +3,14 @@ package com.kakuritsu.kaku_shops.service.product;
 import com.kakuritsu.kaku_shops.dto.ProductDto;
 import com.kakuritsu.kaku_shops.exceptions.AlreadyExistsException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
+import com.kakuritsu.kaku_shops.exceptions.UnauthorizedActionException;
 import com.kakuritsu.kaku_shops.model.Category;
 import com.kakuritsu.kaku_shops.model.Product;
+import com.kakuritsu.kaku_shops.model.ProductRating;
+import com.kakuritsu.kaku_shops.model.User;
 import com.kakuritsu.kaku_shops.repository.CategoryRepository;
+import com.kakuritsu.kaku_shops.repository.OrderRepository;
+import com.kakuritsu.kaku_shops.repository.ProductRatingRepository;
 import com.kakuritsu.kaku_shops.repository.ProductRepository;
 import com.kakuritsu.kaku_shops.request.AddProductRequest;
 import com.kakuritsu.kaku_shops.request.FilterSortProductRequest;
@@ -27,8 +32,9 @@ public class ProductService implements IProductService{
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-
+    private final ProductRatingRepository productRatingRepository;
     private final ProductConverter productConverter;
+    private final OrderRepository orderRepository;
 
     @Override
     public Product addProduct(AddProductRequest request) {
@@ -67,6 +73,26 @@ public class ProductService implements IProductService{
                 })
                 .map(productRepository :: save)
                 .orElseThrow(()-> new ResourceNotFoundException("Product id:"  + productId + "not found found"));
+    }
+
+    @Override
+    public double addRating(Long productId, User user, double userRating) {
+        Long userHasPurchasedAndReceivedTheProduct = orderRepository.userHasPurchasedAndReceivedTheProduct(user.getId(),productId);
+        if(userHasPurchasedAndReceivedTheProduct < 1){
+            throw new UnauthorizedActionException("User has not received the product");
+        }
+        Product product = this.getProductById(productId);
+        ProductRating rating = productRatingRepository.findByProductIdAndUserId(productId,user.getId()).orElseGet(()-> {
+            ProductRating newRating = new ProductRating();
+            newRating.setUser(user);
+            newRating.setRating(userRating);
+            newRating.setProduct(product);
+            return newRating;
+        });
+        rating.setRating(userRating);
+        product.updateAverageRating();
+        productRatingRepository.save(rating);
+        return rating.getRating();
     }
 
     @Override
@@ -116,7 +142,6 @@ public class ProductService implements IProductService{
     public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand,name);
     }
-
 
     boolean productExists(AddProductRequest product){
      return productRepository.existsByNameAndBrand(product.getName(),product.getBrand());

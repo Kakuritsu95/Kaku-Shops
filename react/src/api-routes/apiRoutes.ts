@@ -53,8 +53,8 @@ const API_ROUTES = {
 
   image: {
     upload: `${BASE_PATHS.image}/upload`,
-    download: (imageId: string) => `${BASE_PATHS.image}/download/${imageId}`,
-    update: (imageId: string) => `${BASE_PATHS.image}/update/${imageId}`,
+    download: (imageId: number) => `${BASE_PATHS.image}/download/${imageId}`,
+    update: (imageId: number) => `${BASE_PATHS.image}/update/${imageId}`,
   },
 
   cart: {
@@ -64,16 +64,13 @@ const API_ROUTES = {
     getTotalPrice: (cartId: string) =>
       `${BASE_PATHS.cart}/total-price/${cartId}`,
     getByUserId: (userId: string) => `${BASE_PATHS.cart}/${userId}`,
-    addItemToCart: (productId: string, quantity: number) =>
+    addItemToCart: (productId: number, quantity: number) =>
       `${BASE_PATHS.cartItem}${createSearchQuery(
         [{ productId }, { quantity }],
         true,
       )}`,
-    removeItemToCart: (cartId: string, productId: string) =>
-      `${BASE_PATHS.cartItem}${createSearchQuery(
-        [{ cartId }, { productId }],
-        true,
-      )}`,
+    removeItemToCart: (productId: number) =>
+      `${BASE_PATHS.cartItem}${createSearchQuery([{ productId }], true)}`,
     updateItemQuantity: (cartId: string, productId: string, quantity: number) =>
       `${BASE_PATHS.cartItem}${createSearchQuery(
         [{ cartId }, { productId }, { quantity }],
