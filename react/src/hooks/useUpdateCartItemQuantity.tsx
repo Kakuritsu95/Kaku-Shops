@@ -2,11 +2,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import cartService from "../service/cartService";
 import toast from "react-hot-toast";
 import { RiDeleteBin6Fill } from "react-icons/ri";
-interface AddItemParamProps {
+interface UpdateItemParamProps {
   productId: number;
   quantity: number;
 }
-export default function useAddRemoveCartItem() {
+export default function useUpdateCartItemQuantity() {
   const queryClient = useQueryClient();
   const { mutate: removeCartItem } = useMutation({
     mutationFn: (productId: number) =>
@@ -24,12 +24,20 @@ export default function useAddRemoveCartItem() {
     },
   });
   const { mutate: addProductToCart } = useMutation({
-    mutationFn: ({ productId, quantity }: AddItemParamProps) =>
+    mutationFn: ({ productId, quantity }: UpdateItemParamProps) =>
       cartService.addItem({ productId, quantity }),
     onSuccess: () => {
       toast.success("Product added to cart!");
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });
-  return { removeCartItem, addProductToCart };
+  const { mutate: updateCartItemQuantity } = useMutation({
+    mutationFn: ({ productId, quantity }: UpdateItemParamProps) =>
+      cartService.updateItemQuantity({ productId, quantity }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      toast.success("Product quantity updated!");
+    },
+  });
+  return { removeCartItem, addProductToCart, updateCartItemQuantity };
 }

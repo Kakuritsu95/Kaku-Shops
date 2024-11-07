@@ -1,16 +1,14 @@
 import { Link } from "react-router-dom";
 import { CartItem } from "../../types/cartItemInterface";
-import { MdDeleteForever } from "react-icons/md";
+
 import API_ROUTES from "../../api-routes/apiRoutes";
-import useAddRemoveCartItem from "../../hooks/useAddRemoveCartItem";
+import RemoveCartItemButton from "./RemoveCartItemButton";
 
 export default function CardItemPreviewCard({
   cartItem,
 }: {
   cartItem: CartItem;
 }) {
-  const { removeCartItem } = useAddRemoveCartItem();
-
   return (
     <li key={cartItem.id} className="flex space-x-8 text-sm text-gray-800">
       <Link to={`/product/${cartItem.product.id}`}>
@@ -33,12 +31,7 @@ export default function CardItemPreviewCard({
           <span className="font-semibold">{cartItem.quantity}</span>
         </div>
       </div>
-      <button
-        onClick={() => removeCartItem(cartItem.product.id)}
-        className="h-7 w-7 text-gray-600 hover:cursor-pointer hover:text-orange-600"
-      >
-        <MdDeleteForever className="h-full w-full" />
-      </button>
+      <RemoveCartItemButton productId={cartItem.product.id} />
     </li>
   );
 }

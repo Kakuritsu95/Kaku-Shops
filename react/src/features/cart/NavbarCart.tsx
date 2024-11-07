@@ -2,10 +2,10 @@ import { BsCart3 } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { MdArrowDropDown } from "react-icons/md";
 import { useState } from "react";
-import { CartItemsPreviewList } from "./CartItemsPreviewList";
 import { useCart } from "../../hooks/useCart";
 import { Button } from "../../ui/Button";
-
+import { formatPrice } from "../../utils/priceFormat";
+import { CartPreview } from "./CartPreview";
 export default function NavbarCart() {
   const [showCartProducts, setShowCartProducts] = useState<boolean>(false);
   const { cart, totalCartItems } = useCart();
@@ -26,7 +26,9 @@ export default function NavbarCart() {
       <div className="hidden leading-tight lg:block">
         <p className="text-sm leading-5 text-gray-500">Cart</p>
         <div className="min-w-24">
-          <span className="font-semibold text-gray-600">0,00 €</span>
+          <span className="font-semibold text-gray-600">
+            {formatPrice(cart.totalAmount)}
+          </span>
           <MdArrowDropDown className="ml-0.5 inline" />
         </div>
       </div>
@@ -35,15 +37,15 @@ export default function NavbarCart() {
       >
         {showCartProducts && (
           <div className="relative z-30 mt-10 flex h-20 flex-col">
-            <div className="shadow relative rounded-lg border bg-gray-50">
+            <div className="relative rounded-lg border bg-gray-50 shadow">
               <div className="p-5">
                 <h3 className="text-lg font-semibold">
                   {`${cart.cartItems.length > 0 ? `Your cart (${cart.cartItems.length})` : "Your cart is empty, add products and keep on shopping!"}`}
                 </h3>
-                <CartItemsPreviewList cart={cart} />
+                <CartPreview cart={cart} />
               </div>
               <div className="w-full bg-white px-5 py-5">
-                <Button urlPath={"/"} size="full" color="blue">
+                <Button urlPath={"/cart"} size="full" color="blue">
                   Jumb to Cart
                 </Button>
               </div>

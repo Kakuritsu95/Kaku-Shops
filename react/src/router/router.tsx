@@ -3,6 +3,7 @@ import { AppLayout } from "../ui/AppLayout";
 import Homepage from "../pages/Homepage";
 import ProductsListingPage from "../pages/ProductsListingPage";
 import ProductOverviewPage from "../pages/ProductOverviewPage";
+import CartPage from "../pages/CartPage";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: "/product/:productId",
         element: <ProductOverviewPage />,
+      },
+      {
+        path: "/cart",
+        element: <CartPage />,
       },
     ],
   },

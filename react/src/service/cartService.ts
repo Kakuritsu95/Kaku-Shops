@@ -21,6 +21,17 @@ export default {
   addItem: ({ productId, quantity }: { productId: number; quantity: number }) =>
     httpActions.post(
       `${API_ROUTES.cart.addItemToCart(productId, quantity)}`,
-      {},
+      "",
+    ),
+  updateItemQuantity: ({
+    productId,
+    quantity,
+  }: {
+    productId: number;
+    quantity: number;
+  }) =>
+    httpActions.patch(
+      `${API_ROUTES.cart.updateItemQuantity(productId, quantity)}`,
+      "",
     ),
 };

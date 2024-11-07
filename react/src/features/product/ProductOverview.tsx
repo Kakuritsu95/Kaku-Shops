@@ -1,12 +1,12 @@
 import API_ROUTES from "../../api-routes/apiRoutes";
-import useAddRemoveCartItem from "../../hooks/useAddRemoveCartItem";
 import { useCart } from "../../hooks/useCart";
 import { Product } from "../../types/productInterface";
 import { Button } from "../../ui/Button";
 import ProductOverviewInfo from "./ProductOverViewInfo";
+import useUpdateCartItemQuantity from "../../hooks/useUpdateCartItemQuantity";
 
 export default function ProductOverview({ product }: { product: Product }) {
-  const { addProductToCart } = useAddRemoveCartItem();
+  const { addProductToCart } = useUpdateCartItemQuantity();
   const { getCartItemQuantityByProductId } = useCart();
   const productQuantityInCart = getCartItemQuantityByProductId(product.id);
   return (

@@ -59,7 +59,7 @@ public class CartItemController {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
         }
     }
-    @PutMapping
+    @PatchMapping
     public ResponseEntity<ApiResponse> updateItemQuantity(
             @RequestParam Long productId
             ,@RequestParam int quantity
