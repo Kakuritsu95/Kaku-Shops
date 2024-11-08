@@ -7,7 +7,7 @@ export default function CartOverview({
   cartItems: Array<CartItem>;
 }) {
   return (
-    <ul className="w-2/3 space-y-12">
+    <ul className="mb-16 space-y-12 md:w-2/3">
       {cartItems.map((cartItem) => (
         <CartItemOverviewCard key={cartItem.id} cartItem={cartItem} />
       ))}

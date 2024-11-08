@@ -12,13 +12,13 @@ export default function CartItemOverviewCard({
 }) {
   const totalCartItemPrice = cartItem.quantity * cartItem.unitPrice;
   return (
-    <li className="flex border-t pt-10">
+    <li className="flex space-x-10 border-t pt-10 sm:space-x-0">
       <div className="flex w-2/3 space-x-7">
         <div className="flex h-[12rem] w-[12rem] items-center rounded bg-gray-100">
           <div
             className="mx-auto h-[9rem] w-[9rem] bg-cover bg-center hover:cursor-pointer"
             style={{
-              backgroundImage: `url(${API_ROUTES.base}/${API_ROUTES.image.download(cartItem.product.images?.[0].id)})`,
+              backgroundImage: `url(${API_ROUTES.base}/${API_ROUTES.productImage.download(cartItem.product.images?.[0].id)})`,
             }}
           />
         </div>
@@ -35,7 +35,7 @@ export default function CartItemOverviewCard({
           </span>
         </div>
       </div>
-      <div className="ml-10 flex w-1/3 justify-between">
+      <div className="flex w-1/3 flex-col-reverse justify-end gap-4 sm:flex-row sm:justify-between sm:gap-0">
         <SelectCartItemQuantity
           productId={cartItem.product.id}
           initialQuantity={cartItem.quantity}

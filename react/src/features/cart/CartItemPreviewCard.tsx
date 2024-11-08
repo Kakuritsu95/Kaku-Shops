@@ -15,7 +15,7 @@ export default function CardItemPreviewCard({
         <div
           className="h-14 w-14 bg-cover bg-center hover:cursor-pointer"
           style={{
-            backgroundImage: `url(${API_ROUTES.base}/${API_ROUTES.image.download(cartItem.product.images?.[0].id)})`,
+            backgroundImage: `url(${API_ROUTES.base}/${API_ROUTES.productImage.download(cartItem.product.images?.[0]?.id)})`,
           }}
         />
       </Link>

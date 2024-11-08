@@ -9,7 +9,7 @@ export default function ProductListCard({ product }: { product: Product }) {
         <div
           className="size mx-auto h-64 w-64 bg-cover bg-center duration-300"
           style={{
-            backgroundImage: `url("${API_ROUTES.base}/${API_ROUTES.image.download(product.images[0]?.id)}")`,
+            backgroundImage: `url("${API_ROUTES.base}/${API_ROUTES.productImage.download(product.images[0]?.id)}")`,
           }}
         />
       </div>

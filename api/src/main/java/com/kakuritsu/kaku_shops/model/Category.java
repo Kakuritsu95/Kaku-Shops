@@ -19,9 +19,9 @@ public class Category {
     private Long id;
     private String name;
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    @JsonBackReference
     private List<Product> products;
-
+    @OneToOne(mappedBy = "category")
+    CategoryImage categoryImage;
     public Category(String name) {
         this.name = name;
     }

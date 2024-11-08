@@ -34,8 +34,7 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<Image> images = new ArrayList<>();
+    private List<ProductImage> images = new ArrayList<>();
 
 
     public Product(String name, String brand, BigDecimal price, int inventory, String description, Category category) {

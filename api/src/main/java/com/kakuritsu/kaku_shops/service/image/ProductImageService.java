@@ -2,9 +2,9 @@ package com.kakuritsu.kaku_shops.service.image;
 
 import com.kakuritsu.kaku_shops.dto.ImageDto;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
-import com.kakuritsu.kaku_shops.model.Image;
 import com.kakuritsu.kaku_shops.model.Product;
-import com.kakuritsu.kaku_shops.repository.ImageRepository;
+import com.kakuritsu.kaku_shops.model.ProductImage;
+import com.kakuritsu.kaku_shops.repository.ProductImageRepository;
 import com.kakuritsu.kaku_shops.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,12 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ImageService implements IImageService {
-    private final ImageRepository imageRepository;
+public class ProductImageService implements IImageService {
+    private final ProductImageRepository imageRepository;
     private final IProductService productService;
 
     @Override
-    public Image getImageById(Long id) {
+    public ProductImage getImageById(Long id) {
         return imageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Image not found!"));
     }
 
@@ -40,15 +40,15 @@ public class ImageService implements IImageService {
         List<ImageDto> savedImageDto = new ArrayList<>();
         for (MultipartFile file : files) {
             try {
-                Image newImage = Image.builder()
+                ProductImage newImage = ProductImage.builder()
                         .fileName(file.getOriginalFilename())
                         .fileType(file.getContentType())
                         .image(new SerialBlob(file.getBytes()))
                         .product(product)
                         .build();
-                String buildDownloadUrl = "/api/v1/images/download/";
+                String buildDownloadUrl = "/api/v1/product-images/download/";
                 newImage.setDownloadUrl(buildDownloadUrl + newImage.getId());
-                Image savedImage = imageRepository.save(newImage);
+                ProductImage savedImage = imageRepository.save(newImage);
                 savedImage.setDownloadUrl(buildDownloadUrl + savedImage.getId());
                 savedImageDto.add(new ImageDto(newImage.getId(), newImage.getFileName(),newImage.getDownloadUrl()));
                 imageRepository.save(savedImage);
@@ -62,7 +62,7 @@ public class ImageService implements IImageService {
 
     @Override
     public void updateImage(MultipartFile file, Long imageId) {
-        Image image = getImageById(imageId);
+        ProductImage image = getImageById(imageId);
         try {
             image.setFileType(file.getContentType());
             image.setFileName(file.getOriginalFilename());

@@ -8,7 +8,7 @@ export default function CartPage() {
   return (
     <div>
       <h2 className="mb-10 text-3xl font-bold">Your Shopping Cart</h2>
-      <div className="flex flex-col space-x-16 md:flex-row">
+      <div className="flex flex-col md:flex-row md:space-x-16">
         <CartOverview cartItems={cart?.cartItems} />
         <CartSummary totalAmount={cart.totalAmount} />
       </div>

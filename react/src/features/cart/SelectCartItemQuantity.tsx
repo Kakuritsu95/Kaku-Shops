@@ -16,24 +16,22 @@ export default function SelectCartItemQuantity({
   const selectRef = useRef<HTMLSelectElement>(null);
   const quantityRangeArray = Array.from(Array(maxQuantity), (_, i) => i + 1);
   return (
-    <div className="relative">
-      <select
-        ref={selectRef}
-        id="quantity"
-        className="h-9 w-16 appearance-none rounded-lg border border-gray-500 px-2 text-sm text-gray-900 focus:outline-indigo-400"
-        onChange={(e) =>
-          updateCartItemQuantity({
-            productId,
-            quantity: Number(e.target.value),
-          })
-        }
-      >
-        {quantityRangeArray.map((value) => (
-          <option selected={value == initialQuantity} value={value}>
-            {value}
-          </option>
-        ))}
-      </select>
-    </div>
+    <select
+      ref={selectRef}
+      id="quantity"
+      className="h-9 w-16 appearance-none rounded-lg border border-gray-500 px-2 text-sm text-gray-900 focus:outline-indigo-400"
+      onChange={(e) =>
+        updateCartItemQuantity({
+          productId,
+          quantity: Number(e.target.value),
+        })
+      }
+    >
+      {quantityRangeArray.map((value) => (
+        <option selected={value == initialQuantity} value={value}>
+          {value}
+        </option>
+      ))}
+    </select>
   );
 }

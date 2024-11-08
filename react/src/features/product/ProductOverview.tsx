@@ -15,7 +15,7 @@ export default function ProductOverview({ product }: { product: Product }) {
         <div
           className="mx-auto h-96 w-96 bg-cover bg-center"
           style={{
-            backgroundImage: `url("${API_ROUTES.base}/${API_ROUTES.image.download(product.images[0]?.id)}")`,
+            backgroundImage: `url("${API_ROUTES.base}/${API_ROUTES.productImage.download(product.images[0]?.id)}")`,
           }}
         />
       </div>
