@@ -8,9 +8,9 @@ export default function CartPage() {
   return (
     <div>
       <h2 className="mb-10 text-3xl font-bold">Your Shopping Cart</h2>
-      <div className="flex">
+      <div className="flex flex-col space-x-16 md:flex-row">
         <CartOverview cartItems={cart?.cartItems} />
-        <CartSummary />
+        <CartSummary totalAmount={cart.totalAmount} />
       </div>
     </div>
   );

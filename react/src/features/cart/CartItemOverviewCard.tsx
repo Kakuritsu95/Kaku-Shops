@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import API_ROUTES from "../../api-routes/apiRoutes";
 import { CartItem } from "../../types/cartItemInterface";
 import { formatPrice } from "../../utils/priceFormat";
@@ -22,7 +23,12 @@ export default function CartItemOverviewCard({
           />
         </div>
         <div className="flex flex-col">
-          <h2 className="font-medium text-gray-800">{cartItem.product.name}</h2>
+          <Link
+            to={`/product/${cartItem.product.id}`}
+            className="font-medium text-gray-800"
+          >
+            {cartItem.product.name}
+          </Link>
           <span>{cartItem.product.brand}</span>
           <span className="font-semibold">
             {formatPrice(totalCartItemPrice)}

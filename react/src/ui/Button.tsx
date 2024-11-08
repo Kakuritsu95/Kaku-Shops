@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 interface ButtonProps {
   urlPath?: string;
-  type?: "brand";
+  type?: "brand" | "checkout";
   size?: "small" | "medium" | "large" | "full";
   color?: "brand" | "blue" | "green" | "sky";
   onClick?: () => void;
@@ -11,9 +11,9 @@ interface ButtonProps {
 }
 
 const sizes: { [key: string]: string } = {
-  large: "w-full px-28 py-3.5 md:px-20 md:w-80 mx-auto",
-  full: "px-28 py-3.5 w-full",
-  medium: "px-8 py-3 w-full",
+  large: "px-28 py-3.5 md:px-20 md:w-80",
+  full: "px-28 py-3.5",
+  medium: "px-8 py-3",
 };
 const colors: { [key: string]: string } = {
   brand: "bg-orange-600 hover:bg-orange-700",
@@ -22,7 +22,8 @@ const colors: { [key: string]: string } = {
   sky: "bg-sky-600 hover:bg-sky-700",
 };
 const types: { [key: string]: string } = {
-  brand: `mx-auto rounded font-medium text-white`,
+  brand: "mx-auto rounded font-medium text-white w-full",
+  checkout: "mx-auto rounded-md font-semibold text-white text-[1.05rem] w-full",
 };
 
 export function Button({
@@ -45,7 +46,7 @@ export function Button({
   return (
     <button
       onClick={onClick}
-      className={`${types[type]} ${colors[color]} ${sizes[size]}inline-block duration-100`}
+      className={`${types[type]} ${colors[color]} ${sizes[size]} duration-100`}
     >
       {children}
     </button>
