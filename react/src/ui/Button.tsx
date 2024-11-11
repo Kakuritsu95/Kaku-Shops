@@ -38,7 +38,7 @@ export function Button({
     return (
       <Link
         to={urlPath}
-        className={`${types[type]} ${sizes[size]} ${colors[color]} inline-block duration-100`}
+        className={`${types[type]} ${sizes[size]} ${colors[color]} inline-block text-center duration-100`}
       >
         {children}
       </Link>
@@ -46,7 +46,7 @@ export function Button({
   return (
     <button
       onClick={onClick}
-      className={`${types[type]} ${colors[color]} ${sizes[size]} duration-100`}
+      className={`${types[type]} ${colors[color]} ${sizes[size]} text-center duration-100`}
     >
       {children}
     </button>
