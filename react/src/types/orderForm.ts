@@ -6,4 +6,6 @@ export type OrderFormValues = {
   city: string;
   postalCode: string;
   phoneNumber: string;
+  docType: "receipt" | "invoice";
+  vatNumber?: "string";
 };

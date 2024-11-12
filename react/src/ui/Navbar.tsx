@@ -8,7 +8,6 @@ export default function Navbar() {
       <Topbar />
       <Brandbar />
       <Searchbar smallScreen={true} />
-      <div>categories</div>
     </header>
   );
 }

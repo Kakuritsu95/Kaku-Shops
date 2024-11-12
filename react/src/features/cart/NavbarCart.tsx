@@ -10,24 +10,23 @@ export default function NavbarCart() {
   const [showCartProducts, setShowCartProducts] = useState<boolean>(false);
   const { cart, totalCartItems } = useCart();
 
-  if (!cart) return;
   return (
     <div
       onMouseEnter={() => setShowCartProducts(true)}
       onMouseLeave={() => setShowCartProducts(false)}
       className="relative flex gap-3"
     >
-      <Link to="" className="relative rounded-full bg-orange-500 p-3">
+      <Link to="/cart" className="relative rounded-full bg-orange-500 p-3">
         <BsCart3 size={21} color="white" />
         <span className="absolute right-[-3px] top-[-3px] h-5 w-5 rounded-full bg-red-500 text-center text-xs leading-5 text-white">
-          {totalCartItems}
+          {totalCartItems || 0}
         </span>
       </Link>
       <div className="hidden leading-tight lg:block">
         <p className="text-sm leading-5 text-gray-500">Cart</p>
         <div className="min-w-24">
           <span className="font-semibold text-gray-600">
-            {formatPrice(cart.totalAmount)}
+            {cart ? formatPrice(cart?.totalAmount) : formatPrice(0)}
           </span>
           <MdArrowDropDown className="ml-0.5 inline" />
         </div>
@@ -40,15 +39,17 @@ export default function NavbarCart() {
             <div className="relative rounded-lg border bg-gray-50 shadow">
               <div className="p-5">
                 <h3 className="text-lg font-semibold">
-                  {`${cart.cartItems.length > 0 ? `Your cart (${cart.cartItems.length})` : "Your cart is empty, add products and keep on shopping!"}`}
+                  {`${cart && cart?.cartItems?.length > 0 ? `Your cart (${cart?.cartItems?.length})` : "Your cart is empty, add products and keep on shopping!"}`}
                 </h3>
-                <CartPreview cart={cart} />
+                {cart && <CartPreview cart={cart} />}
               </div>
-              <div className="w-full bg-white px-5 py-5">
-                <Button urlPath={"/cart"} size="full" color="blue">
-                  Jumb to Cart
-                </Button>
-              </div>
+              {cart && (
+                <div className="w-full bg-white px-5 py-5">
+                  <Button urlPath={"/cart"} size="full" color="blue">
+                    Jumb to Cart
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         )}
