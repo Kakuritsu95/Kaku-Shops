@@ -37,7 +37,7 @@ public class SecurityConfig {
     private static final List<String> SECURED_USER_URLS = List.of("/api/v1/orders", "/api/v1/products/rate/**");
     private static final List<String> SECURED_ADMIN_URLS = List.of("/api/v1/imagee/**");
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors->cors.configurationSource(apiConfiguration()))
                 //Add custom exception handling class (authEntryPoint)
@@ -48,8 +48,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth-> auth.requestMatchers(SECURED_ADMIN_URLS.toArray(String[]::new)).hasRole("ADMIN"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(SECURED_USER_URLS.toArray(String[]::new))
                 .authenticated().anyRequest().permitAll());
-
-
 
 
         http.authenticationProvider(daoAuthenticationProvider());

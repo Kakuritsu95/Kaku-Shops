@@ -4,10 +4,12 @@ import com.kakuritsu.kaku_shops.dto.OrderDto;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Cart;
 import com.kakuritsu.kaku_shops.model.Order;
+import com.kakuritsu.kaku_shops.request.OrderRequest;
 import com.kakuritsu.kaku_shops.response.ApiResponse;
 import com.kakuritsu.kaku_shops.service.order.IOrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +24,12 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class OrderController {
     private final IOrderService orderService;
     @PostMapping
-    public ResponseEntity<ApiResponse> createOrder(HttpServletRequest request, HttpServletResponse response){
+    public ResponseEntity<ApiResponse> createOrder(
+             @RequestBody @Valid OrderRequest orderRequest
+            ,HttpServletRequest request
+            ,HttpServletResponse response){
         try {
-            Order order = orderService.placeOrder(request,response);
+            Order order = orderService.placeOrder(orderRequest,request,response);
             OrderDto orderDto = orderService.convertToDto(order);
             return ResponseEntity.ok().body(new ApiResponse("Success!", orderDto));
         } catch (RuntimeException e) {

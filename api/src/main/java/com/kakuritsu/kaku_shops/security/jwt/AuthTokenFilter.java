@@ -1,10 +1,12 @@
 package com.kakuritsu.kaku_shops.security.jwt;
 
+import com.kakuritsu.kaku_shops.helpers.CookieManagement;
 import com.kakuritsu.kaku_shops.security.user.ShopUserDetailsService;
 import com.kakuritsu.kaku_shops.service.user.IUserService;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -21,6 +23,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 
@@ -35,7 +39,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             ,@NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = parseJwt(request);
-            if(StringUtils.hasText(jwt) && jwtUtils.validateToken(jwt)){
+            if (StringUtils.hasText(jwt) && jwtUtils.validateToken(jwt)){
                 String username = jwtUtils.getUsernameFromToken(jwt);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
@@ -43,6 +47,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             }
         } catch (JwtException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
             response.getWriter().write("Invalid or expired token, please login again");
             return;
         }
@@ -54,9 +59,10 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request,response);
     }
     private String parseJwt(HttpServletRequest request){
-        String headerAuth =  request.getHeader("Authorization");
-        if(StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")){
-            return headerAuth.substring(7);
+        String headerAuth = CookieManagement.getCookieValueByName(request,"auth").orElse(null);
+        System.out.println(headerAuth + "-----------------------------------");
+        if(StringUtils.hasText(headerAuth)){
+         return headerAuth;
         }
         return null;
     }

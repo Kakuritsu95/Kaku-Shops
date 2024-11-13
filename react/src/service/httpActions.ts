@@ -3,6 +3,7 @@ import API_ROUTES from "../api-routes/apiRoutes";
 
 axios.defaults.baseURL = API_ROUTES.base;
 axios.defaults.withCredentials = true;
+axios.defaults.headers.options?.Accept?.toString();
 
 export default {
   get: (url: string) => axios.get(url).then((res) => res.data.data),

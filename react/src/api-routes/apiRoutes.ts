@@ -17,7 +17,7 @@ const API_ROUTES = {
   base: API_BASE_URL,
 
   auth: {
-    login: `auth`,
+    login: `auth/login`,
   },
 
   user: {
