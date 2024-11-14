@@ -1,30 +1,39 @@
-import { Control, Controller, ControllerRenderProps } from "react-hook-form";
-import { OrderFormValues } from "../types/orderForm";
-import React from "react";
-import { FORM_VALIDATION_RULES } from "../constants/FORM_VALIDATION_RULES";
+import {
+  Control,
+  Controller,
+  ControllerRenderProps,
+  FieldValues,
+  Path,
+  PathValue,
+  RegisterOptions,
+} from "react-hook-form";
 
-interface ControllerProps {
-  name: keyof OrderFormValues;
-  defaultValue?: string;
+import React from "react";
+
+interface ControllerProps<T extends FieldValues> {
+  name: Path<T>;
+  defaultValue?: PathValue<T, Path<T>>;
+  validationRules?: RegisterOptions<T, Path<T>>;
   render: (props: {
-    field: ControllerRenderProps<OrderFormValues, keyof OrderFormValues>;
+    field: ControllerRenderProps<T, Path<T>>;
   }) => React.ReactElement;
-  control: Control<OrderFormValues>;
+  control: Control<T>;
 }
 
-export default function ControllerInput({
+export default function ControllerInput<T extends FieldValues>({
   name,
   render,
+  validationRules,
   defaultValue,
   control,
-}: ControllerProps) {
+}: ControllerProps<T>) {
   return (
     <div className="flex flex-1 flex-col">
       <Controller
         name={name}
-        rules={FORM_VALIDATION_RULES[name]}
+        rules={validationRules}
         control={control}
-        defaultValue={defaultValue || ""}
+        defaultValue={defaultValue}
         render={render}
       />
     </div>

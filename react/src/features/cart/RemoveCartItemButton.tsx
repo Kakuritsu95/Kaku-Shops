@@ -10,7 +10,7 @@ export default function RemoveCartItemButton({
   return (
     <button
       onClick={() => removeCartItem(productId)}
-      className="h-7 w-7 text-gray-600 hover:cursor-pointer hover:text-orange-600"
+      className="h-7 w-10 text-gray-600 hover:cursor-pointer hover:text-orange-600 md:h-7 md:w-7"
     >
       <MdDeleteForever className="h-full w-full" />
     </button>

@@ -2,7 +2,7 @@ package com.kakuritsu.kaku_shops.controller;
 
 import com.kakuritsu.kaku_shops.dto.CartDto;
 import com.kakuritsu.kaku_shops.exceptions.CartOperationException;
-import com.kakuritsu.kaku_shops.helpers.CookieManagement;
+import com.kakuritsu.kaku_shops.helpers.CookieManagementService;
 import com.kakuritsu.kaku_shops.model.Cart;
 import com.kakuritsu.kaku_shops.response.ApiResponse;
 import com.kakuritsu.kaku_shops.service.cart.CartItemService;
@@ -14,8 +14,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
@@ -26,6 +24,7 @@ public class CartItemController {
     private final CartItemService cartItemService;
     private final ICartService cartService;
     private final ModelMapper mapper;
+    private final CookieManagementService cookieManagementService;
 
 
     @PostMapping
@@ -36,8 +35,8 @@ public class CartItemController {
             HttpServletResponse response)
     {
 
-        String guestCartId = CookieManagement.getCookieValueByName(request, "cart")
-                .orElseGet(() -> CookieManagement.generateAndReturnCookieByNameAndValue(request, response, "cart", null));
+        String guestCartId = cookieManagementService.getCookieValueByName(request, "cart")
+                .orElseGet(() -> cookieManagementService.generateAndReturnCookieByNameAndValue(response, "cart", null));
 
         Cart cart =  cartItemService.addItemToCart(guestCartId,productId,quantity);
         CartDto cartDto = mapper.map(cart,CartDto.class);
@@ -51,7 +50,7 @@ public class CartItemController {
             HttpServletRequest request
     ){
         try {
-            String guestCartId =  CookieManagement.getCookieValueByName(request,"cart").orElseThrow(()->new CartOperationException("Cart does not exist"));
+            String guestCartId =  cookieManagementService.getCookieValueByName(request,"cart").orElseThrow(()->new CartOperationException("Cart does not exist"));
             cartItemService.removeItemFromCart(guestCartId, productId);
             return ResponseEntity.ok().body(new ApiResponse("Deleted",null));
         } catch (CartOperationException e) {

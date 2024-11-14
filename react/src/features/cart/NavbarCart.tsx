@@ -16,7 +16,11 @@ export default function NavbarCart() {
       onMouseLeave={() => setShowCartProducts(false)}
       className="relative flex gap-3"
     >
-      <Link to="/cart" className="relative rounded-full bg-orange-500 p-3">
+      <Link
+        onClick={() => setShowCartProducts((show) => !show)}
+        to="/cart"
+        className="relative rounded-full bg-orange-500 p-3"
+      >
         <BsCart3 size={21} color="white" />
         <span className="absolute right-[-3px] top-[-3px] h-5 w-5 rounded-full bg-red-500 text-center text-xs leading-5 text-white">
           {totalCartItems || 0}
@@ -32,10 +36,10 @@ export default function NavbarCart() {
         </div>
       </div>
       <div
-        className={`absolute -bottom-[6rem] right-0 z-10 w-96 duration-300 md:right-10 ${showCartProducts ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+        className={`b absolute -bottom-[7.5rem] right-0 z-10 w-auto duration-300 md:w-96 ${showCartProducts ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
       >
         {showCartProducts && (
-          <div className="relative z-30 mt-10 flex h-20 flex-col">
+          <div className="relative z-30 mt-6 flex h-24 flex-col">
             <div className="relative rounded-lg border bg-gray-50 shadow">
               <div className="p-5">
                 <h3 className="text-lg font-semibold">
@@ -43,9 +47,9 @@ export default function NavbarCart() {
                 </h3>
                 {cart && <CartPreview cart={cart} />}
               </div>
-              {cart && (
+              {cart && cart.cartItems.length > 0 && (
                 <div className="w-full bg-white px-5 py-5">
-                  <Button urlPath={"/cart"} size="full" color="blue">
+                  <Button urlPath={"/cart"} size="medium" color="blue">
                     Jumb to Cart
                   </Button>
                 </div>

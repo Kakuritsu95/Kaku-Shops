@@ -13,7 +13,7 @@ export default function CardItemPreviewCard({
     <li key={cartItem.id} className="flex space-x-8 text-sm text-gray-800">
       <Link to={`/product/${cartItem.product.id}`}>
         <div
-          className="h-14 w-14 bg-cover bg-center hover:cursor-pointer"
+          className="h-12 w-12 bg-cover bg-center hover:cursor-pointer md:h-14 md:w-14"
           style={{
             backgroundImage: `url(${API_ROUTES.base}/${API_ROUTES.productImage.download(cartItem.product.images?.[0]?.id)})`,
           }}

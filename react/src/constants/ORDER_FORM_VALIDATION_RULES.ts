@@ -1,5 +1,5 @@
 import { ValidationRule } from "../types/validationRule";
-export const FORM_VALIDATION_RULES: { [key: string]: ValidationRule } = {
+export const ORDER_FORM_VALIDATION_RULES: { [key: string]: ValidationRule } = {
   email: {
     required: "Email is required",
     pattern: {

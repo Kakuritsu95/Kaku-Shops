@@ -42,7 +42,7 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
             user.setRoles(Set.of(userRole));
             user.setPassword(passwordEncoder.encode("1"+i));
             userRepository.save(user);
-            System.out.println("Default user " + i + " created successfully.");
+
         }
     }
     private void createDefaultAdminIfNotExists(){
@@ -59,8 +59,7 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
             user.setRoles(Set.of(adminRole));
             user.setPassword(passwordEncoder.encode("1"+i));
             userRepository.save(user);
-            System.out.println("Admin user " + i + " created successfully.");
-        }
+          }
     }
     private void createDefaultRolesIfNotExists(){
         Set<String> defaultRoles = Set.of("ROLE_ADMIN", "ROLE_USER");

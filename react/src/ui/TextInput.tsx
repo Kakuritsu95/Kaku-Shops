@@ -1,11 +1,12 @@
+import { FieldValues } from "react-hook-form";
 import { InputProps } from "../types/inputTypes";
 
-export default function TextInput({
+export default function TextInput<T extends FieldValues>({
   field,
   maxLength,
   errorMessage,
   labelName,
-}: InputProps) {
+}: InputProps<T>) {
   return (
     <>
       <label className="text-[0.96rem] font-medium text-gray-700">

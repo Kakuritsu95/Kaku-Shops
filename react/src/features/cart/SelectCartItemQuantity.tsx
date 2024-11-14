@@ -19,6 +19,7 @@ export default function SelectCartItemQuantity({
     <select
       ref={selectRef}
       id="quantity"
+      defaultValue={initialQuantity}
       className="h-9 w-16 appearance-none rounded-lg border border-gray-500 px-2 text-sm text-gray-900 focus:outline-indigo-400"
       onChange={(e) =>
         updateCartItemQuantity({
@@ -28,7 +29,7 @@ export default function SelectCartItemQuantity({
       }
     >
       {quantityRangeArray.map((value) => (
-        <option selected={value == initialQuantity} value={value}>
+        <option key={value} value={value}>
           {value}
         </option>
       ))}

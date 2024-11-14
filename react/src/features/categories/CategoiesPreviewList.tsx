@@ -6,7 +6,7 @@ export default function CategoriesPreviewList() {
   return (
     <ul className="flex flex-col flex-wrap justify-between gap-y-4 sm:flex-row">
       {categories?.map((category) => (
-        <CategoryPreviewCard category={category} />
+        <CategoryPreviewCard key={category.id} category={category} />
       ))}
     </ul>
   );
