@@ -1,4 +1,4 @@
-export type OrderFormValues = {
+export type OrderFormFields = {
   email: string;
   firstName: string;
   lastName: string;
@@ -6,6 +6,6 @@ export type OrderFormValues = {
   city: string;
   postalCode: string;
   phoneNumber: string;
-  proofType: "receipt" | "invoice";
+  proofType: "RECEIPT" | "INVOICE";
   vatNumber?: "string";
 };

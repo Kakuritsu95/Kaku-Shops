@@ -1,29 +1,33 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import FormSection from "../../ui/FormSection";
-import { OrderFormValues } from "../../types/orderForm";
+import { OrderFormFields } from "../../types/orderFormFields";
 import TextInput from "../../ui/TextInput";
 import ControllerInput from "../../ui/ControllerInput";
 import CityInput from "../../ui/CityInput";
 import { GREEK_CITIES_WITH_POSTAL_CODES } from "../../constants/GREEK_CITIES_WITH_POSTAL_CODES";
 import SelectDocumentTypeInput from "../../ui/SelectDocumentInput";
 import { forwardRef, PropsWithChildren, useEffect } from "react";
-import { useUserDetails } from "../../context/UserDetailsContext";
 import { ORDER_FORM_VALIDATION_RULES } from "../../constants/ORDER_FORM_VALIDATION_RULES";
-import { Navigate } from "react-router";
+import { useUserDetails } from "../../context/UserDetailsContext";
+import { useMutation } from "@tanstack/react-query";
+import orderService from "../../service/orderService";
+import { AxiosError } from "axios";
+import { OrderRequest } from "../../types/orderInterface";
+
 export const OrderInfoForm = forwardRef<HTMLFormElement, PropsWithChildren>(
   function OrderInfoForm(_, formRef) {
-    const { userId, email, role, initializeUser } = useUserDetails();
+    const { email } = useUserDetails();
     const {
       formState: { errors },
       control,
       watch,
       setValue,
       handleSubmit,
-    } = useForm<OrderFormValues>({
-      defaultValues: { proofType: "receipt" },
+    } = useForm<OrderFormFields>({
+      defaultValues: { proofType: "RECEIPT", email },
     });
     const city = watch("city");
-    const userWantsInvoice = watch("proofType") == "invoice";
+    const userWantsInvoice = watch("proofType") == "INVOICE";
 
     useEffect(() => {
       const postalCode = GREEK_CITIES_WITH_POSTAL_CODES.find(
@@ -33,11 +37,15 @@ export const OrderInfoForm = forwardRef<HTMLFormElement, PropsWithChildren>(
         setValue("postalCode", postalCode);
       }
     }, [city, setValue, watch]);
-
-    const onSubmit: SubmitHandler<OrderFormValues> = (data) => {
-      console.log(data);
+    const { mutate: placeOrder } = useMutation<void, AxiosError, OrderRequest>({
+      mutationFn: (orderDetails) => orderService.placeOrder(orderDetails),
+      onSuccess: () => console.log("submitted"),
+    });
+    const onSubmit: SubmitHandler<OrderFormFields> = (orderDetails) => {
+      const { address, city, postalCode, ...userInfo } = orderDetails;
+      placeOrder({ ...userInfo, address: { address, city, postalCode } });
     };
-    if (!userId) return <Navigate to="/auth/login" />;
+
     return (
       <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="w-1/2">
         <FormSection title="Contact information">
@@ -144,7 +152,7 @@ export const OrderInfoForm = forwardRef<HTMLFormElement, PropsWithChildren>(
                 <SelectDocumentTypeInput
                   labelName="Receipt"
                   errorMessage={errors?.proofType?.message}
-                  value="receipt"
+                  value="RECEIPT"
                   field={field}
                 />
               )}
@@ -157,7 +165,7 @@ export const OrderInfoForm = forwardRef<HTMLFormElement, PropsWithChildren>(
                 <SelectDocumentTypeInput
                   labelName="invoice"
                   errorMessage={errors?.proofType?.message}
-                  value="invoice"
+                  value="INVOICE"
                   field={field}
                 />
               )}

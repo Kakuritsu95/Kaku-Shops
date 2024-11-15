@@ -1,17 +1,18 @@
 import authService from "../service/authService";
-import { LoginCredentials, Role } from "../types/userInterface";
+import { LoginCredentials, User } from "../types/userInterface";
 import { useUserDetails } from "../context/UserDetailsContext";
-import { Navigate, useNavigate } from "react-router";
+import { Navigate } from "react-router";
 import { useForm } from "react-hook-form";
 import ControllerInput from "../ui/ControllerInput";
 import TextInput from "../ui/TextInput";
 import { LOGIN_FORM_VALIDATION_RULES } from "../constants/LOGIN_FORM_VALIDATION_RULES";
 import { Button } from "../ui/Button";
-import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 export default function LoginPage() {
   const { userId, initializeUser } = useUserDetails();
-  const navigate = useNavigate();
 
   const {
     formState: { isLoading, errors },
@@ -20,17 +21,30 @@ export default function LoginPage() {
   } = useForm<LoginCredentials>({
     defaultValues: { email: "user1@gmail.com", password: "11" },
   });
-
-  function onSubmit(data: LoginCredentials) {
-    authService.login(data);
-    initializeUser({ role: Role.USER, email: "123", userId: 1 });
+  const { data: user, mutate: login } = useMutation<
+    User,
+    AxiosError,
+    LoginCredentials
+  >({
+    mutationFn: (credentials: LoginCredentials) =>
+      authService.login(credentials),
+    onSuccess: (data: User) => {
+      initializeUser(data);
+    },
+  });
+  function onSubmit(loginCredentials: LoginCredentials) {
+    login(loginCredentials);
   }
   if (userId) return <Navigate to="/" />;
   return (
-    <div className="mx-auto w-3/5 bg-orange-500 px-24 py-56">
+    <div className="sm:shadow-border mx-auto w-full space-y-10 rounded-xl p-5 sm:mt-24 sm:w-8/12 sm:px-10 sm:py-12 md:w-5/12 lg:w-4/12">
+      <div className="space-y-3">
+        <h2 className="text-2xl font-semibold">Welcome back</h2>
+        <p className="text-gray-500">Please enter your details</p>
+      </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col space-y-5"
+        className="flex flex-col space-y-6"
       >
         <ControllerInput
           name="email"
@@ -39,7 +53,7 @@ export default function LoginPage() {
           render={({ field }) => (
             <TextInput
               errorMessage={errors?.email?.message}
-              labelName="Email"
+              labelName="Email address"
               field={field}
             />
           )}
@@ -52,14 +66,22 @@ export default function LoginPage() {
             <TextInput
               errorMessage={errors?.email?.message}
               labelName="Password"
+              type="password"
               field={field}
             />
           )}
         />
-        <Button type="brand" color="brand" size="full">
-          Login
+
+        <Button type="brand" color="brand" size="medium">
+          Sign in
         </Button>
       </form>
+      <div className="space-x-2">
+        <span>Dont have an account?</span>
+        <Link to="/signup" className="text-sky-600 underline">
+          Sign up
+        </Link>
+      </div>
     </div>
   );
 }

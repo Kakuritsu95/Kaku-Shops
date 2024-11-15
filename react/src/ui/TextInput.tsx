@@ -5,6 +5,7 @@ export default function TextInput<T extends FieldValues>({
   field,
   maxLength,
   errorMessage,
+  type = "text",
   labelName,
 }: InputProps<T>) {
   return (
@@ -17,7 +18,7 @@ export default function TextInput<T extends FieldValues>({
       <input
         value={field.value}
         onChange={field.onChange}
-        type="text"
+        type={type}
         maxLength={maxLength}
         ref={field.ref}
         className="rounded border border-gray-300 py-1.5 pl-3 shadow-sm outline-2 focus:shadow-none focus:outline-blue-700"

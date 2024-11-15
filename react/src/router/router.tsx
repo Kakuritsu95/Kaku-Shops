@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AppLayout } from "../ui/AppLayout";
 import Homepage from "../pages/Homepage";
 import ProductsListingPage from "../pages/ProductsListingPage";
@@ -10,12 +10,16 @@ import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "",
     element: <AppLayout />,
     children: [
       {
+        element: <Navigate to={"/homepage"} />,
         path: "",
+      },
+      {
         element: <Homepage />,
+        path: "/homepage",
       },
       {
         path: "/products/category/:categoryId",

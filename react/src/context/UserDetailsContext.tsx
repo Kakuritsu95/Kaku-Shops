@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useContext, useReducer } from "react";
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useReducer,
+} from "react";
 import { PartialUser } from "../types/userInterface";
 
 interface ContextValues extends PartialUser {
@@ -16,7 +22,7 @@ enum ReducerActionType {
 const intialContextValues: ContextValues = {
   userId: undefined,
   email: undefined,
-  role: undefined,
+  roles: [],
   initializeUser: () => {},
   logout: () => {},
 };
@@ -33,19 +39,19 @@ function userDetailsReducer(state: PartialUser, action: ReducerAction) {
   }
 }
 export function UserDetailsContext({ children }: { children: ReactNode }) {
-  const [{ userId, email, role }, dispatch] = useReducer(
+  const [{ userId, email, roles }, dispatch] = useReducer(
     userDetailsReducer,
     intialContextValues,
   );
-  function initializeUser(user: PartialUser) {
+  const initializeUser = useCallback((user: PartialUser) => {
     dispatch({ type: ReducerActionType.INITIALIZE, payload: user });
-  }
-  function logout() {
+  }, []);
+  const logout = useCallback(() => {
     dispatch({ type: ReducerActionType.LOGOUT });
-  }
+  }, []);
   return (
     <UserPrincipalContext.Provider
-      value={{ userId, email, role, initializeUser, logout }}
+      value={{ userId, email, roles, initializeUser, logout }}
     >
       {children}
     </UserPrincipalContext.Provider>

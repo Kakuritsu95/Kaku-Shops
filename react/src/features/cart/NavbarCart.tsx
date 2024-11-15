@@ -36,10 +36,10 @@ export default function NavbarCart() {
         </div>
       </div>
       <div
-        className={`b absolute -bottom-[7.5rem] right-0 z-10 w-auto duration-300 md:w-96 ${showCartProducts ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+        className={`absolute -bottom-[7.5rem] right-0 z-10 w-auto duration-300 md:w-96 ${showCartProducts ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
       >
         {showCartProducts && (
-          <div className="relative z-30 mt-6 flex h-24 flex-col">
+          <div className="z-50 mt-6 flex h-24 flex-col">
             <div className="relative rounded-lg border bg-gray-50 shadow">
               <div className="p-5">
                 <h3 className="text-lg font-semibold">

@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class UserDetailsDto {
-    private Long id;
+    private Long userId;
     private String email;
     private List<String> roles;
 }
