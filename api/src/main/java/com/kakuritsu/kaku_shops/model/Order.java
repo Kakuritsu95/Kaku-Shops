@@ -1,10 +1,9 @@
 package com.kakuritsu.kaku_shops.model;
 
 import com.kakuritsu.kaku_shops.enums.OrderStatus;
+import com.kakuritsu.kaku_shops.enums.ProofType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,6 +13,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "`order`")
 public class Order {
@@ -29,4 +30,12 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
+    private String phoneNumber;
+    private String email;
+    private String firstName;
+    private String lastName;
+    @OneToOne
+    private Address address;
+    @Enumerated(EnumType.STRING)
+    private ProofType proofType;
 }

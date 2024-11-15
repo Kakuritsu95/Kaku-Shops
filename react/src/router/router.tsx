@@ -1,17 +1,25 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AppLayout } from "../ui/AppLayout";
 import Homepage from "../pages/Homepage";
 import ProductsListingPage from "../pages/ProductsListingPage";
 import ProductOverviewPage from "../pages/ProductOverviewPage";
+import CartPage from "../pages/CartPage";
+import CheckoutPage from "../pages/CheckoutPage";
+import LoginPage from "../pages/LoginPage";
+import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "",
     element: <AppLayout />,
     children: [
       {
+        element: <Navigate to={"/homepage"} />,
         path: "",
+      },
+      {
         element: <Homepage />,
+        path: "/homepage",
       },
       {
         path: "/products/category/:categoryId",
@@ -20,6 +28,22 @@ const router = createBrowserRouter([
       {
         path: "/product/:productId",
         element: <ProductOverviewPage />,
+      },
+      {
+        path: "/cart",
+        element: <CartPage />,
+      },
+      {
+        path: "/checkout",
+        element: (
+          <ProtectedRoute>
+            <CheckoutPage />,
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "auth/login",
+        element: <LoginPage />,
       },
     ],
   },

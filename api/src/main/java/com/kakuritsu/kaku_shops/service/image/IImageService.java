@@ -2,6 +2,7 @@ package com.kakuritsu.kaku_shops.service.image;
 
 import com.kakuritsu.kaku_shops.dto.ImageDto;
 import com.kakuritsu.kaku_shops.model.Image;
+import com.kakuritsu.kaku_shops.model.ProductImage;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

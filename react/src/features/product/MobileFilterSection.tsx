@@ -12,7 +12,7 @@ export default function MobileFilterSection() {
     <>
       {
         <div
-          className={`shadow fixed left-0 z-10 h-screen w-full bg-stone-50 px-3 py-3 duration-300 md:hidden ${areFiltersOpen ? "bottom-0" : "-bottom-full"}`}
+          className={`fixed left-0 z-10 h-screen w-full bg-stone-50 px-3 py-3 shadow duration-300 md:hidden ${areFiltersOpen ? "bottom-0" : "-bottom-full"}`}
         >
           <ProductFilterSortSection />
           <button
@@ -25,7 +25,7 @@ export default function MobileFilterSection() {
       }
       <button
         onClick={() => setAreFiltersOpen((open) => !open)}
-        className="fixed bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-orange-600 p-3 text-white md:hidden"
+        className="fixed bottom-8 left-1/2 -translate-x-1/2 rounded-full bg-orange-600 p-3 text-white md:hidden"
       >
         <IoOptionsOutline size={20} />
       </button>

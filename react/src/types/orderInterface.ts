@@ -9,6 +9,20 @@ export interface Order {
   orderItems: Array<OrderItem>;
   user: User;
 }
+interface Address {
+  address: string;
+  city: string;
+  postalCode: string;
+}
+export interface OrderRequest {
+  email: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  proofType: "RECEIPT" | "INVOICE";
+  vatNumber?: string;
+  address: Address;
+}
 
 enum OrderStatus {
   PENDING = "PENDING",

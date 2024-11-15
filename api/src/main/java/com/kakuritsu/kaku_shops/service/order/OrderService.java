@@ -7,6 +7,9 @@ import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.*;
 import com.kakuritsu.kaku_shops.repository.OrderRepository;
 import com.kakuritsu.kaku_shops.repository.ProductRepository;
+import com.kakuritsu.kaku_shops.request.AddressRequest;
+import com.kakuritsu.kaku_shops.request.OrderRequest;
+import com.kakuritsu.kaku_shops.service.address.IAddressService;
 import com.kakuritsu.kaku_shops.service.cart.ICartService;
 import com.kakuritsu.kaku_shops.service.user.IUserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -28,23 +32,40 @@ public class OrderService implements IOrderService {
     private final ICartService cartService;
     private final ModelMapper mapper;
     private final IUserService userService;
-
+    private final IAddressService addressService;
+    @Transactional
     @Override
-            public Order placeOrder(HttpServletRequest request, HttpServletResponse response) {
+            public Order placeOrder(
+                    OrderRequest orderRequest
+                   ,HttpServletRequest request
+                   ,HttpServletResponse response
+                   ) {
             cartService.checkIfUserHasCartCookie(request);
-            String  cartSessionCookie = cartService.generateCartCookieOrGetIfExists(request,response);
-            User user = userService.getAuthenticatedUser();
+            String cartSessionCookie = cartService.generateCartCookieOrGetIfExists(request,response);
 
+            User user = userService.getAuthenticatedUser();
             Cart cart = cartService.getCartBySessionId(cartSessionCookie).orElseThrow(()->new CartOperationException("Cart doesn't exist please add items"));
             if(cart.getTotalAmount().compareTo(BigDecimal.ZERO)==0) {throw new RuntimeException("Cart is empty!");};
             cart.setUser(user);
-            Order order = createOrder(cart);
+            Address newAddress = createSaveAndReturnAddress(orderRequest.getAddress());
+            Order order = createOrder(cart,orderRequest);
+            order.setAddress(newAddress);
             List<OrderItem> orderItems = createOrderItems(order,cart);
             order.setOrderItems(new HashSet<>(orderItems));
             order.setTotalAmount(calculateTotalAmount(orderItems));
             cartService.clearCart(cart.getId());
             return orderRepository.save(order);
+
         }
+
+private Address createSaveAndReturnAddress(AddressRequest address){
+        Address newAddress = new Address();
+        newAddress.setAddress(address.getAddress());
+        newAddress.setCity(address.getCity());
+        newAddress.setPostalCode(address.getPostalCode());
+       return addressService.save(newAddress);
+
+}
 
 
     private BigDecimal calculateTotalAmount(List<OrderItem> orderItems) {
@@ -52,12 +73,17 @@ public class OrderService implements IOrderService {
                ,(acc,curr)-> acc.add(curr.getPrice().multiply(new BigDecimal(curr.getQuantity())))
                ,BigDecimal::add);
     }
-    private Order createOrder(Cart cart){
-        Order newOrder = new Order();
-        newOrder.setOrderStatus(OrderStatus.PENDING);
-        newOrder.setOrderDate(LocalDate.now());
-        newOrder.setUser(cart.getUser());
-        return newOrder;
+    private Order createOrder(Cart cart, OrderRequest orderRequest){
+        return   Order.builder()
+                .user(cart.getUser())
+                .orderStatus(OrderStatus.PENDING)
+                .orderDate(LocalDate.now())
+                .firstName(orderRequest.getEmail())
+                .lastName(orderRequest.getLastName())
+                .email(orderRequest.getEmail())
+                .phoneNumber(orderRequest.getPhoneNumber())
+                .proofType(orderRequest.getProofType())
+                .build();
     }
     private List<OrderItem> createOrderItems(Order order, Cart cart) {
         return cart.getCartItems().stream().map(item -> {

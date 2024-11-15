@@ -56,6 +56,7 @@ public class CartItemService implements ICartItemService {
         CartItem cartItem = this.getCartItem(cart,productId);
         cartItem.setQuantity(quantity);
         cartItem.updateTotalPrice();
+        cart.updateTotalAmount();
         cartItemRepository.save(cartItem);
         cartRepository.save(cart);
     }

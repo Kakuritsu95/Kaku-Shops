@@ -5,6 +5,7 @@ export default {
     extend: {
       boxShadow: {
         outer: "0px 0px 0.5px 0.2px rgba(0,72,255,1)",
+        border: "1px 1px 15px -10px rgba(59,51,59,1)",
       },
       keyframes: {
         shake: {

@@ -1,15 +1,13 @@
 package com.kakuritsu.kaku_shops.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Setter
@@ -23,8 +21,8 @@ public class Cart {
     private String sessionId;
     private BigDecimal totalAmount = BigDecimal.ZERO;
     @OneToMany(mappedBy = "cart",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private Set<CartItem> cartItems = new HashSet<>();
+    @OrderBy("totalPrice DESC")
+    private List<CartItem> cartItems = new ArrayList<CartItem>();
 
     @OneToOne
     @JoinColumn(name = "userId")
@@ -32,7 +30,7 @@ public class Cart {
 
     public void addItem(CartItem item){
         if(this.cartItems==null){
-            this.cartItems= new HashSet<CartItem>();
+            this.cartItems= new ArrayList<CartItem>();
         }
         this.cartItems.add(item);
         item.setCart(this);

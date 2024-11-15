@@ -1,7 +1,11 @@
+export enum Role {
+  USER = "ROLE_USER",
+  ADMIN = "ROLE_ADMIN",
+}
 export interface User {
-  firstName: string;
-  lastName: string;
+  userId: number;
   email: string;
+  roles: Array<Role>;
 }
 
 export interface CreateUser extends User {
@@ -17,3 +21,4 @@ export interface LoginCredentials {
   email: string;
   password: string;
 }
+export type PartialUser = Partial<User>;

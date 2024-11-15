@@ -1,5 +1,6 @@
 package com.kakuritsu.kaku_shops.security.config;
 
+import com.kakuritsu.kaku_shops.helpers.CookieManagementService;
 import com.kakuritsu.kaku_shops.security.jwt.AuthTokenFilter;
 import com.kakuritsu.kaku_shops.security.jwt.JwtAuthEntryPoint;
 import com.kakuritsu.kaku_shops.security.jwt.JwtUtils;
@@ -33,11 +34,11 @@ public class SecurityConfig {
     private final ShopUserDetailsService userDetailsService;
     private final JwtAuthEntryPoint authEntryPoint;
     private final JwtUtils jwtUtils;
-//    private static final List<String> SECURED_USER_URLS = List.of("/api/v1/carts/**","/api/v1/cart-items/**");
+    private final CookieManagementService cookieManagementService;
     private static final List<String> SECURED_USER_URLS = List.of("/api/v1/orders", "/api/v1/products/rate/**");
     private static final List<String> SECURED_ADMIN_URLS = List.of("/api/v1/imagee/**");
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors->cors.configurationSource(apiConfiguration()))
                 //Add custom exception handling class (authEntryPoint)
@@ -48,8 +49,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth-> auth.requestMatchers(SECURED_ADMIN_URLS.toArray(String[]::new)).hasRole("ADMIN"))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(SECURED_USER_URLS.toArray(String[]::new))
                 .authenticated().anyRequest().permitAll());
-
-
 
 
         http.authenticationProvider(daoAuthenticationProvider());
@@ -73,7 +72,7 @@ public class SecurityConfig {
     }
     @Bean
     public AuthTokenFilter authTokenFilter(){
-        return new AuthTokenFilter(jwtUtils, userDetailsService);
+        return new AuthTokenFilter(jwtUtils, userDetailsService,cookieManagementService);
     }
 
     @Bean

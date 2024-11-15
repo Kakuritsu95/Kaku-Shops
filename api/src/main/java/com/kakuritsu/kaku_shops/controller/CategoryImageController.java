@@ -4,7 +4,7 @@ import com.kakuritsu.kaku_shops.dto.ImageDto;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Image;
 import com.kakuritsu.kaku_shops.response.ApiResponse;
-import com.kakuritsu.kaku_shops.service.image.ImageService;
+import com.kakuritsu.kaku_shops.service.image.IImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -20,17 +20,17 @@ import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
-@RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/images")
-public class ImageController {
+@RequiredArgsConstructor
+@RequestMapping("${api.prefix}/category-images")
+public class CategoryImageController {
+    private final IImageService categoryImageService;
 
-    private final ImageService imageService;
-     @PostMapping("/upload")
-     
-    public ResponseEntity<ApiResponse> saveImages(@RequestParam List<MultipartFile> files, Long productId){
+    @PostMapping("/upload")
+
+    public ResponseEntity<ApiResponse> saveImages(@RequestParam MultipartFile file, Long categoryId){
         try {
-            List<ImageDto> imageDtos = imageService.saveImages(files,productId);
+            List<ImageDto> imageDtos = categoryImageService.saveImages(List.of(file),categoryId);
             return ResponseEntity.ok(new ApiResponse("success", imageDtos));
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Upload failed!",e.getMessage()));
@@ -38,32 +38,32 @@ public class ImageController {
     }
     @GetMapping("/download/{imageId}")
     public ResponseEntity<Resource> downloadImage(@PathVariable Long imageId) throws SQLException {
-        Image image = imageService.getImageById(imageId);
+        Image image = categoryImageService.getImageById(imageId);
         ByteArrayResource resource = new ByteArrayResource(image.getImage().getBytes(1,(int) image.getImage().length()));
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(image.getFileType()))
                 .header(CONTENT_DISPOSITION,"attachment; filename=\"" +image.getFileName() + "\"")
                 .body(resource);
 
     }
-    @PutMapping("image/{imageId}")
+    @PutMapping("/{imageId}")
     public ResponseEntity<ApiResponse> updateImage(@PathVariable Long imageId, @RequestBody MultipartFile file){
         try {
-            Image image = imageService.getImageById(imageId);
+            Image image = categoryImageService.getImageById(imageId);
             if(image!=null){
-                imageService.updateImage(file,imageId);
+                categoryImageService.updateImage(file,imageId);
                 return ResponseEntity.ok().body(new ApiResponse("Update success!",null));
             }
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("Update failed!",null));
         }
-     return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Update failed!", INTERNAL_SERVER_ERROR));
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Update failed!", INTERNAL_SERVER_ERROR));
     }
-    @DeleteMapping("image/{imageId}/delete")
+    @DeleteMapping("/{imageId}")
     public ResponseEntity<ApiResponse> updateImage(@PathVariable Long imageId){
         try {
-            Image image = imageService.getImageById(imageId);
+            Image image = categoryImageService.getImageById(imageId);
             if(image!=null){
-                imageService.deleteImageById(imageId);
+                categoryImageService.deleteImageById(imageId);
                 return ResponseEntity.ok().body(new ApiResponse("Delete success!",null));
             }
         } catch (ResourceNotFoundException e) {

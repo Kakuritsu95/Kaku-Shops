@@ -17,7 +17,6 @@ public class ProductDto {
     private String description;
     private double averageRating;
     private int sellCount;
-    private Category category;
+    private CategoryDto category;
     private List<ImageDto> images;
-
 }

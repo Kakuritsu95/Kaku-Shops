@@ -1,12 +1,12 @@
 import API_ROUTES from "../../api-routes/apiRoutes";
-import useAddRemoveCartItem from "../../hooks/useAddRemoveCartItem";
 import { useCart } from "../../hooks/useCart";
 import { Product } from "../../types/productInterface";
 import { Button } from "../../ui/Button";
 import ProductOverviewInfo from "./ProductOverViewInfo";
+import useUpdateCartItemQuantity from "../../hooks/useUpdateCartItemQuantity";
 
 export default function ProductOverview({ product }: { product: Product }) {
-  const { addProductToCart } = useAddRemoveCartItem();
+  const { addProductToCart } = useUpdateCartItemQuantity();
   const { getCartItemQuantityByProductId } = useCart();
   const productQuantityInCart = getCartItemQuantityByProductId(product.id);
   return (
@@ -15,7 +15,7 @@ export default function ProductOverview({ product }: { product: Product }) {
         <div
           className="mx-auto h-96 w-96 bg-cover bg-center"
           style={{
-            backgroundImage: `url("${API_ROUTES.base}/${API_ROUTES.image.download(product.images[0]?.id)}")`,
+            backgroundImage: `url("${API_ROUTES.base}/${API_ROUTES.productImage.download(product.images[0]?.id)}")`,
           }}
         />
       </div>
