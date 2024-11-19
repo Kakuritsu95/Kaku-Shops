@@ -5,14 +5,8 @@ import FilterByCategory from "./filter-sort/FilterByCategory";
 import SortByPrice from "./filter-sort/SortByPrice";
 
 export default function ProductFilterSortSection() {
-  const handleChange = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-  };
-
   return (
-    <form className="space-y-10" onChange={handleChange}>
+    <form className="space-y-10">
       <h2 className="text-lg">Filters</h2>
       <FilterByCategory />
       <FilterByBrand />

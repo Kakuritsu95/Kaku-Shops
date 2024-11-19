@@ -7,6 +7,7 @@ import CartPage from "../pages/CartPage";
 import CheckoutPage from "../pages/CheckoutPage";
 import LoginPage from "../pages/LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
+import SearchResultsPage from "../pages/SearchResultsPage";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         element: <Navigate to={"/homepage"} />,
         path: "",
+      },
+      {
+        element: <SearchResultsPage />,
+        path: "/search",
       },
       {
         element: <Homepage />,

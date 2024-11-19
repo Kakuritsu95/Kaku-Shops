@@ -1,6 +1,8 @@
 package com.kakuritsu.kaku_shops.service.product;
 
+import com.kakuritsu.kaku_shops.dto.CategoryDto;
 import com.kakuritsu.kaku_shops.dto.ProductDto;
+import com.kakuritsu.kaku_shops.dto.ProductsSearchResult;
 import com.kakuritsu.kaku_shops.exceptions.AlreadyExistsException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.exceptions.UnauthorizedActionException;
@@ -18,6 +20,7 @@ import com.kakuritsu.kaku_shops.request.UpdateProductRequest;
 import com.kakuritsu.kaku_shops.service.converter.ProductConverter;
 import com.kakuritsu.kaku_shops.specificiation.ProductSpecs;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -25,6 +28,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +40,7 @@ public class ProductService implements IProductService{
     private final ProductRatingRepository productRatingRepository;
     private final ProductConverter productConverter;
     private final OrderRepository orderRepository;
+    private final ModelMapper mapper;
 
     @Override
     public Product addProduct(AddProductRequest request) {
@@ -113,6 +119,23 @@ public class ProductService implements IProductService{
         Page<Product> products = productRepository.findAll(ProductSpecs.ProductFilterSpecification(request, categoryId), pageRequest);
         return products.map(productConverter::convertProductToProductDto);    }
 
+    @Override
+    public Page<ProductDto> getProductsBySearchKeyword(String keyword) {
+        Sort sort = Sort.by(Sort.Direction.ASC,"price");
+        Page<Product> products = productRepository.findProductsBySearchKeyword(keyword, PageRequest.of(0,10, sort));
+        return products.map(productConverter::convertProductToProductDto);
+    }
+    @Override
+    public ProductsSearchResult getProductsByKeywordAndFilters(String keyword){
+        Sort sort = Sort.by(Sort.Direction.ASC,"price");
+        Set<String> relevantBrands = productRepository.findDistinctBrandsByKeyword(keyword);
+        List<Category> relevantCategories = categoryRepository.findCategoriesByKeyword(keyword);
+        Page<Product> products = productRepository.findProductsByKeywordAndFilters(keyword, PageRequest.of(0,10,sort));
+        Page<ProductDto> productDto = products.map(productConverter::convertProductToProductDto);
+        List<CategoryDto>relevantCategoriesDto = relevantCategories.stream().map(category -> mapper.map(category,CategoryDto.class)).toList();
+        return new ProductsSearchResult(productDto,relevantBrands,relevantCategoriesDto);
+
+    }
     @Override
     public List<Product> getProductsByCategory(String category) {
         return productRepository.findByCategoryName(category);

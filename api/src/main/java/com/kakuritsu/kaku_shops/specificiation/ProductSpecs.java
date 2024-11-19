@@ -14,7 +14,7 @@ public class ProductSpecs {
         return ((root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
              if(categoryId!=null){
-                predicates.add(criteriaBuilder.equal(root.get("category").get("id"),categoryId));            
+                predicates.add(criteriaBuilder.equal(root.get("category").get("id"),categoryId));
             }
             if(request.getBrand()!=null){
                 predicates.add(criteriaBuilder.equal(root.get("brand"),request.getBrand()));

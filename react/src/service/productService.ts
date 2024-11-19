@@ -8,6 +8,8 @@ export default {
     httpActions.get(
       API_ROUTES.product.getBySearchQuery(categoryId, searchParams),
     ),
+  getBySearchKeyword: (keyword: string) =>
+    httpActions.get(API_ROUTES.product.getByKeyword(keyword)),
   add: (product: AddProduct) =>
     httpActions.post(API_ROUTES.product.add, product),
   getById: (productId: string) =>

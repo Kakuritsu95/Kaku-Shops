@@ -33,6 +33,8 @@ const API_ROUTES = {
     getAll: `${BASE_PATHS.product}`,
     getBySearchQuery: (categoryId: string, searchParams: string) =>
       `${BASE_PATHS.product}/search/${categoryId}?${searchParams}`,
+    getByKeyword: (keyword: string) =>
+      `${BASE_PATHS.product}/search?keyword=${keyword}`,
     add: `${BASE_PATHS.product}`,
     getById: (id: string) => `${BASE_PATHS.product}/${id}`,
     update: (id: string) => `${BASE_PATHS.product}/${id}`,

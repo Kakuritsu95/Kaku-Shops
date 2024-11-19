@@ -1,10 +1,12 @@
 package com.kakuritsu.kaku_shops.controller;
 
 import com.kakuritsu.kaku_shops.dto.ProductDto;
+
+import com.kakuritsu.kaku_shops.dto.ProductsSearchResult;
 import com.kakuritsu.kaku_shops.exceptions.AlreadyExistsException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Product;
-import com.kakuritsu.kaku_shops.model.ProductRating;
+
 import com.kakuritsu.kaku_shops.model.User;
 import com.kakuritsu.kaku_shops.repository.ProductRepository;
 import com.kakuritsu.kaku_shops.request.AddProductRequest;
@@ -172,7 +174,7 @@ public class ProductController {
     }
     @GetMapping("/brands/{categoryId}")
     public ResponseEntity<ApiResponse> getDistinctBrand(@PathVariable Long categoryId){
-        Set<String> associatedBrands = productRepository.getDistinctBrands(categoryId);
+        Set<String> associatedBrands = productRepository.findDistinctBrands(categoryId);
         return ResponseEntity.ok().body(new ApiResponse("ok", associatedBrands));
     }
 
@@ -180,5 +182,16 @@ public class ProductController {
     public ResponseEntity<ApiResponse> getProductsByCategoryAndSearchParams(@PathVariable Long categoryId, @ModelAttribute FilterSortProductRequest request){
         Page<ProductDto> productDtos = productService.getProductsByCategoryIdAndSearchParams(categoryId,request);
         return ResponseEntity.ok().body(new ApiResponse("ok",productDtos));
+    }
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse> getProductsBySearchKeyword(@RequestParam String keyword){
+        Page<ProductDto> productDtos = productService.getProductsBySearchKeyword(keyword);
+        return ResponseEntity.ok().body(new ApiResponse("search results",productDtos));
+    }
+    @GetMapping("/results")
+    public ResponseEntity<ApiResponse> getProductsSearchResultsByKeyword(@RequestParam String keyword){
+        ProductsSearchResult result = productService.getProductsByKeywordAndFilters(keyword);
+        return ResponseEntity.ok().body(new ApiResponse("ok result", result));
+
     }
 }
