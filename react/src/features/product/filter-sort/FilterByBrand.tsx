@@ -1,20 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router";
-import productService from "../../../service/productService";
 import SearchParamToggle from "./SearchParamToggle";
 
-export default function FilterByBrand() {
-  const { categoryId } = useParams();
-  const { data: brands, isLoading } = useQuery<Array<string>>({
-    queryKey: [categoryId, "brands"],
-    queryFn: () =>
-      productService.getUniqueBrandsByCategoryId(String(categoryId)),
-  });
-
+export default function FilterByBrand({ brands }: { brands: Array<string> }) {
   return (
     <div className="space-y-5">
       <h3 className="font-semibold">Brands</h3>
-      {!isLoading && (
+      {
         <ul>
           {brands &&
             brands.map((brand) => (
@@ -27,7 +17,7 @@ export default function FilterByBrand() {
               />
             ))}
         </ul>
-      )}
+      }
     </div>
   );
 }

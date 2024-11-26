@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import ProductFilterSortSection from "./ProductFilterSortSection";
 import { IoOptionsOutline } from "react-icons/io5";
-export default function MobileFilterSection() {
+import { Category } from "../../types/categoryInterface";
+export default function MobileFilterSection({
+  categories,
+  brands,
+}: {
+  categories: Array<Category>;
+  brands: Array<string>;
+}) {
   const [areFiltersOpen, setAreFiltersOpen] = useState<boolean>(false);
   useEffect(() => {
     if (areFiltersOpen) document.body.style.overflow = "hidden";
@@ -14,7 +21,7 @@ export default function MobileFilterSection() {
         <div
           className={`fixed left-0 z-10 h-screen w-full bg-stone-50 px-3 py-3 shadow duration-300 md:hidden ${areFiltersOpen ? "bottom-0" : "-bottom-full"}`}
         >
-          <ProductFilterSortSection />
+          <ProductFilterSortSection categories={categories} brands={brands} />
           <button
             onClick={() => setAreFiltersOpen((open) => !open)}
             className="text-bold absolute right-5 top-5 hover:text-red-500"

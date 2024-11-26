@@ -3,9 +3,9 @@ import { OrderRequest } from "../types/orderInterface";
 import httpActions from "./httpActions";
 
 export default {
-  getById: (orderId: number) =>
+  getById: (orderId: string) =>
     httpActions.get(API_ROUTES.order.getById(orderId)),
-  getByUserId: (orderId: number) =>
+  getByUserId: (orderId: string) =>
     httpActions.get(API_ROUTES.order.getByUserId(orderId)),
   placeOrder: (orderDetails: OrderRequest) =>
     httpActions.post(API_ROUTES.order.placeOrder, orderDetails),

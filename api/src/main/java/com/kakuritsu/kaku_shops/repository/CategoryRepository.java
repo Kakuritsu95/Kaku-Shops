@@ -12,9 +12,13 @@ import java.util.Set;
 public interface CategoryRepository extends JpaRepository<Category,Long> {
     Category findByName(String name);
 
-    @Query("SELECT c FROM Category c JOIN products p WHERE p.name LIKE %:keyword% OR p.brand LIKE %:keyword% OR c.name LIKE %:keyword%")
+    @Query("SELECT c FROM Category c" +
+            " JOIN products p" +
+            " WHERE (p.name LIKE %:keyword% OR p.brand LIKE %:keyword% OR c.name LIKE %:keyword%)" +
+            " AND (:brand IS NULL OR p.brand=:brand)")
     List<Category> findCategoriesByKeyword(
-            @Param("keyword") String keyword
+            @Param("keyword") String keyword,
+            @Param("brand") String brand
     );
 
     boolean existsByName(String name);

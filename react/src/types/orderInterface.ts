@@ -7,9 +7,10 @@ export interface Order {
   totalAmount: number;
   orderStatus: OrderStatus;
   orderItems: Array<OrderItem>;
+  address: Address;
   user: User;
 }
-interface Address {
+export interface Address {
   address: string;
   city: string;
   postalCode: string;

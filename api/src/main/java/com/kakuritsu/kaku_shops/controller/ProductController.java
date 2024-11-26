@@ -11,6 +11,7 @@ import com.kakuritsu.kaku_shops.model.User;
 import com.kakuritsu.kaku_shops.repository.ProductRepository;
 import com.kakuritsu.kaku_shops.request.AddProductRequest;
 import com.kakuritsu.kaku_shops.request.FilterSortProductRequest;
+import com.kakuritsu.kaku_shops.request.SearchProductsRequest;
 import com.kakuritsu.kaku_shops.request.UpdateProductRequest;
 import com.kakuritsu.kaku_shops.response.ApiResponse;
 import com.kakuritsu.kaku_shops.service.converter.ProductConverter;
@@ -189,8 +190,8 @@ public class ProductController {
         return ResponseEntity.ok().body(new ApiResponse("search results",productDtos));
     }
     @GetMapping("/results")
-    public ResponseEntity<ApiResponse> getProductsSearchResultsByKeyword(@RequestParam String keyword){
-        ProductsSearchResult result = productService.getProductsByKeywordAndFilters(keyword);
+    public ResponseEntity<ApiResponse> getProductsSearchResultsByKeywordAndFilters(@ModelAttribute SearchProductsRequest searchRequest){
+        ProductsSearchResult result = productService.getProductsByKeywordAndFilters(searchRequest);
         return ResponseEntity.ok().body(new ApiResponse("ok result", result));
 
     }

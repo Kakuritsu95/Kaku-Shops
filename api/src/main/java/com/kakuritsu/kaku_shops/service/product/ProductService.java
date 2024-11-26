@@ -16,6 +16,7 @@ import com.kakuritsu.kaku_shops.repository.ProductRatingRepository;
 import com.kakuritsu.kaku_shops.repository.ProductRepository;
 import com.kakuritsu.kaku_shops.request.AddProductRequest;
 import com.kakuritsu.kaku_shops.request.FilterSortProductRequest;
+import com.kakuritsu.kaku_shops.request.SearchProductsRequest;
 import com.kakuritsu.kaku_shops.request.UpdateProductRequest;
 import com.kakuritsu.kaku_shops.service.converter.ProductConverter;
 import com.kakuritsu.kaku_shops.specificiation.ProductSpecs;
@@ -111,12 +112,13 @@ public class ProductService implements IProductService{
         if(request.getSortBy()!=null) {
             String[] sortParts = request.getSortBy().split("-");
             String sortField = sortParts[0];
-
-            Sort.Direction sortDirection = sortParts.length > 1 && sortParts[1].equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
-             sort = Sort.by(sortDirection, sortField);
+            Sort.Direction sortDirection = sortParts.length > 1 && sortParts[1].equalsIgnoreCase("asc")
+                    ? Sort.Direction.ASC
+                    : Sort.Direction.DESC;
+            sort = Sort.by(sortDirection, sortField);
         }
         PageRequest pageRequest = PageRequest.of(request.getPage(), request.getSize(),sort);
-        Page<Product> products = productRepository.findAll(ProductSpecs.ProductFilterSpecification(request, categoryId), pageRequest);
+        Page<Product> products = productRepository.findAll(ProductSpecs.productFilterSpecification(request, categoryId), pageRequest);
         return products.map(productConverter::convertProductToProductDto);    }
 
     @Override
@@ -126,11 +128,20 @@ public class ProductService implements IProductService{
         return products.map(productConverter::convertProductToProductDto);
     }
     @Override
-    public ProductsSearchResult getProductsByKeywordAndFilters(String keyword){
+    public ProductsSearchResult getProductsByKeywordAndFilters(SearchProductsRequest searchRequest){
         Sort sort = Sort.by(Sort.Direction.ASC,"price");
-        Set<String> relevantBrands = productRepository.findDistinctBrandsByKeyword(keyword);
-        List<Category> relevantCategories = categoryRepository.findCategoriesByKeyword(keyword);
-        Page<Product> products = productRepository.findProductsByKeywordAndFilters(keyword, PageRequest.of(0,10,sort));
+        if(searchRequest.getSortBy()!=null) {
+            String[] sortParts = searchRequest.getSortBy().split("-");
+            String sortField = sortParts[0];
+
+            Sort.Direction sortDirection = sortParts.length > 1 && sortParts[1].equalsIgnoreCase("asc")
+                    ? Sort.Direction.ASC
+                    : Sort.Direction.DESC;
+            sort = Sort.by(sortDirection, sortField);
+        }
+        Set<String> relevantBrands = productRepository.findDistinctBrandsByKeyword(searchRequest.getKeyword(),searchRequest.getCategory());
+        List<Category> relevantCategories = categoryRepository.findCategoriesByKeyword(searchRequest.getKeyword(), searchRequest.getBrand());
+        Page<Product> products = productRepository.findAll(ProductSpecs.productsSearchResultSpecification(searchRequest),PageRequest.of(searchRequest.getPage(), searchRequest.getSize(),sort));
         Page<ProductDto> productDto = products.map(productConverter::convertProductToProductDto);
         List<CategoryDto>relevantCategoriesDto = relevantCategories.stream().map(category -> mapper.map(category,CategoryDto.class)).toList();
         return new ProductsSearchResult(productDto,relevantBrands,relevantCategoriesDto);

@@ -70,7 +70,7 @@ private Address createSaveAndReturnAddress(AddressRequest address){
 
     private BigDecimal calculateTotalAmount(List<OrderItem> orderItems) {
        return orderItems.stream().reduce(BigDecimal.ZERO
-               ,(acc,curr)-> acc.add(curr.getPrice().multiply(new BigDecimal(curr.getQuantity())))
+               ,(acc,curr)-> acc.add(curr.getPrice())
                ,BigDecimal::add);
     }
     private Order createOrder(Cart cart, OrderRequest orderRequest){

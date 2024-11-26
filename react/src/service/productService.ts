@@ -10,6 +10,12 @@ export default {
     ),
   getBySearchKeyword: (keyword: string) =>
     httpActions.get(API_ROUTES.product.getByKeyword(keyword)),
+  getSearchResultsWithFiltersBySearchParams: (searchParams: string) =>
+    httpActions.get(
+      API_ROUTES.product.getSearchResultsWithFiltersBySearchParams(
+        searchParams,
+      ),
+    ),
   add: (product: AddProduct) =>
     httpActions.post(API_ROUTES.product.add, product),
   getById: (productId: string) =>

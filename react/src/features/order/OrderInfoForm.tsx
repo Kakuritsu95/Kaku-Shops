@@ -16,7 +16,7 @@ import { OrderRequest } from "../../types/orderInterface";
 
 export const OrderInfoForm = forwardRef<HTMLFormElement, PropsWithChildren>(
   function OrderInfoForm(_, formRef) {
-    const { email } = useUserDetails();
+    const { email = "" } = useUserDetails();
     const {
       formState: { errors },
       control,
@@ -24,7 +24,7 @@ export const OrderInfoForm = forwardRef<HTMLFormElement, PropsWithChildren>(
       setValue,
       handleSubmit,
     } = useForm<OrderFormFields>({
-      defaultValues: { proofType: "RECEIPT", email },
+      defaultValues: { proofType: "RECEIPT", email, city: "" },
     });
     const city = watch("city");
     const userWantsInvoice = watch("proofType") == "INVOICE";

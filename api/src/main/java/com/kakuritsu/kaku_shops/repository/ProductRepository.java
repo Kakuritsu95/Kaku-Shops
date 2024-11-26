@@ -26,16 +26,26 @@ public interface ProductRepository extends JpaRepository<Product,Long>, JpaSpeci
 
     boolean existsByNameAndBrand(String name, String brand);
 
-    @Query("SELECT DISTINCT brand FROM Product p JOIN category c WHERE c.id = :categoryId")
+    @Query(" SELECT DISTINCT brand" +
+            " FROM Product p JOIN category c" +
+            " WHERE c.id = :categoryId")
     Set<String> findDistinctBrands(
             @Param("categoryId") Long categoryId
     );
-    @Query("SELECT DISTINCT brand FROM Product p JOIN category c WHERE p.name LIKE %:keyword% OR p.brand LIKE %:keyword% OR c.name LIKE %:keyword%")
+    @Query("SELECT DISTINCT brand" +
+            " FROM Product p" +
+            " JOIN category c" +
+            " WHERE (p.name LIKE %:keyword% OR p.brand LIKE %:keyword% OR c.name LIKE %:keyword%)" +
+            " AND (:categoryName IS NULL OR c.name=:categoryName)")
     Set<String> findDistinctBrandsByKeyword(
-            @Param("keyword") String keyword
+            @Param("keyword") String keyword,
+            @Param("categoryName") String categoryName
     );
 
-    @Query("SELECT p FROM Product p JOIN category c WHERE p.name LIKE %:keyword% OR p.brand LIKE %:keyword% OR c.name LIKE %:keyword%")
+    @Query("SELECT p" +
+            " FROM Product p" +
+            " JOIN category c" +
+            " WHERE p.name LIKE %:keyword% OR p.brand LIKE %:keyword% OR c.name LIKE %:keyword%")
     Page<Product> findProductsBySearchKeyword(@Param("keyword") String keyword, PageRequest page);
     @Query("SELECT p FROM Product p JOIN category c WHERE p.name LIKE %:keyword% OR p.brand LIKE %:keyword% OR c.name LIKE %:keyword%")
     Page<Product> findProductsByKeywordAndFilters(@Param("keyword") String keyword, PageRequest page);
