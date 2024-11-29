@@ -1,6 +1,7 @@
 package com.kakuritsu.kaku_shops.controller;
 
 import com.kakuritsu.kaku_shops.dto.OrderDto;
+import com.kakuritsu.kaku_shops.event.PlaceOrderEventPublisher;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Cart;
 import com.kakuritsu.kaku_shops.model.Order;
@@ -12,6 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +26,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("${api.prefix}/orders")
 public class OrderController {
     private final IOrderService orderService;
+
     @PostMapping
     public ResponseEntity<ApiResponse> createOrder(
              @RequestBody @Valid OrderRequest orderRequest
@@ -31,12 +35,15 @@ public class OrderController {
         try {
             Order order = orderService.placeOrder(orderRequest,request,response);
             OrderDto orderDto = orderService.convertToDto(order);
-            return ResponseEntity.ok().body(new ApiResponse("Success!", orderDto));
+
+            return ResponseEntity.ok().body(new ApiResponse("Success!", orderDto.getId()));
         } catch (RuntimeException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
         }
     }
+
     @GetMapping("/{orderId}")
+    @PostAuthorize("returnObject.body.data.userId == principal.id")
     public ResponseEntity<ApiResponse> getOrderById(@PathVariable Long orderId){
         try {
             OrderDto order = orderService.getOrderById(orderId);

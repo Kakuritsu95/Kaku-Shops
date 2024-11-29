@@ -7,6 +7,7 @@ interface ButtonProps {
   size?: "small" | "medium" | "large" | "full";
   color?: "brand" | "blue" | "green" | "sky" | "black";
   onClick?: () => void;
+  isSubmitting?: boolean;
   children?: ReactNode;
 }
 
@@ -34,6 +35,7 @@ export function Button({
   type = "brand",
   size = "large",
   color = "green",
+  isSubmitting = false,
   children,
 }: ButtonProps) {
   if (urlPath)
@@ -48,7 +50,8 @@ export function Button({
   return (
     <button
       onClick={onClick}
-      className={`${types[type]} ${colors[color]} ${sizes[size]} text-center duration-100`}
+      disabled={isSubmitting}
+      className={`${types[type]} ${colors[color]} ${sizes[size]} ${isSubmitting && "bg-gray-400 hover:cursor-not-allowed hover:bg-gray-400"} text-center duration-100`}
     >
       {children}
     </button>

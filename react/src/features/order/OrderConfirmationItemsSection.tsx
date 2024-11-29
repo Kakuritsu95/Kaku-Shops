@@ -1,12 +1,13 @@
 import { OrderItem } from "../../types/orderItemInterface";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import OrderConfirmationItemCard from "./OrderConfirmationItemCard";
-import CartItemCostBreakdown from "../cart/CartItemCostBreakdown";
 import CartPriceBreakdown from "../cart/CartPriceBreakdown";
 export default function OrderConfirmationItemsSection({
   orderItems,
+  orderTotalAmount,
 }: {
   orderItems: Array<OrderItem>;
+  orderTotalAmount: number;
 }) {
   return (
     <div className="w-full space-y-3 overflow-y-auto rounded-md border-gray-100 font-semibold text-gray-800 lg:w-1/2 lg:border-l-2 lg:px-9 xl:w-1/3">
@@ -23,7 +24,7 @@ export default function OrderConfirmationItemsSection({
         ))}
       </ul>
       <div className="pr-5">
-        <CartPriceBreakdown totalAmount={44} />
+        <CartPriceBreakdown totalAmount={orderTotalAmount} />
       </div>
     </div>
   );

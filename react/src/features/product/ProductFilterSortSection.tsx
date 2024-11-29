@@ -9,8 +9,8 @@ export default function ProductFilterSortSection({
   categories,
   brands,
 }: {
-  categories: Array<Category>;
-  brands: Array<string>;
+  categories: Array<Category> | undefined;
+  brands: Array<string> | undefined;
 }) {
   return (
     <form className="space-y-10">

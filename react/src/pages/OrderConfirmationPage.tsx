@@ -18,7 +18,10 @@ export default function OrderConfirmationPage() {
         orderId={order.id}
         address={order.address}
       />
-      <OrderConfirmationItemsSection orderItems={order.orderItems} />
+      <OrderConfirmationItemsSection
+        orderTotalAmount={order.totalAmount}
+        orderItems={order.orderItems}
+      />
     </div>
   );
 }

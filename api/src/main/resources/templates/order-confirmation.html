@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f9f9fb; color: #1b1a1a;">
+
+
+<table width="100%"   style="background-color: #f9f9fb; padding: 20px 0;">
+    <tr>
+        <td align="center">
+
+            <table width="600" style="background-color: #ffffff; border: 1px solid #eaeaea; border-radius: 8px; padding: 20px;">
+
+                <tr>
+                    <td align="center" style="padding-bottom: 20px;">
+                        <img src="cid:logoImage" alt="Logo" style="width: 150px; height: auto;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <h1 style="color: rgb(249, 115, 22); font-size: 24px; margin: 0; padding-bottom: 20px;">Thank you for your order!</h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p style="font-size: 14px; line-height: 1.6; text-align: center; margin: 0 0 20px 0;">
+                            Your order will be processed within 24 hours during workdays. You will be notified by email once your order has been shipped.
+                        </p>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        <h2 style="font-size: 18px; margin-bottom: 15px; color: #1b1a1a; text-align: left;">Shipping Information</h2>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 20px;">
+                            <tr>
+                                <td style="padding: 5px 0; border-bottom: 1px solid #eaeaea;">
+                                    <strong style="color: #1b1a1a;">Order Number:</strong>
+                                </td>
+                                <td align="right" style="padding: 5px 0; border-bottom: 1px solid #eaeaea;">
+                                    <span th:text="${order.refCode}" style="color: #000000; font-weight: 600;"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px 0; border-bottom: 1px solid #eaeaea;">
+                                    <strong style="color: #1b1a1a;">Date:</strong>
+                                </td>
+                                <td align="right" style="padding: 5px 0; border-bottom: 1px solid #eaeaea;">
+                                    <span th:text="${order.orderDate}" style="color: #000000; font-weight: 600;"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px 0; border-bottom: 1px solid #eaeaea;">
+                                    <strong style="color: #1b1a1a;">Payment Method:</strong>
+                                </td>
+                                <td align="right" style="padding: 5px 0; border-bottom: 1px solid #eaeaea;">
+                                    <span style="color: #000000; font-weight: 600;">Cash upon delivery</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px 0; border-bottom: 1px solid #eaeaea;">
+                                    <strong style="color: #1b1a1a;">Receiver:</strong>
+                                </td>
+                                <td align="right" style="padding: 5px 0; border-bottom: 1px solid #eaeaea;">
+                                    <span th:text="${order.firstName}" style="color: #000000; font-weight: 600;"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px 0; border-bottom: 1px solid #eaeaea;">
+                                    <strong style="color: #1b1a1a;">Address:</strong>
+                                </td>
+                                <td align="right" style="padding: 5px 0; border-bottom: 1px solid #eaeaea;">
+                                    <span th:text="${order.address.address + ', ' + order.address.city + ', ' + order.address.postalCode}" style="color: #000000; font-weight: 600;"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px 0; border-bottom: 1px solid #eaeaea;">
+                                    <strong style="color: #1b1a1a;">Phone Number:</strong>
+                                </td>
+                                <td align="right" style="padding: 5px 0; border-bottom: 1px solid #eaeaea;">
+                                    <span th:text="${order.phoneNumber}" style="color: #000000; font-weight: 600;"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        <h2 style="font-size: 18px; margin-bottom: 15px; color: #1b1a1a; text-align: left;">Order Summary</h2>
+                        <table width="100%" style="margin-bottom: 20px;">
+                            <tr th:each="item : ${order.orderItems}">
+                                <td style="padding: 5px 0; border-bottom: 1px solid #eaeaea;">
+                                    <span th:text="${item.product.name}" style="color: #1b1a1a; font-weight: 600;"></span>
+                                </td>
+                                <td align="center" style="padding: 5px 0; border-bottom: 1px solid #eaeaea;">
+                                    <span th:text="'x' + ${item.quantity}" style="color: #000000; font-weight: 600;"></span>
+                                </td>
+                                <td align="right" style="padding: 5px 0; border-bottom: 1px solid #eaeaea;">
+                                    <span th:text="${item.price}+'€'" style="color: #000000; font-weight: 600;"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        <table  style="margin-bottom: 20px; width:35rem; border: 1px solid #eaeaea;  border-radius: 8px; padding: 15px;">
+                            <tr>
+                                <td style="padding: 5px 0;">
+                                    <strong style="color: #1b1a1a;">Order Cost:</strong>
+                                </td>
+                                <td align="right" style="padding: 5px 0;">
+                                    <span th:text="${order.totalAmount}+'€'" style="color: #000000; font-weight: 600;"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px 0;">
+                                    <strong style="color: #1b1a1a;">Shipping Cost:</strong>
+                                </td>
+                                <td align="right" style="padding: 5px 0;">
+                                    <span th:text="${15}+'€'" style="color: #000000; font-weight: 600;"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px 0;">
+                                    <strong style="color: #1b1a1a;">Total:</strong>
+                                </td>
+                                <td align="right" style="padding: 5px 0;">
+                                    <span th:text="${order.totalAmount} + ${15}+'€'" style="color: #000000; font-weight: 600;">sd</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 20px;">
+                        <!-- Use a table to align buttons side by side in Gmail -->
+                        <table>
+                            <tr>
+                                <td style="width: 50%">
+                                    <a href="http://localhost:5173/order-progress/${order.refCode}"
+                                       style="background-color: #125fbc; color: #ffffff; text-decoration: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 14px; display: inline-block;">
+                                        Track Your Order
+                                    </a>
+                                </td>
+                                <td style="width: 50%; text-align: center;">
+                                    <a href="http://localhost:5173"
+                                       style="background-color: #ffffff; color: #000000; text-decoration: none; padding: 10px 20px; border: 1px solid #eaeaea; border-radius: 8px; font-weight: 600; font-size: 14px; display: inline-block;">
+                                        Continue shopping
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

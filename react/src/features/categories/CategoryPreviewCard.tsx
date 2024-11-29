@@ -27,7 +27,9 @@ export default function CategoryPreviewCard({
           Discover the latest smartphones with cutting-edge technology, stunning
           designs, and powerful performance. designs, and powerful performance.
         </p>
-        <Button color="sky">Explore now!</Button>
+        <Button size="medium" color="sky">
+          Explore now!
+        </Button>
       </div>
     </Link>
   );

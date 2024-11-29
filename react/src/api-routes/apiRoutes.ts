@@ -66,7 +66,7 @@ const API_ROUTES = {
   },
   categoryImage: {
     upload: `${BASE_PATHS.categoryImage}/upload`,
-    download: (imageId: string) =>
+    download: (imageId: number) =>
       `${BASE_PATHS.categoryImage}/download/${imageId}`,
     update: (imageId: string) =>
       `${BASE_PATHS.categoryImage}/update/${imageId}`,

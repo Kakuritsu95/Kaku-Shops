@@ -7,9 +7,12 @@ import { Product } from "../types/productInterface";
 import { useQuery } from "@tanstack/react-query";
 import productService from "../service/productService";
 import useCategories from "../hooks/useCategories";
+import { useState } from "react";
 
 export default function ProductsListingPage() {
   const [searchParams] = useSearchParams();
+  const [isFilterSectionOpen, setIsFilterSectionOpen] =
+    useState<boolean>(false);
   const { categoryId = "" } = useParams();
   const categories = useCategories();
   const { data: products, isLoading } = useQuery<PagedData<Product>>({
@@ -33,9 +36,16 @@ export default function ProductsListingPage() {
           <ProductFilterSection categories={categories} brands={brands} />
         )}
       </aside>
-      {categories && brands && (
-        <MobileFilterSection categories={categories} brands={brands} />
-      )}
+      {
+        <MobileFilterSection
+          isFilterSectionOpen={isFilterSectionOpen}
+          toggleOpenFilterSection={() =>
+            setIsFilterSectionOpen((open) => !open)
+          }
+          categories={categories}
+          brands={brands}
+        />
+      }
       {products && <ProductsDisplay products={products} />}
     </div>
   );

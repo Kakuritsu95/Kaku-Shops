@@ -18,7 +18,7 @@ export default function OrderConfirmationInfoSection({
       <OrderThankYouMessage orderId={orderId} />
       <OrderUserUpdateNotificationBox />
       <OrderConfirmationDetails address={address} />
-      <div className="justify-self-end">
+      <div className="sm:justify-self-end">
         <Button size="small" color="black">
           Continue Shopping
         </Button>

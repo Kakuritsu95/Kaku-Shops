@@ -2,6 +2,7 @@ package com.kakuritsu.kaku_shops.service.order;
 
 import com.kakuritsu.kaku_shops.dto.OrderDto;
 import com.kakuritsu.kaku_shops.enums.OrderStatus;
+import com.kakuritsu.kaku_shops.event.PlaceOrderEventPublisher;
 import com.kakuritsu.kaku_shops.exceptions.CartOperationException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.*;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +36,7 @@ public class OrderService implements IOrderService {
     private final ModelMapper mapper;
     private final IUserService userService;
     private final IAddressService addressService;
+    private final PlaceOrderEventPublisher orderEventPublisher;
     @Transactional
     @Override
             public Order placeOrder(
@@ -42,7 +46,6 @@ public class OrderService implements IOrderService {
                    ) {
             cartService.checkIfUserHasCartCookie(request);
             String cartSessionCookie = cartService.generateCartCookieOrGetIfExists(request,response);
-
             User user = userService.getAuthenticatedUser();
             Cart cart = cartService.getCartBySessionId(cartSessionCookie).orElseThrow(()->new CartOperationException("Cart doesn't exist please add items"));
             if(cart.getTotalAmount().compareTo(BigDecimal.ZERO)==0) {throw new RuntimeException("Cart is empty!");};
@@ -54,8 +57,8 @@ public class OrderService implements IOrderService {
             order.setOrderItems(new HashSet<>(orderItems));
             order.setTotalAmount(calculateTotalAmount(orderItems));
             cartService.clearCart(cart.getId());
+            orderEventPublisher.publishOrderEvent(order);
             return orderRepository.save(order);
-
         }
 
 private Address createSaveAndReturnAddress(AddressRequest address){
@@ -83,6 +86,7 @@ private Address createSaveAndReturnAddress(AddressRequest address){
                 .email(orderRequest.getEmail())
                 .phoneNumber(orderRequest.getPhoneNumber())
                 .proofType(orderRequest.getProofType())
+                .refCode(UUID.randomUUID().toString())
                 .build();
     }
     private List<OrderItem> createOrderItems(Order order, Cart cart) {

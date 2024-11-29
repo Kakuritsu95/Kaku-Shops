@@ -4,10 +4,12 @@ import { Product } from "../../types/productInterface";
 import { Button } from "../../ui/Button";
 import ProductOverviewInfo from "./ProductOverViewInfo";
 import useUpdateCartItemQuantity from "../../hooks/useUpdateCartItemQuantity";
+import Spinner from "../../ui/Spinner";
 
 export default function ProductOverview({ product }: { product: Product }) {
-  const { addProductToCart } = useUpdateCartItemQuantity();
+  const { addProductToCart, isAdding } = useUpdateCartItemQuantity();
   const { getCartItemQuantityByProductId } = useCart();
+  console.log(isAdding);
   const productQuantityInCart = getCartItemQuantityByProductId(product.id);
   return (
     <div className="mt-14 flex w-full flex-col items-center gap-10 md:flex-row md:items-start">
@@ -26,12 +28,18 @@ export default function ProductOverview({ product }: { product: Product }) {
             addProductToCart({ productId: product.id, quantity: 1 })
           }
         >
-          {productQuantityInCart && (
-            <span className="inline-block w-6 rounded-full bg-lime-200 bg-opacity-20 py-0.5 text-sm font-semibold">
-              {productQuantityInCart}
-            </span>
+          {isAdding ? (
+            <Spinner />
+          ) : (
+            <>
+              {productQuantityInCart && (
+                <span className="inline-block w-6 rounded-full bg-lime-200 bg-opacity-20 py-0.5 text-sm font-semibold">
+                  {productQuantityInCart}
+                </span>
+              )}
+              <span className="ml-2">Add To Cart</span>
+            </>
           )}
-          <span className="ml-2">Add To Cart</span>
         </Button>
       </div>
     </div>

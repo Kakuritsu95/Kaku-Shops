@@ -23,7 +23,7 @@ export default function useUpdateCartItemQuantity() {
       });
     },
   });
-  const { mutate: addProductToCart } = useMutation({
+  const { mutate: addProductToCart, isPending: isAdding } = useMutation({
     mutationFn: ({ productId, quantity }: UpdateItemParamProps) =>
       cartService.addItem({ productId, quantity }),
     onSuccess: () => {
@@ -39,5 +39,5 @@ export default function useUpdateCartItemQuantity() {
       toast.success("Product quantity updated!");
     },
   });
-  return { removeCartItem, addProductToCart, updateCartItemQuantity };
+  return { removeCartItem, addProductToCart, updateCartItemQuantity, isAdding };
 }

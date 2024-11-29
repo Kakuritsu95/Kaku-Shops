@@ -7,7 +7,7 @@ import SearchParamToggle from "./SearchParamToggle";
 export default function FilterByCategory({
   categories,
 }: {
-  categories: Array<Category>;
+  categories: Array<Category> | undefined;
 }) {
   const { categoryId } = useParams();
   return (
@@ -15,7 +15,7 @@ export default function FilterByCategory({
       <h3 className="font-semibold">Categories</h3>
       <ul>
         {categoryId ? (
-          categories.map((category: Category) => (
+          categories?.map((category: Category) => (
             <Link key={category.id} to={`/products/category/${category.id}`}>
               <FilterSortLabel
                 isChecked={category.id == Number(categoryId)}
