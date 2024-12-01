@@ -6,6 +6,7 @@ export interface PagedData<T> {
   number: number;
   numberOfElements: number;
   pageable: Pageable;
+  totalPages: number;
 }
 
 interface Pageable {

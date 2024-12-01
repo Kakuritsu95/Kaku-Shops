@@ -17,4 +17,5 @@ public class OrderDto {
     private OrderStatus orderStatus;
     private Set<OrderItemDto> orderItems;
     private Address address;
+    private String refCode;
 }

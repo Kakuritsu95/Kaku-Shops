@@ -19,7 +19,7 @@ export default function OrderConfirmationInfoSection({
       <OrderUserUpdateNotificationBox />
       <OrderConfirmationDetails address={address} />
       <div className="sm:justify-self-end">
-        <Button size="small" color="black">
+        <Button urlPath="/" size="small" color="black">
           Continue Shopping
         </Button>
       </div>

@@ -1,9 +1,7 @@
 package com.kakuritsu.kaku_shops.controller;
 
 import com.kakuritsu.kaku_shops.dto.OrderDto;
-import com.kakuritsu.kaku_shops.event.PlaceOrderEventPublisher;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
-import com.kakuritsu.kaku_shops.model.Cart;
 import com.kakuritsu.kaku_shops.model.Order;
 import com.kakuritsu.kaku_shops.request.OrderRequest;
 import com.kakuritsu.kaku_shops.response.ApiResponse;
@@ -35,15 +33,14 @@ public class OrderController {
         try {
             Order order = orderService.placeOrder(orderRequest,request,response);
             OrderDto orderDto = orderService.convertToDto(order);
-
-            return ResponseEntity.ok().body(new ApiResponse("Success!", orderDto.getId()));
+            return ResponseEntity.ok().body(new ApiResponse("Success!", orderDto.getRefCode()));
         } catch (RuntimeException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
         }
     }
 
     @GetMapping("/{orderId}")
-    @PostAuthorize("returnObject.body.data.userId == principal.id")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse> getOrderById(@PathVariable Long orderId){
         try {
             OrderDto order = orderService.getOrderById(orderId);
@@ -52,6 +49,18 @@ public class OrderController {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
         }
     }
+    @GetMapping("/ref-code/{refCode}")
+    @PostAuthorize("returnObject.body.data.userId == principal.id")
+    public ResponseEntity<ApiResponse> getOrderByRefCode(@PathVariable String refCode){
+        try {
+            OrderDto order = orderService.getOrderByRefCode(refCode);
+            return ResponseEntity.ok().body(new ApiResponse("order found",order));
+        } catch (Exception e) {
+          return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
+        }
+
+    }
+
     @GetMapping("/user/{userId}")
     public ResponseEntity<ApiResponse> getUserOrders(@PathVariable Long userId){
         try {

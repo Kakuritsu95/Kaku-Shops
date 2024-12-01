@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -114,6 +115,13 @@ private Address createSaveAndReturnAddress(AddressRequest address){
     public List<OrderDto> getUserOrders(Long userId){
        return orderRepository.findByUserId(userId).stream().map(this::convertToDto).toList();
     }
+
+    @Override
+    public OrderDto getOrderByRefCode(String refCode) {
+        Order order = orderRepository.findByRefCode(refCode).orElseThrow(()->new ResourceNotFoundException("Order with given ref " + refCode + " was not found" ));
+        return mapper.map(order, OrderDto.class);
+    }
+
     @Override
     public OrderDto convertToDto(Order order){
         return mapper.map(order, OrderDto.class);

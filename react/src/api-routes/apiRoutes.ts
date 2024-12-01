@@ -106,6 +106,8 @@ const API_ROUTES = {
 
   order: {
     getById: (orderId: string) => `${BASE_PATHS.order}/${orderId}`,
+    getByRefCode: (refCode: string) =>
+      `${BASE_PATHS.order}/ref-code/${refCode}`,
     getByUserId: (userId: string) => `${BASE_PATHS.order}/user/${userId}`,
     placeOrder: BASE_PATHS.order,
   },

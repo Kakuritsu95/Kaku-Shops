@@ -17,7 +17,7 @@ export default function CategoryPreviewCard({
         <div
           className="mx-auto h-40 w-40 bg-cover bg-center duration-300 hover:h-44 hover:w-44"
           style={{
-            backgroundImage: `url(${API_ROUTES.base}/${API_ROUTES.categoryImage.download(category?.image.id)})`,
+            backgroundImage: `url(${API_ROUTES.base}/${API_ROUTES.categoryImage.download(category?.image?.id)})`,
           }}
         />
       </div>

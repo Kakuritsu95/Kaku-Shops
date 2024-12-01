@@ -11,6 +11,6 @@ public class FilterSortProductRequest {
     private Integer maxPrice;
     private boolean inStock;
     private String recent;
-    private int page;
+    private int page = 1;
     private int size = 5;
 }

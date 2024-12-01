@@ -7,36 +7,50 @@ import { SearchProductsResult } from "../types/productInterface";
 import { useQuery } from "@tanstack/react-query";
 import productService from "../service/productService";
 import { useState } from "react";
+import Pagination from "../ui/Pagination";
 
 export default function ProductsListingPage() {
   const [searchParams] = useSearchParams();
   const [isFilterSectionOpen, setIsFilterSectionOpen] =
     useState<boolean>(false);
-  const { data: products, isLoading } = useQuery<SearchProductsResult>({
+  const { data: searchResult, isLoading } = useQuery<SearchProductsResult>({
     queryKey: [...Array.from(searchParams.entries()).sort()],
     queryFn: () =>
       productService.getSearchResultsWithFiltersBySearchParams(
         searchParams.toString(),
       ),
   });
-  if (!products) return <div className="h-dvh"></div>;
+  if (!searchResult) return <div className="h-dvh"></div>;
   return (
-    <div className="flex gap-5">
-      <aside className="hidden md:block md:translate-x-0">
-        <ProductFilterSection
-          categories={products?.relevantCategories}
-          brands={products?.relevantBrands}
+    <div>
+      <div className="flex gap-20">
+        <aside className="hidden md:block md:translate-x-0">
+          <ProductFilterSection
+            categories={searchResult?.relevantCategories}
+            brands={searchResult?.relevantBrands}
+          />
+        </aside>
+
+        <MobileFilterSection
+          isFilterSectionOpen={isFilterSectionOpen}
+          toggleOpenFilterSection={() =>
+            setIsFilterSectionOpen((open) => !open)
+          }
+          categories={searchResult?.relevantCategories}
+          brands={searchResult?.relevantBrands}
         />
-      </aside>
 
-      <MobileFilterSection
-        isFilterSectionOpen={isFilterSectionOpen}
-        toggleOpenFilterSection={() => setIsFilterSectionOpen((open) => !open)}
-        categories={products?.relevantCategories}
-        brands={products?.relevantBrands}
+        {searchResult && (
+          <ProductsDisplay
+            products={searchResult.products}
+            breadCrumpRouteName={searchParams.get("keyword")}
+          />
+        )}
+      </div>
+      <Pagination
+        totalPages={searchResult.products.totalPages}
+        currentPage={searchResult.products.pageable.pageNumber + 1}
       />
-
-      {products && <ProductsDisplay products={products.products} />}
     </div>
   );
 }

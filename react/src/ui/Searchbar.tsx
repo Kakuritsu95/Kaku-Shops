@@ -18,6 +18,7 @@ export default function Searchbar({ smallScreen }: { smallScreen?: boolean }) {
     queryFn: () => {
       return productService.getBySearchKeyword(debouncedKeyword);
     },
+    enabled: !!debouncedKeyword,
   });
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropDownRef = useDetectClickOutside(() => setIsDropdownOpen(false));

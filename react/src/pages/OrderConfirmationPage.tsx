@@ -6,11 +6,12 @@ import OrderConfirmationInfoSection from "../features/order/OrderConfirmationInf
 import OrderConfirmationItemsSection from "../features/order/OrderConfirmationItemsSection";
 
 export default function OrderConfirmationPage() {
-  const { orderId = "" } = useParams();
+  const { orderRefCode = "" } = useParams();
   const { data: order } = useQuery<Order>({
-    queryKey: ["order", orderId],
-    queryFn: () => orderService.getById(orderId),
+    queryKey: ["order", orderRefCode],
+    queryFn: () => orderService.getByRefCode(orderRefCode),
   });
+
   if (!order) return;
   return (
     <div className="mt-16 flex flex-col gap-12 lg:flex-row">

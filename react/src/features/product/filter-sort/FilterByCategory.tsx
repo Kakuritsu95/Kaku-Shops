@@ -26,7 +26,7 @@ export default function FilterByCategory({
           ))
         ) : (
           <ul>
-            {categories.map((category) => (
+            {categories?.map((category) => (
               <SearchParamToggle
                 name={category.name}
                 urlParam="category"

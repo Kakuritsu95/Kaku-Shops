@@ -11,7 +11,7 @@ export default function ProductSearchResultsListPreview({
   closeDropdown: () => void;
 }) {
   return (
-    <ul className="absolute w-full divide-y rounded-lg border bg-white p-3 px-5 sm:w-2/3">
+    <ul className="absolute z-10 w-full divide-y rounded-lg border bg-white p-3 px-5 sm:w-2/3">
       {products?.map((product) => (
         <Link
           onClick={closeDropdown}

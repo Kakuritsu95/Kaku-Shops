@@ -21,7 +21,7 @@ const router = createBrowserRouter([
       },
       {
         element: <OrderConfirmationPage />,
-        path: "order/:orderId",
+        path: "order/:orderRefCode",
       },
       {
         element: <SearchResultsPage />,

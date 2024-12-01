@@ -43,7 +43,7 @@ export const OrderInfoForm = forwardRef<
       setValue("postalCode", postalCode);
     }
   }, [city, setValue, watch]);
-  const { mutate: placeOrder, data } = useMutation<
+  const { mutate: placeOrder, data: orderRefCode } = useMutation<
     string,
     AxiosError,
     OrderRequest
@@ -60,7 +60,7 @@ export const OrderInfoForm = forwardRef<
     const { address, city, postalCode, ...userInfo } = orderDetails;
     placeOrder({ ...userInfo, address: { address, city, postalCode } });
   };
-  if (data) navigate(`/order/${data}`);
+  if (orderRefCode) navigate(`/order/${orderRefCode}`);
   return (
     <form
       ref={formRef}

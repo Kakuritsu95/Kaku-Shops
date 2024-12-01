@@ -9,6 +9,6 @@ public class SearchProductsRequest {
     private String brand;
     private String sortBy;
     private boolean inStock;
-    private int page;
+    private int page = 1;
     private int size = 10;
 }

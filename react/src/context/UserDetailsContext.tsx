@@ -6,6 +6,7 @@ import {
   useReducer,
 } from "react";
 import { PartialUser } from "../types/userInterface";
+import authService from "../service/authService";
 
 interface ContextValues extends PartialUser {
   initializeUser: (user: PartialUser) => void;
@@ -48,6 +49,7 @@ export function UserDetailsContext({ children }: { children: ReactNode }) {
   }, []);
   const logout = useCallback(() => {
     dispatch({ type: ReducerActionType.LOGOUT });
+    authService.logout();
   }, []);
   return (
     <UserPrincipalContext.Provider

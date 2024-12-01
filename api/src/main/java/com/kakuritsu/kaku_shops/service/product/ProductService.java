@@ -117,7 +117,7 @@ public class ProductService implements IProductService{
                     : Sort.Direction.DESC;
             sort = Sort.by(sortDirection, sortField);
         }
-        PageRequest pageRequest = PageRequest.of(request.getPage(), request.getSize(),sort);
+        PageRequest pageRequest = PageRequest.of(request.getPage()-1, request.getSize(),sort);
         Page<Product> products = productRepository.findAll(ProductSpecs.productFilterSpecification(request, categoryId), pageRequest);
         return products.map(productConverter::convertProductToProductDto);    }
 
@@ -141,7 +141,7 @@ public class ProductService implements IProductService{
         }
         Set<String> relevantBrands = productRepository.findDistinctBrandsByKeyword(searchRequest.getKeyword(),searchRequest.getCategory());
         List<Category> relevantCategories = categoryRepository.findCategoriesByKeyword(searchRequest.getKeyword(), searchRequest.getBrand());
-        Page<Product> products = productRepository.findAll(ProductSpecs.productsSearchResultSpecification(searchRequest),PageRequest.of(searchRequest.getPage(), searchRequest.getSize(),sort));
+        Page<Product> products = productRepository.findAll(ProductSpecs.productsSearchResultSpecification(searchRequest),PageRequest.of(searchRequest.getPage()-1, searchRequest.getSize(),sort));
         Page<ProductDto> productDto = products.map(productConverter::convertProductToProductDto);
         List<CategoryDto>relevantCategoriesDto = relevantCategories.stream().map(category -> mapper.map(category,CategoryDto.class)).toList();
         return new ProductsSearchResult(productDto,relevantBrands,relevantCategoriesDto);

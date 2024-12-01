@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import productService from "../service/productService";
 import useCategories from "../hooks/useCategories";
 import { useState } from "react";
+import Pagination from "../ui/Pagination";
 
 export default function ProductsListingPage() {
   const [searchParams] = useSearchParams();
@@ -15,7 +16,7 @@ export default function ProductsListingPage() {
     useState<boolean>(false);
   const { categoryId = "" } = useParams();
   const categories = useCategories();
-  const { data: products, isLoading } = useQuery<PagedData<Product>>({
+  const { data: searchResults, isLoading } = useQuery<PagedData<Product>>({
     queryKey: [categoryId, ...Array.from(searchParams.entries()).sort()],
     queryFn: () =>
       productService.getByCategoryIdAndSearchQuery(
@@ -30,23 +31,36 @@ export default function ProductsListingPage() {
   });
 
   return (
-    <div className="flex gap-5">
-      <aside className="hidden md:block md:translate-x-0">
-        {categories && brands && (
-          <ProductFilterSection categories={categories} brands={brands} />
+    <div>
+      <div className="flex gap-20">
+        <aside className="hidden w-52 md:block md:translate-x-0">
+          {categories && brands && (
+            <ProductFilterSection categories={categories} brands={brands} />
+          )}
+        </aside>
+        {
+          <MobileFilterSection
+            isFilterSectionOpen={isFilterSectionOpen}
+            toggleOpenFilterSection={() =>
+              setIsFilterSectionOpen((open) => !open)
+            }
+            categories={categories}
+            brands={brands}
+          />
+        }
+        {searchResults && (
+          <ProductsDisplay
+            breadCrumpRouteName={searchResults.content[0].category.name}
+            products={searchResults}
+          />
         )}
-      </aside>
-      {
-        <MobileFilterSection
-          isFilterSectionOpen={isFilterSectionOpen}
-          toggleOpenFilterSection={() =>
-            setIsFilterSectionOpen((open) => !open)
-          }
-          categories={categories}
-          brands={brands}
+      </div>
+      {searchResults && (
+        <Pagination
+          totalPages={searchResults?.totalPages}
+          currentPage={searchResults?.pageable?.pageNumber + 1}
         />
-      }
-      {products && <ProductsDisplay products={products} />}
+      )}
     </div>
   );
 }
