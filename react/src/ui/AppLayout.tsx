@@ -6,8 +6,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { Toaster } from "react-hot-toast";
 import { UserDetailsContext } from "../context/UserDetailsContext";
+import { retry } from "@reduxjs/toolkit/query";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: false } },
+});
 
 export function AppLayout() {
   return (

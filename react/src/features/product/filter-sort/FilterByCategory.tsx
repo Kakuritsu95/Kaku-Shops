@@ -2,17 +2,20 @@ import { useParams } from "react-router";
 import { Category } from "../../../types/categoryInterface";
 import FilterSortLabel from "./FilterSortLabel";
 import { Link } from "react-router-dom";
-import useCategories from "../../../hooks/useCategories";
+import SearchParamToggle from "./SearchParamToggle";
 
-export default function FilterByCategory() {
+export default function FilterByCategory({
+  categories,
+}: {
+  categories: Array<Category> | undefined;
+}) {
   const { categoryId } = useParams();
-  const categories = useCategories();
   return (
     <div className="space-y-5">
       <h3 className="font-semibold">Categories</h3>
       <ul>
-        {categories &&
-          categories.map((category: Category) => (
+        {categoryId ? (
+          categories?.map((category: Category) => (
             <Link key={category.id} to={`/products/category/${category.id}`}>
               <FilterSortLabel
                 isChecked={category.id == Number(categoryId)}
@@ -20,7 +23,19 @@ export default function FilterByCategory() {
                 type="checkbox"
               />
             </Link>
-          ))}
+          ))
+        ) : (
+          <ul>
+            {categories?.map((category) => (
+              <SearchParamToggle
+                name={category.name}
+                urlParam="category"
+                value={category.name}
+                type="checkbox"
+              />
+            ))}
+          </ul>
+        )}
       </ul>
     </div>
   );

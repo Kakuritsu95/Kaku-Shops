@@ -7,7 +7,7 @@ export default function ProductListCard({ product }: { product: Product }) {
     <li className="w-full sm:w-[48%] lg:w-[32%]">
       <div className="flex h-[25rem] items-center rounded-md bg-gray-100">
         <div
-          className="size mx-auto h-64 w-64 bg-cover bg-center duration-300"
+          className="mx-auto h-64 w-64 bg-cover bg-center duration-300"
           style={{
             backgroundImage: `url("${API_ROUTES.base}/${API_ROUTES.productImage.download(product.images[0]?.id)}")`,
           }}

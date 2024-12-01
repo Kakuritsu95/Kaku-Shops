@@ -1,6 +1,8 @@
 package com.kakuritsu.kaku_shops.repository;
 
 import com.kakuritsu.kaku_shops.model.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -24,8 +26,27 @@ public interface ProductRepository extends JpaRepository<Product,Long>, JpaSpeci
 
     boolean existsByNameAndBrand(String name, String brand);
 
-    @Query("SELECT DISTINCT brand FROM Product p JOIN category c WHERE c.id = :categoryId")
-    Set<String> getDistinctBrands(
-            @Param("categoryId") Long category
+    @Query(" SELECT DISTINCT brand" +
+            " FROM Product p JOIN category c" +
+            " WHERE c.id = :categoryId")
+    Set<String> findDistinctBrands(
+            @Param("categoryId") Long categoryId
     );
+    @Query("SELECT DISTINCT brand" +
+            " FROM Product p" +
+            " JOIN category c" +
+            " WHERE (p.name LIKE %:keyword% OR p.brand LIKE %:keyword% OR c.name LIKE %:keyword%)" +
+            " AND (:categoryName IS NULL OR c.name=:categoryName)")
+    Set<String> findDistinctBrandsByKeyword(
+            @Param("keyword") String keyword,
+            @Param("categoryName") String categoryName
+    );
+
+    @Query("SELECT p" +
+            " FROM Product p" +
+            " JOIN category c" +
+            " WHERE p.name LIKE %:keyword% OR p.brand LIKE %:keyword% OR c.name LIKE %:keyword%")
+    Page<Product> findProductsBySearchKeyword(@Param("keyword") String keyword, PageRequest page);
+    @Query("SELECT p FROM Product p JOIN category c WHERE p.name LIKE %:keyword% OR p.brand LIKE %:keyword% OR c.name LIKE %:keyword%")
+    Page<Product> findProductsByKeywordAndFilters(@Param("keyword") String keyword, PageRequest page);
 }

@@ -28,7 +28,7 @@ export default function ControllerInput<T extends FieldValues>({
   control,
 }: ControllerProps<T>) {
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="flex w-full flex-col">
       <Controller
         name={name}
         rules={validationRules}

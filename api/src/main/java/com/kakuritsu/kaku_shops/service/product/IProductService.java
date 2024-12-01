@@ -1,10 +1,12 @@
 package com.kakuritsu.kaku_shops.service.product;
 
 import com.kakuritsu.kaku_shops.dto.ProductDto;
+import com.kakuritsu.kaku_shops.dto.ProductsSearchResult;
 import com.kakuritsu.kaku_shops.model.Product;
 import com.kakuritsu.kaku_shops.model.User;
 import com.kakuritsu.kaku_shops.request.AddProductRequest;
 import com.kakuritsu.kaku_shops.request.FilterSortProductRequest;
+import com.kakuritsu.kaku_shops.request.SearchProductsRequest;
 import com.kakuritsu.kaku_shops.request.UpdateProductRequest;
 import org.springframework.data.domain.Page;
 
@@ -23,6 +25,8 @@ public interface IProductService {
 
     Page<ProductDto> getProductsByCategoryIdAndSearchParams(Long categoryId, FilterSortProductRequest request);
 
+    Page<ProductDto> getProductsBySearchKeyword(String keyword);
+    ProductsSearchResult getProductsByKeywordAndFilters(SearchProductsRequest searchRequest);
     List<Product> getProductsByCategory(String category);
 
     List<Product> getProductsByBrand(String brand);

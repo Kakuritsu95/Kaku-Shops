@@ -33,6 +33,10 @@ const API_ROUTES = {
     getAll: `${BASE_PATHS.product}`,
     getBySearchQuery: (categoryId: string, searchParams: string) =>
       `${BASE_PATHS.product}/search/${categoryId}?${searchParams}`,
+    getByKeyword: (keyword: string) =>
+      `${BASE_PATHS.product}/search?keyword=${keyword}`,
+    getSearchResultsWithFiltersBySearchParams: (searchParams: string) =>
+      `${BASE_PATHS.product}/results?${searchParams}`,
     add: `${BASE_PATHS.product}`,
     getById: (id: string) => `${BASE_PATHS.product}/${id}`,
     update: (id: string) => `${BASE_PATHS.product}/${id}`,
@@ -58,13 +62,13 @@ const API_ROUTES = {
     upload: `${BASE_PATHS.productImage}/upload`,
     download: (imageId: number) =>
       `${BASE_PATHS.productImage}/download/${imageId}`,
-    update: (imageId: number) => `${BASE_PATHS.productImage}/update/${imageId}`,
+    update: (imageId: string) => `${BASE_PATHS.productImage}/update/${imageId}`,
   },
   categoryImage: {
     upload: `${BASE_PATHS.categoryImage}/upload`,
     download: (imageId: number) =>
       `${BASE_PATHS.categoryImage}/download/${imageId}`,
-    update: (imageId: number) =>
+    update: (imageId: string) =>
       `${BASE_PATHS.categoryImage}/update/${imageId}`,
   },
 
@@ -91,18 +95,20 @@ const API_ROUTES = {
 
   category: {
     getAll: `${BASE_PATHS.category}`,
-    getById: (categoryId: number) => `${BASE_PATHS.category}/${categoryId}`,
+    getById: (categoryId: string) => `${BASE_PATHS.category}/${categoryId}`,
     add: `${BASE_PATHS.category}`,
-    deleteById: (categoryId: number) => `${BASE_PATHS.category}/${categoryId}`,
+    deleteById: (categoryId: string) => `${BASE_PATHS.category}/${categoryId}`,
     searchByName: (name: string) =>
       `${BASE_PATHS}/${createSearchQuery([{ name }])}`,
-    updateCategory: (categoryId: number) =>
+    updateCategory: (categoryId: string) =>
       `${BASE_PATHS.category}/${categoryId}`,
   },
 
   order: {
-    getById: (orderId: number) => `${BASE_PATHS.order}/${orderId}`,
-    getByUserId: (userId: number) => `${BASE_PATHS.order}/user/${userId}`,
+    getById: (orderId: string) => `${BASE_PATHS.order}/${orderId}`,
+    getByRefCode: (refCode: string) =>
+      `${BASE_PATHS.order}/ref-code/${refCode}`,
+    getByUserId: (userId: string) => `${BASE_PATHS.order}/user/${userId}`,
     placeOrder: BASE_PATHS.order,
   },
 };

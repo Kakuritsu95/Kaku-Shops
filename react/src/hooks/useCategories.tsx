@@ -5,7 +5,9 @@ import { Category } from "../types/categoryInterface";
 export default function useCategories() {
   const { data: categories } = useQuery<Array<Category>>({
     queryKey: ["categories"],
-    queryFn: categoryService.getAll,
+    queryFn: () => {
+      return categoryService.getAll();
+    },
   });
   return categories;
 }

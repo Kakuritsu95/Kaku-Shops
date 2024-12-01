@@ -28,16 +28,19 @@ export default function UserOptions({ email }: { email: string }) {
       {isDropDownOpen && (
         <ul className="bg-gray-0 text-gray-60 absolute right-0 top-8 z-10 flex w-40 flex-col space-y-3.5 rounded-lg border bg-gray-50 px-5 py-3.5 text-sm font-medium text-gray-600">
           <UserDropdownListOption>
-            Account <IoSettingsOutline size={18} />
+            <span>Account</span>
+            <IoSettingsOutline size={18} />
           </UserDropdownListOption>
           <UserDropdownListOption>
-            My Cart <BsCart2 size={18} />
+            <span>My cart</span>
+            <BsCart2 size={18} />
           </UserDropdownListOption>
           <UserDropdownListOption>
-            Order history <BsCart2 size={18} />
+            <span>Order history</span>
+            <BsCart2 size={18} />
           </UserDropdownListOption>
-          <UserDropdownListOption>
-            <button onClick={logoutUser}>Logout</button>
+          <UserDropdownListOption onClick={logout}>
+            <span>Logout</span>
             <TbLogout size={18} />
           </UserDropdownListOption>
         </ul>

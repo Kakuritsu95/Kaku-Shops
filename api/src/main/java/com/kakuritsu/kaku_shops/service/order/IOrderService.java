@@ -13,6 +13,7 @@ public interface IOrderService {
     OrderDto getOrderById(Long orderId);
     List<OrderDto> getUserOrders(Long id);
 
+    OrderDto getOrderByRefCode(String refCode);
     OrderDto convertToDto(Order order);
 }
 

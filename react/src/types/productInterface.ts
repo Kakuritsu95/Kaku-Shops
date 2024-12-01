@@ -1,5 +1,6 @@
 import { Image } from "./imageInterface";
 import { Category } from "./categoryInterface";
+import { PagedData } from "./PagedData";
 
 export interface Product {
   id: number;
@@ -18,4 +19,9 @@ export interface AddProduct
   images: Array<File>;
 }
 
+export interface SearchProductsResult {
+  products: PagedData<Product>;
+  relevantCategories: Array<Category>;
+  relevantBrands: Array<string>;
+}
 export type UpdateProduct = Partial<AddProduct>;

@@ -6,12 +6,11 @@ import lombok.Data;
 @Data
 public class FilterSortProductRequest {
     private String brand;
-    private String category;
     private String sortBy;
     private Integer minPrice;
     private Integer maxPrice;
     private boolean inStock;
     private String recent;
-    private int page;
+    private int page = 1;
     private int size = 5;
 }

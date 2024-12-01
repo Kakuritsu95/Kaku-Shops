@@ -5,7 +5,7 @@ import NavbarCart from "../features/cart/NavbarCart";
 
 export default function Brandbar() {
   return (
-    <div className="mx-4 flex items-center justify-between space-x-8 py-3 lg:justify-center">
+    <div className="mx-4 flex items-center justify-between space-x-14 py-3 lg:justify-center">
       <Logo />
       <Searchbar />
       <div className="flex items-center">
