@@ -8,8 +8,9 @@ export interface User {
   roles: Array<Role>;
 }
 
-export interface CreateUser extends User {
-  password: string;
+export interface CreateUser extends LoginCredentials {
+  firstName: string;
+  lastName: string;
 }
 
 export interface UpdateUser {

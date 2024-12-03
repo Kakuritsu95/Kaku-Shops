@@ -5,6 +5,7 @@ export interface PagedData<T> {
   last: boolean;
   number: number;
   numberOfElements: number;
+  totalElements: number;
   pageable: Pageable;
   totalPages: number;
 }

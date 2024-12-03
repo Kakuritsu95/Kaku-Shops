@@ -21,7 +21,7 @@ export default function TextInput<T extends FieldValues>({
         type={type}
         maxLength={maxLength}
         ref={field.ref}
-        className="rounded border border-gray-300 py-1.5 pl-3 shadow-sm outline-2 focus:shadow-none focus:outline-blue-700"
+        className="w-full rounded border border-gray-300 py-1.5 pl-3 shadow-sm outline-2 focus:shadow-none focus:outline-blue-700"
       />
     </>
   );

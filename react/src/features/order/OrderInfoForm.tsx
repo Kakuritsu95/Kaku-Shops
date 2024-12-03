@@ -82,7 +82,7 @@ export const OrderInfoForm = forwardRef<
         />
       </FormSection>
       <FormSection title="Shipping information">
-        <div className="flex gap-2 sm:gap-5">
+        <div className="flex gap-2 sm:w-full sm:gap-5">
           <ControllerInput
             name="firstName"
             control={control}

@@ -30,7 +30,11 @@ export default function SearchParamToggle({
     const currentParams = Object.fromEntries(searchParams);
 
     if (e.target.checked) {
-      setSearchParams({ ...currentParams, [searchParam]: e.target.value });
+      setSearchParams({
+        ...currentParams,
+        [searchParam]: e.target.value,
+        page: "1",
+      });
     } else {
       const { [searchParam]: _, ...rest } = currentParams;
       setSearchParams(rest);

@@ -9,6 +9,7 @@ import LoginPage from "../pages/LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 import SearchResultsPage from "../pages/SearchResultsPage";
 import OrderConfirmationPage from "../pages/OrderConfirmationPage";
+import Signup from "../pages/Signup";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: "auth/login",
         element: <LoginPage />,
+      },
+      {
+        path: "signup",
+        element: <Signup />,
       },
     ],
   },

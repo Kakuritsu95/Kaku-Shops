@@ -1,11 +1,12 @@
+import { FieldValues } from "react-hook-form";
 import { InputProps } from "../types/inputTypes";
 
-export default function SelectDocumentTypeInput({
+export default function SelectDocumentTypeInput<T extends FieldValues>({
   value,
   field,
   errorMessage,
   labelName,
-}: InputProps) {
+}: InputProps<T>) {
   return (
     <div className="flex items-center gap-5">
       <input
