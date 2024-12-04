@@ -20,6 +20,8 @@ const API_ROUTES = {
     login: "auth/login",
     logout: "auth/logout",
     authenticateUser: "auth/authenticate",
+    activateUser: (verificationToken: string) =>
+      `auth/activate-account/${verificationToken}`,
   },
 
   user: {

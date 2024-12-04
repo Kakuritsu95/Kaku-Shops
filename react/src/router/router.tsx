@@ -10,6 +10,8 @@ import ProtectedRoute from "./ProtectedRoute";
 import SearchResultsPage from "../pages/SearchResultsPage";
 import OrderConfirmationPage from "../pages/OrderConfirmationPage";
 import Signup from "../pages/Signup";
+import AccountVerificationPage from "../pages/AccountVerificationPage";
+import ContactUs from "../pages/ContactUs";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +61,14 @@ const router = createBrowserRouter([
       {
         path: "signup",
         element: <Signup />,
+      },
+      {
+        path: "auth/verification/:verificationToken",
+        element: <AccountVerificationPage />,
+      },
+      {
+        path: "contact",
+        element: <ContactUs />,
       },
     ],
   },

@@ -1,4 +1,4 @@
-package com.kakuritsu.kaku_shops.event;
+package com.kakuritsu.kaku_shops.event.order;
 
 import com.kakuritsu.kaku_shops.service.email.IEmailService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +12,6 @@ public class UserPlacedOrderListener implements ApplicationListener<UserPlacedOr
     private final IEmailService emailService;
     @Override
     public void onApplicationEvent(UserPlacedOrderEvent event) {
-        emailService.sendOrderConfirmationEmail(event.order);
+        emailService.sendOrderConfirmationEmail(event.getOrder());
     }
 }

@@ -32,4 +32,6 @@ public class User {
             ,joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id")
             ,inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id"))
     private Collection<Role> roles = new HashSet<>();
+    @Column(columnDefinition="tinyint(1) default 0")
+    private boolean isEnabled;
 }

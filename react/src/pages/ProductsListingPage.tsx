@@ -16,8 +16,12 @@ export default function ProductsListingPage() {
     useState<boolean>(false);
   const { categoryId = "" } = useParams();
   const categories = useCategories();
-  const { data: searchResults, isLoading } = useQuery<PagedData<Product>>({
-    queryKey: [categoryId, ...Array.from(searchParams.entries()).sort()],
+  const { data: searchResults } = useQuery<PagedData<Product>>({
+    queryKey: [
+      "productsListing",
+      categoryId,
+      ...Array.from(searchParams.entries()).sort(),
+    ],
     queryFn: () =>
       productService.getByCategoryIdAndSearchQuery(
         categoryId,

@@ -13,21 +13,21 @@ export default function ProductsListingPage() {
   const [searchParams] = useSearchParams();
   const [isFilterSectionOpen, setIsFilterSectionOpen] =
     useState<boolean>(false);
-  const { data: searchResult, isLoading } = useQuery<SearchProductsResult>({
-    queryKey: [...Array.from(searchParams.entries()).sort()],
+  const { data: searchResults } = useQuery<SearchProductsResult>({
+    queryKey: ["searchResults", ...Array.from(searchParams.entries()).sort()],
     queryFn: () =>
       productService.getSearchResultsWithFiltersBySearchParams(
         searchParams.toString(),
       ),
   });
-  if (!searchResult) return <div className="h-dvh"></div>;
+  if (!searchResults) return <div className="h-dvh"></div>;
   return (
     <div>
       <div className="flex gap-20">
         <aside className="hidden md:block md:translate-x-0">
           <ProductFilterSection
-            categories={searchResult?.relevantCategories}
-            brands={searchResult?.relevantBrands}
+            categories={searchResults?.relevantCategories}
+            brands={searchResults?.relevantBrands}
           />
         </aside>
 
@@ -36,20 +36,20 @@ export default function ProductsListingPage() {
           toggleOpenFilterSection={() =>
             setIsFilterSectionOpen((open) => !open)
           }
-          categories={searchResult?.relevantCategories}
-          brands={searchResult?.relevantBrands}
+          categories={searchResults?.relevantCategories}
+          brands={searchResults?.relevantBrands}
         />
 
-        {searchResult && (
+        {searchResults && (
           <ProductsDisplay
-            products={searchResult.products}
+            products={searchResults.products}
             breadCrumpRouteName={searchParams.get("keyword")}
           />
         )}
       </div>
       <Pagination
-        totalPages={searchResult.products.totalPages}
-        currentPage={searchResult.products.pageable.pageNumber + 1}
+        totalPages={searchResults.products.totalPages}
+        currentPage={searchResults.products.pageable.pageNumber + 1}
       />
     </div>
   );

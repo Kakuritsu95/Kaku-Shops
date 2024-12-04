@@ -4,6 +4,7 @@ import UserOptions from "../features/user/UserOptions";
 
 export default function Topbar() {
   const { email } = useUserDetails();
+
   return (
     <div className="flex items-center justify-center bg-orange-600 py-3 text-stone-200">
       <span className="hidden w-2/5 md:inline">(+30) 2103346732</span>
@@ -17,7 +18,7 @@ export default function Topbar() {
         </Link>
         <div className="px-4 duration-100 hover:text-stone-50">
           {email ? (
-            <UserOptions email={email} />
+            <UserOptions />
           ) : (
             <Link
               className="pr-4 duration-100 hover:text-stone-50"

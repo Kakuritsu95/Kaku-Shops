@@ -15,7 +15,7 @@ export default function LoginPage() {
   const { userId, initializeUser } = useUserDetails();
 
   const {
-    formState: { isLoading, errors },
+    formState: { errors },
     control,
     handleSubmit,
   } = useForm<LoginCredentials>({

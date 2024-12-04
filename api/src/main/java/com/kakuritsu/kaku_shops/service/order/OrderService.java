@@ -2,7 +2,8 @@ package com.kakuritsu.kaku_shops.service.order;
 
 import com.kakuritsu.kaku_shops.dto.OrderDto;
 import com.kakuritsu.kaku_shops.enums.OrderStatus;
-import com.kakuritsu.kaku_shops.event.PlaceOrderEventPublisher;
+
+import com.kakuritsu.kaku_shops.event.EventPublisher;
 import com.kakuritsu.kaku_shops.exceptions.CartOperationException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.*;
@@ -17,7 +18,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +25,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -37,7 +36,7 @@ public class OrderService implements IOrderService {
     private final ModelMapper mapper;
     private final IUserService userService;
     private final IAddressService addressService;
-    private final PlaceOrderEventPublisher orderEventPublisher;
+    private final EventPublisher eventPublisher;
     @Transactional
     @Override
             public Order placeOrder(
@@ -58,7 +57,7 @@ public class OrderService implements IOrderService {
             order.setOrderItems(new HashSet<>(orderItems));
             order.setTotalAmount(calculateTotalAmount(orderItems));
             cartService.clearCart(cart.getId());
-            orderEventPublisher.publishOrderEvent(order);
+            eventPublisher.publishOrderEvent(order);
             return orderRepository.save(order);
         }
 
