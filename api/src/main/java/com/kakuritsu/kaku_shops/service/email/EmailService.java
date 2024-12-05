@@ -2,6 +2,7 @@ package com.kakuritsu.kaku_shops.service.email;
 
 import com.kakuritsu.kaku_shops.model.Order;
 import com.kakuritsu.kaku_shops.model.User;
+import com.kakuritsu.kaku_shops.request.GuestContactUsRequest;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,6 +60,20 @@ public class EmailService implements IEmailService {
             String process = templateEngine.process("account-verification.html",context);
             helper.setText(process,true);
             mailSender.send(message);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void sendGuestContactUsMessage(GuestContactUsRequest request) {
+        try {
+            SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+            simpleMailMessage.setFrom(request.getEmail());
+            simpleMailMessage.setTo(applicationEmailAddress);
+            simpleMailMessage.setSubject(request.getSubject() + " " + request.getOrderRefCode());
+            simpleMailMessage.setText(request.getMessage());
+            mailSender.send(simpleMailMessage);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }

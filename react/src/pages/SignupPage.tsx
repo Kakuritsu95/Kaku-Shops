@@ -11,7 +11,7 @@ import { REGISTER_FORM_VALIDATION_RULES } from "../constants/USER_FORM_VALIDATIO
 import { Button } from "../ui/Button";
 import { Link } from "react-router-dom";
 
-export default function Signup() {
+export default function SignupPage() {
   const {
     formState: { errors },
     control,
@@ -42,7 +42,7 @@ export default function Signup() {
           validationRules={REGISTER_FORM_VALIDATION_RULES.email}
           render={({ field }) => (
             <TextInput
-              errorMessage={errors?.email?.message}
+              error={errors?.email}
               labelName="Email address"
               field={field}
             />
@@ -54,7 +54,7 @@ export default function Signup() {
           validationRules={REGISTER_FORM_VALIDATION_RULES.password}
           render={({ field }) => (
             <TextInput
-              errorMessage={errors?.password?.message}
+              error={errors?.password}
               labelName="Password"
               type="password"
               field={field}
@@ -65,10 +65,10 @@ export default function Signup() {
           <ControllerInput
             name="firstName"
             control={control}
-            validationRules={REGISTER_FORM_VALIDATION_RULES.name}
+            validationRules={REGISTER_FORM_VALIDATION_RULES.firstName}
             render={({ field }) => (
               <TextInput
-                errorMessage={errors?.firstName?.message}
+                error={errors?.firstName}
                 labelName="Firstname"
                 field={field}
               />
@@ -77,10 +77,10 @@ export default function Signup() {
           <ControllerInput
             name="lastName"
             control={control}
-            validationRules={REGISTER_FORM_VALIDATION_RULES.name}
+            validationRules={REGISTER_FORM_VALIDATION_RULES.lastName}
             render={({ field }) => (
               <TextInput
-                errorMessage={errors?.lastName?.message}
+                error={errors?.lastName}
                 labelName="Lastname"
                 field={field}
               />

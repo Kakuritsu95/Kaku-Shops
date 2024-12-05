@@ -4,15 +4,15 @@ import { InputProps } from "../types/inputTypes";
 export default function TextInput<T extends FieldValues>({
   field,
   maxLength,
-  errorMessage,
+  error,
   type = "text",
   labelName,
 }: InputProps<T>) {
   return (
     <>
       <label className="text-[0.96rem] font-medium text-gray-700">
-        <span className={`${errorMessage && "text-red-500"}`}>
-          {errorMessage || labelName}
+        <span className={`${error && "text-red-500"}`}>
+          {error?.message || labelName}
         </span>
       </label>
       <input

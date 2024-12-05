@@ -48,7 +48,7 @@ export default function LoginPage() {
           validationRules={LOGIN_FORM_VALIDATION_RULES.email}
           render={({ field }) => (
             <TextInput
-              errorMessage={errors?.email?.message}
+              error={errors?.email}
               labelName="Email address"
               field={field}
             />
@@ -60,7 +60,7 @@ export default function LoginPage() {
           validationRules={LOGIN_FORM_VALIDATION_RULES.password}
           render={({ field }) => (
             <TextInput
-              errorMessage={errors?.email?.message}
+              error={errors?.password}
               labelName="Password"
               type="password"
               field={field}

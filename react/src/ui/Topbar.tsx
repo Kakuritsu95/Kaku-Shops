@@ -13,7 +13,7 @@ export default function Topbar() {
           Order progress
         </Link>
 
-        <Link to="" className="px-4 duration-100 hover:text-stone-50">
+        <Link to="/contact" className="px-4 duration-100 hover:text-stone-50">
           Contact us
         </Link>
         <div className="px-4 duration-100 hover:text-stone-50">

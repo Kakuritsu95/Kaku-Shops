@@ -3,8 +3,10 @@ import FormSection from "../../ui/FormSection";
 import { OrderFormFields } from "../../types/orderFormFields";
 import TextInput from "../../ui/TextInput";
 import ControllerInput from "../../ui/ControllerInput";
-import CityInput from "../../ui/CityInput";
-import { GREEK_CITIES_WITH_POSTAL_CODES } from "../../constants/GREEK_CITIES_WITH_POSTAL_CODES";
+import {
+  GREEK_CITIES,
+  GREEK_CITIES_WITH_POSTAL_CODES,
+} from "../../constants/GREEK_CITIES_WITH_POSTAL_CODES";
 import SelectDocumentTypeInput from "../../ui/SelectDocumentInput";
 import { forwardRef, PropsWithChildren, useEffect } from "react";
 import { ORDER_FORM_VALIDATION_RULES } from "../../constants/ORDER_FORM_VALIDATION_RULES";
@@ -14,11 +16,12 @@ import orderService from "../../service/orderService";
 import { AxiosError } from "axios";
 import { OrderRequest } from "../../types/orderInterface";
 import { useNavigate } from "react-router";
+import DropdownOptionsInput from "../../ui/DropdownOptionsInput";
 
 export const OrderInfoForm = forwardRef<
   HTMLFormElement,
-  PropsWithChildren<{ onSubmitOrder: (value: boolean) => void }>
->(function OrderInfoForm({ onSubmitOrder }, formRef) {
+  PropsWithChildren<{ setIsSubmitting: (value: boolean) => void }>
+>(function OrderInfoForm({ setIsSubmitting }, formRef) {
   const queryClient = useQueryClient();
   const { email = "" } = useUserDetails();
 
@@ -50,13 +53,13 @@ export const OrderInfoForm = forwardRef<
   >({
     mutationFn: (orderDetails) => orderService.placeOrder(orderDetails),
     onSuccess: () => {
-      onSubmitOrder(false);
+      setIsSubmitting(false);
       queryClient.resetQueries({ queryKey: ["cart"] });
     },
-    onError: () => onSubmitOrder(false),
+    onError: () => setIsSubmitting(false),
   });
   const onSubmit: SubmitHandler<OrderFormFields> = (orderDetails) => {
-    onSubmitOrder(true);
+    setIsSubmitting(true);
     const { address, city, postalCode, ...userInfo } = orderDetails;
     placeOrder({ ...userInfo, address: { address, city, postalCode } });
   };
@@ -73,11 +76,7 @@ export const OrderInfoForm = forwardRef<
           control={control}
           validationRules={ORDER_FORM_VALIDATION_RULES.email}
           render={({ field }) => (
-            <TextInput
-              errorMessage={errors?.email?.message}
-              labelName="Email"
-              field={field}
-            />
+            <TextInput error={errors?.email} labelName="Email" field={field} />
           )}
         />
       </FormSection>
@@ -89,7 +88,7 @@ export const OrderInfoForm = forwardRef<
             validationRules={ORDER_FORM_VALIDATION_RULES.firstName}
             render={({ field }) => (
               <TextInput
-                errorMessage={errors?.firstName?.message}
+                error={errors?.firstName}
                 labelName="First name"
                 field={field}
               />
@@ -101,7 +100,7 @@ export const OrderInfoForm = forwardRef<
             validationRules={ORDER_FORM_VALIDATION_RULES.lastName}
             render={({ field }) => (
               <TextInput
-                errorMessage={errors?.lastName?.message}
+                error={errors?.lastName}
                 labelName="Last name"
                 field={field}
               />
@@ -114,7 +113,7 @@ export const OrderInfoForm = forwardRef<
           validationRules={ORDER_FORM_VALIDATION_RULES.address}
           render={({ field }) => (
             <TextInput
-              errorMessage={errors?.address?.message}
+              error={errors?.address}
               labelName="Address"
               field={field}
             />
@@ -126,8 +125,9 @@ export const OrderInfoForm = forwardRef<
             control={control}
             validationRules={ORDER_FORM_VALIDATION_RULES.city}
             render={({ field }) => (
-              <CityInput
-                errorMessage={errors?.city?.message}
+              <DropdownOptionsInput
+                error={errors?.city}
+                dropdownOptions={GREEK_CITIES}
                 labelName="City"
                 field={field}
               />
@@ -139,7 +139,7 @@ export const OrderInfoForm = forwardRef<
             validationRules={ORDER_FORM_VALIDATION_RULES.postalCode}
             render={({ field }) => (
               <TextInput
-                errorMessage={errors?.postalCode?.message}
+                error={errors?.postalCode}
                 labelName="Postal code"
                 field={field}
                 maxLength={5}
@@ -153,7 +153,7 @@ export const OrderInfoForm = forwardRef<
           validationRules={ORDER_FORM_VALIDATION_RULES.phoneNumber}
           render={({ field }) => (
             <TextInput
-              errorMessage={errors?.phoneNumber?.message}
+              error={errors?.phoneNumber}
               labelName="Phone number"
               field={field}
               maxLength={10}
@@ -170,7 +170,7 @@ export const OrderInfoForm = forwardRef<
             render={({ field }) => (
               <SelectDocumentTypeInput
                 labelName="Receipt"
-                errorMessage={errors?.proofType?.message}
+                error={errors?.proofType}
                 value="RECEIPT"
                 field={field}
               />
@@ -183,7 +183,7 @@ export const OrderInfoForm = forwardRef<
             render={({ field }) => (
               <SelectDocumentTypeInput
                 labelName="invoice"
-                errorMessage={errors?.proofType?.message}
+                error={errors?.proofType}
                 value="INVOICE"
                 field={field}
               />
@@ -197,7 +197,7 @@ export const OrderInfoForm = forwardRef<
             validationRules={ORDER_FORM_VALIDATION_RULES.vatNumber}
             render={({ field }) => (
               <TextInput
-                errorMessage={errors?.vatNumber?.message}
+                error={errors?.vatNumber}
                 labelName="Vat number"
                 field={field}
                 maxLength={9}
