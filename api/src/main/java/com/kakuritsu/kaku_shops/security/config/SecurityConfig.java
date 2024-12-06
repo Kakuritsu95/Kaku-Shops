@@ -36,7 +36,7 @@ public class SecurityConfig {
     private final JwtUtils jwtUtils;
     private final CookieManagementService cookieManagementService;
     private static final List<String> SECURED_USER_URLS = List.of("/api/v1/orders", "/api/v1/products/rate/**");
-    private static final List<String> SECURED_ADMIN_URLS = List.of("/api/v1/imagee/**");
+    private static final List<String> SECURED_ADMIN_URLS = List.of("/api/v1/image/**");
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)

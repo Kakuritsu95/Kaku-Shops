@@ -1,4 +1,4 @@
-import ContactUs from "../pages/ContactUs";
+import ContactUs from "../pages/ContactUsPage";
 import { createSearchQuery } from "../utils/urlHelpers";
 
 const API_BASE_URL = "http://localhost:8080/api/v1";

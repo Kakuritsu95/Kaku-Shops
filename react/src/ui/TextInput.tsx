@@ -11,7 +11,7 @@ export default function TextInput<T extends FieldValues>({
   return (
     <>
       <label className="text-[0.96rem] font-medium text-gray-700">
-        <span className={`${error && "text-red-500"}`}>
+        <span className={`${error && "text-red-400"}`}>
           {error?.message || labelName}
         </span>
       </label>

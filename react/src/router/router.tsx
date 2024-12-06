@@ -10,8 +10,8 @@ import ProtectedRoute from "./ProtectedRoute";
 import SearchResultsPage from "../pages/SearchResultsPage";
 import OrderConfirmationPage from "../pages/OrderConfirmationPage";
 import AccountVerificationPage from "../pages/AccountVerificationPage";
-import ContactUs from "../pages/ContactUs";
 import SignupPage from "../pages/SignupPage";
+import ContactUsPage from "../pages/ContactUsPage";
 
 const router = createBrowserRouter([
   {
@@ -68,7 +68,7 @@ const router = createBrowserRouter([
       },
       {
         path: "contact",
-        element: <ContactUs />,
+        element: <ContactUsPage />,
       },
     ],
   },

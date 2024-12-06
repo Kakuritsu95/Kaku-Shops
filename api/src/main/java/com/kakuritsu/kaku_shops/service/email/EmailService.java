@@ -20,7 +20,7 @@ import org.thymeleaf.context.Context;
 public class EmailService implements IEmailService {
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
-    @Value("${app.mail.address}")
+    @Value("${spring.mail.username}")
     private String applicationEmailAddress;
 
 
@@ -67,13 +67,17 @@ public class EmailService implements IEmailService {
 
     @Override
     public void sendGuestContactUsMessage(GuestContactUsRequest request) {
+
         try {
-            SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-            simpleMailMessage.setFrom(request.getEmail());
-            simpleMailMessage.setTo(applicationEmailAddress);
-            simpleMailMessage.setSubject(request.getSubject() + " " + request.getOrderRefCode());
-            simpleMailMessage.setText(request.getMessage());
-            mailSender.send(simpleMailMessage);
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message);
+            helper.setTo(applicationEmailAddress);
+            helper.setSubject(request.getEmail() + " " + request.getSubject());
+            Context context = new Context();
+            context.setVariable("contactRequest", request);
+            String process = templateEngine.process("guest-contact-message.html",context);
+            helper.setText(process,true);
+            mailSender.send(message);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }

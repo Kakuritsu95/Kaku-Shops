@@ -19,22 +19,22 @@ export const CONTACT_FORM_VALIDATION_RULES: {
     required: "Firstname is required",
     minLength: {
       value: 3,
-      message: "Firstname must contain at least 3 characters",
+      message: "First name must contain at least 3 characters",
     },
     maxLength: {
       value: 16,
-      message: "Firstname can hold a maximum of 16 characters",
+      message: "First name can hold a maximum of 16 characters",
     },
   },
   lastName: {
-    required: "Firstname is required",
+    required: "Last name is required",
     minLength: {
       value: 3,
-      message: "Firstname must contain at least 3 characters",
+      message: "First name must contain at least 3 characters",
     },
     maxLength: {
       value: 16,
-      message: "Firstname can hold a maximum of 16 characters",
+      message: "First name can hold a maximum of 16 characters",
     },
   },
   recaptchaToken: {
@@ -42,25 +42,18 @@ export const CONTACT_FORM_VALIDATION_RULES: {
   },
   orderRefCode: {
     minLength: {
-      value: 3,
-      message: "Please enter your order reference code",
+      value: 36,
+      message: "Please enter a valid reference code",
     },
     maxLength: {
-      value: 16,
-      message: "Please enter your order reference code",
+      value: 36,
+      message: "Please enter a valid reference code",
     },
   },
-  message: {
-    required: "Please enter a message",
-    minLength: { value: 20, message: "Give us more details" },
-    maxLength: {
-      value: 3000,
-      message: "Message cannot exceed the number of 3000 characters",
-    },
-  },
+
   subject: {
     required: "Please select a subject",
     validate: (value) =>
-      CONTACT_SUBJECTS.includes(value) || "Please select a subject",
+      (value && CONTACT_SUBJECTS.includes(value)) || "Please select a subject",
   },
 };

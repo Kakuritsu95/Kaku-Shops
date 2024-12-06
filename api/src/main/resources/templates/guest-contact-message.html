@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<main style="padding:0.5rem 0 0 1rem;">
+<ul style="list-style:none; padding:0; width:25rem; color:#6082B6; font-weight:600;">
+    <li style="border-bottom:1px solid gray; padding:3px">
+        <span style="display:inline-block; width:8rem;" >Email :</span>
+        <span style="margin-left:5px; color:#444444" th:text="${contactRequest.email}">daroricklineage2@hotmail.com</span>
+    </li>
+    <li style="border-bottom:1px solid gray; padding:3px">
+        <span style="display:inline-block; width:8rem;">First name :</span>
+        <span style="margin-left:5px; color:#444444;" th:text="${contactRequest.firstName}">Thodoros</span>
+    </li>
+    <li style="border-bottom:1px solid gray; padding:3px">
+        <span style="display:inline-block; width:8rem;">Last name :</span>
+        <span style="margin-left:5px; color:#444444;" th:text="${contactRequest.lastName}">Christoforidis</span>
+    </li>
+    <li style="border-bottom:1px solid gray; padding:3px">
+        <span style="display:inline-block; width:8rem;">Subject :</span>
+        <span style="margin-left:5px; color:#444444;" th:text="${contactRequest.subject}">Other</span>
+    </li>
+    <li style="border-bottom:1px solid gray; padding:3px">
+        <span style="display:inline-block; width:8rem;">Order reference:</span>
+        <span style="margin-left:5px; color:#444444;" th:text="${contactRequest.orderRefCode}">ade3-145a-2341-2kal</span>
+    </li>
+</ul>
+    <div style="color:#111111; margin-top:3rem; ">
+    <span style="font-weight:bold; font-size:1.3rem; color:#444444;">Guest Message</span>
+        <div style="background-color:#666666; height:1px; margin-top:0.5rem; width:55%;"></div>
+       <p style="font-size:1.03rem; font-weight:600; color:#0000FF; letter-spacing:0.5px; leading:1.5px; text-wrap:wrap" th:text="${contactRequest.message}">Καλησπέρα σας</p>
+    </div>
+</main>
+</body>
+</html>
