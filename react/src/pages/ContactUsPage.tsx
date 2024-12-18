@@ -5,7 +5,7 @@ import ContactUsForm from "../ui/ContactUsForm";
 
 export default function ContactUsPage() {
   const [isFormSuccessfullySubmitted, setIsFormSuccessfullySubmitted] =
-    useState<boolean>(true);
+    useState<boolean>(false);
   const [guestFirstName, setGuestFirstName] = useState<string>();
   if (captchaSiteKey) {
     return (
