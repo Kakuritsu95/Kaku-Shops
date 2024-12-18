@@ -3,7 +3,7 @@ import { useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { useNavigate } from "react-router";
 import productService from "../service/productService";
-import { useSearchResults } from "../hooks/useDebounce";
+import { useDebounceKeyword } from "../hooks/useDebounceKeyword";
 import { PagedData } from "../types/PagedData";
 import { Product } from "../types/productInterface";
 import useDetectClickOutside from "../hooks/useDetectClickOutside";
@@ -12,8 +12,8 @@ import ProductSearchResultsListPreview from "../features/product/ProductSearchRe
 export default function Searchbar({ smallScreen }: { smallScreen?: boolean }) {
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const navigate = useNavigate();
-  const debouncedKeyword = useSearchResults(searchKeyword);
-  const { data } = useQuery<PagedData<Product>>({
+  const debouncedKeyword = useDebounceKeyword(searchKeyword);
+  const { data: searchResults } = useQuery<PagedData<Product>>({
     queryKey: ["searchResults", debouncedKeyword],
     queryFn: () => {
       return productService.getBySearchKeyword(debouncedKeyword);
@@ -53,8 +53,9 @@ export default function Searchbar({ smallScreen }: { smallScreen?: boolean }) {
       </form>
       {isDropdownOpen && (
         <ProductSearchResultsListPreview
-          products={data?.content}
+          products={searchResults?.content}
           closeDropdown={() => setIsDropdownOpen(false)}
+          searchKeyword={searchKeyword}
         />
       )}
     </div>

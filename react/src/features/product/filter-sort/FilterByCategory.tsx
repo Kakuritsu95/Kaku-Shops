@@ -29,6 +29,7 @@ export default function FilterByCategory({
             {categories?.map((category) => (
               <SearchParamToggle
                 name={category.name}
+                key={category.id}
                 urlParam="category"
                 value={category.name}
                 type="checkbox"

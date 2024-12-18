@@ -1,5 +1,11 @@
-import { ValidationRule } from "../types/validationRule";
-export const ORDER_FORM_VALIDATION_RULES: { [key: string]: ValidationRule } = {
+import { Path, RegisterOptions } from "react-hook-form";
+import { OrderFormFields } from "../types/orderFormFields";
+export const ORDER_FORM_VALIDATION_RULES: {
+  [K in keyof OrderFormFields]: RegisterOptions<
+    OrderFormFields,
+    Path<OrderFormFields>
+  >;
+} = {
   email: {
     required: "Email is required",
     pattern: {
@@ -23,6 +29,7 @@ export const ORDER_FORM_VALIDATION_RULES: { [key: string]: ValidationRule } = {
       message: "Phone number must be 10 digits",
     },
   },
+  proofType: { required: true },
   vatNumber: {
     required: "VAT number is required",
     validate: (value: string | undefined) => {
@@ -41,11 +48,11 @@ export const ORDER_FORM_VALIDATION_RULES: { [key: string]: ValidationRule } = {
   },
   postalCode: {
     required: "Postal code is required",
-    validate: (value: string | undefined) => {
-      if (value == undefined) return true;
-      if (!+value) return "Please enter number values";
-      return true;
-    },
+    // validate: (value: string | undefined) => {
+    //   if (value == undefined) return true;
+    //   if (!+value) return "Please enter number values";
+    //   return true;
+    // },
     minLength: {
       value: 5,
       message: "Postal code must be 5 digits",

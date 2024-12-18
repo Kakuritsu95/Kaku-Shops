@@ -11,7 +11,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="flex flex-col justify-between bg-gray-50 px-2 md:px-12 lg:flex-row lg:px-10 lg:py-14">
-      <OrderInfoForm ref={formRef} onSubmitOrder={setIsSubmittingOrder} />
+      <OrderInfoForm ref={formRef} setIsSubmitting={setIsSubmittingOrder} />
       <BeforeOrderSummary
         isSubmittingOrder={isSubmittingOrder}
         submitOrder={submitOrder}

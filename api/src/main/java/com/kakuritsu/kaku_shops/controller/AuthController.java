@@ -2,11 +2,13 @@ package com.kakuritsu.kaku_shops.controller;
 
 import com.kakuritsu.kaku_shops.dto.UserDetailsDto;
 import com.kakuritsu.kaku_shops.exceptions.CookieException;
+import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.helpers.CookieManagementService;
 import com.kakuritsu.kaku_shops.request.LoginRequest;
 import com.kakuritsu.kaku_shops.response.ApiResponse;
 import com.kakuritsu.kaku_shops.security.jwt.JwtUtils;
-import io.jsonwebtoken.Claims;
+import com.kakuritsu.kaku_shops.service.user.IUserService;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -17,13 +19,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,6 +30,7 @@ public class AuthController {
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
     private final CookieManagementService cookieManagementService;
+    private final IUserService userService;
 
 
     @PostMapping("/login")
@@ -63,6 +62,20 @@ public class AuthController {
         cookieManagementService.deleteCookieByName(request, response,"auth");
         return ResponseEntity.accepted().body("Logged out");
     }
+
+    @PutMapping("/activate-account/{verificationToken}")
+    public ResponseEntity<ApiResponse> verifyAccountByVerificationToken(@PathVariable String verificationToken){
+        try {
+            userService.activateUserByVerificationToken(verificationToken);
+            return ResponseEntity.ok().body(new ApiResponse("ok",null));
+        } catch (JwtException e) {
+            return ResponseEntity.status(BAD_REQUEST).body(new ApiResponse("Invalid or expired token",null));
+        }
+        catch (ResourceNotFoundException e){
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
+        }
+    }
+
 }
 
 

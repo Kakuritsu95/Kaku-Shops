@@ -23,7 +23,7 @@ public class ShopUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = Optional.ofNullable(userRepository.findByEmail(email)).orElseThrow(()-> new UsernameNotFoundException("User not found"));
         Collection<GrantedAuthority> authorities = user.getRoles().stream().map(role->new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
-        return new ShopUserDetails(user.getId(),user.getEmail(),user.getPassword(),authorities);
+        return new ShopUserDetails(user.getId(),user.getEmail(),user.getPassword(),user.getFirstName(),user.isEnabled(),authorities);
     }
 
 }

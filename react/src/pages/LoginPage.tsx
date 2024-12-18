@@ -5,7 +5,7 @@ import { Navigate } from "react-router";
 import { useForm } from "react-hook-form";
 import ControllerInput from "../ui/ControllerInput";
 import TextInput from "../ui/TextInput";
-import { LOGIN_FORM_VALIDATION_RULES } from "../constants/LOGIN_FORM_VALIDATION_RULES";
+import { LOGIN_FORM_VALIDATION_RULES } from "../constants/USER_FORM_VALIDATION_RULES";
 import { Button } from "../ui/Button";
 import { Link } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
@@ -15,17 +15,13 @@ export default function LoginPage() {
   const { userId, initializeUser } = useUserDetails();
 
   const {
-    formState: { isLoading, errors },
+    formState: { errors },
     control,
     handleSubmit,
   } = useForm<LoginCredentials>({
     defaultValues: { email: "user1@gmail.com", password: "11" },
   });
-  const { data: user, mutate: login } = useMutation<
-    User,
-    AxiosError,
-    LoginCredentials
-  >({
+  const { mutate: login } = useMutation<User, AxiosError, LoginCredentials>({
     mutationFn: (credentials: LoginCredentials) =>
       authService.login(credentials),
     onSuccess: (data: User) => {
@@ -37,7 +33,7 @@ export default function LoginPage() {
   }
   if (userId) return <Navigate to="/" />;
   return (
-    <div className="sm:shadow-border mx-auto w-full space-y-10 rounded-xl p-5 sm:mt-24 sm:w-8/12 sm:px-10 sm:py-12 md:w-5/12 lg:w-4/12">
+    <div className="mx-auto w-full space-y-10 rounded-xl p-5 sm:mt-24 sm:w-8/12 sm:px-10 sm:py-12 sm:shadow-border md:w-5/12 lg:w-4/12">
       <div className="space-y-3">
         <h2 className="text-2xl font-semibold">Welcome back</h2>
         <p className="text-gray-500">Please enter your details</p>
@@ -52,7 +48,7 @@ export default function LoginPage() {
           validationRules={LOGIN_FORM_VALIDATION_RULES.email}
           render={({ field }) => (
             <TextInput
-              errorMessage={errors?.email?.message}
+              error={errors?.email}
               labelName="Email address"
               field={field}
             />
@@ -64,7 +60,7 @@ export default function LoginPage() {
           validationRules={LOGIN_FORM_VALIDATION_RULES.password}
           render={({ field }) => (
             <TextInput
-              errorMessage={errors?.email?.message}
+              error={errors?.password}
               labelName="Password"
               type="password"
               field={field}

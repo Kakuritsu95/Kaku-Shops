@@ -5,11 +5,13 @@ export enum Role {
 export interface User {
   userId: number;
   email: string;
+  firstName: string;
   roles: Array<Role>;
 }
 
-export interface CreateUser extends User {
-  password: string;
+export interface CreateUser extends LoginCredentials {
+  firstName: string;
+  lastName: string;
 }
 
 export interface UpdateUser {

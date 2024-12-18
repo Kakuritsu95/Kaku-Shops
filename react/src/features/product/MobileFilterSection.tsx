@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ProductFilterSortSection from "./ProductFilterSortSection";
 import { IoOptionsOutline } from "react-icons/io5";
 import { Category } from "../../types/categoryInterface";

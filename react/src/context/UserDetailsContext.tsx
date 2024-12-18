@@ -23,6 +23,7 @@ enum ReducerActionType {
 const intialContextValues: ContextValues = {
   userId: undefined,
   email: undefined,
+  firstName: undefined,
   roles: [],
   initializeUser: () => {},
   logout: () => {},
@@ -40,7 +41,7 @@ function userDetailsReducer(state: PartialUser, action: ReducerAction) {
   }
 }
 export function UserDetailsContext({ children }: { children: ReactNode }) {
-  const [{ userId, email, roles }, dispatch] = useReducer(
+  const [{ userId, email, firstName, roles }, dispatch] = useReducer(
     userDetailsReducer,
     intialContextValues,
   );
@@ -53,7 +54,7 @@ export function UserDetailsContext({ children }: { children: ReactNode }) {
   }, []);
   return (
     <UserPrincipalContext.Provider
-      value={{ userId, email, roles, initializeUser, logout }}
+      value={{ userId, email, firstName, roles, initializeUser, logout }}
     >
       {children}
     </UserPrincipalContext.Provider>

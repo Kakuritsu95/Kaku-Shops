@@ -9,6 +9,9 @@ import LoginPage from "../pages/LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 import SearchResultsPage from "../pages/SearchResultsPage";
 import OrderConfirmationPage from "../pages/OrderConfirmationPage";
+import AccountVerificationPage from "../pages/AccountVerificationPage";
+import SignupPage from "../pages/SignupPage";
+import ContactUsPage from "../pages/ContactUsPage";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +57,18 @@ const router = createBrowserRouter([
       {
         path: "auth/login",
         element: <LoginPage />,
+      },
+      {
+        path: "signup",
+        element: <SignupPage />,
+      },
+      {
+        path: "auth/verification/:verificationToken",
+        element: <AccountVerificationPage />,
+      },
+      {
+        path: "contact",
+        element: <ContactUsPage />,
       },
     ],
   },

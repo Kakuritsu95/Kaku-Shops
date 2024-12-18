@@ -9,6 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserDetailsDto {
     private Long userId;
+    private String firstName;
     private String email;
     private List<String> roles;
 }

@@ -15,6 +15,8 @@ public class ShopUserDetails implements UserDetails {
     private Long id;
     private String email;
     private String password;
+    private String firstName;
+    private boolean enabled;
     private Collection<GrantedAuthority>authorities;
 
 
@@ -50,6 +52,6 @@ public class ShopUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return this.enabled;
     }
 }

@@ -1,3 +1,4 @@
+import ContactUs from "../pages/ContactUsPage";
 import { createSearchQuery } from "../utils/urlHelpers";
 
 const API_BASE_URL = "http://localhost:8080/api/v1";
@@ -11,15 +12,19 @@ const BASE_PATHS = {
   order: "orders",
   productImage: "product-images",
   categoryImage: "category-images",
+  guestContactUs: "contact-us",
+  auth: "auth",
 };
 
 const API_ROUTES = {
   base: API_BASE_URL,
 
   auth: {
-    login: "auth/login",
-    logout: "auth/logout",
-    authenticateUser: "auth/authenticate",
+    login: `${BASE_PATHS.auth}/login`,
+    logout: `${BASE_PATHS.auth}/logout`,
+    authenticateUser: `${BASE_PATHS.auth}/authenticate`,
+    activateUser: (verificationToken: string) =>
+      `${BASE_PATHS.auth}/activate-account/${verificationToken}`,
   },
 
   user: {
@@ -111,6 +116,7 @@ const API_ROUTES = {
     getByUserId: (userId: string) => `${BASE_PATHS.order}/user/${userId}`,
     placeOrder: BASE_PATHS.order,
   },
+  contactUs: BASE_PATHS.guestContactUs,
 };
 
 export default API_ROUTES;
