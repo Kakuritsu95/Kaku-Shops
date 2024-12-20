@@ -7,7 +7,7 @@ import ProductOverview from "../features/product/ProductOverview";
 
 export default function ProductOverviewPage() {
   const { productId = "" } = useParams();
-  const { data: product, isLoading } = useQuery<Product>({
+  const { data: product } = useQuery<Product>({
     queryKey: ["product", productId],
     queryFn: () => productService.getById(productId),
   });

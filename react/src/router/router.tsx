@@ -12,6 +12,9 @@ import OrderConfirmationPage from "../pages/OrderConfirmationPage";
 import AccountVerificationPage from "../pages/AccountVerificationPage";
 import SignupPage from "../pages/SignupPage";
 import ContactUsPage from "../pages/ContactUsPage";
+import OrderHistoryPage from "../pages/OrderHistoryPage";
+import OrderProgressPage from "../pages/OrderProgressPage";
+import OrderSearchPage from "../pages/OrderSearchPage";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +72,18 @@ const router = createBrowserRouter([
       {
         path: "contact",
         element: <ContactUsPage />,
+      },
+      {
+        path: "order-history",
+        element: <OrderHistoryPage />,
+      },
+      {
+        path: "order-progress-form",
+        element: <OrderSearchPage />,
+      },
+      {
+        path: "order-progress/:orderRefCode",
+        element: <OrderProgressPage />,
       },
     ],
   },

@@ -40,4 +40,6 @@ export default {
     ),
   getUniqueBrandsByCategoryId: (categoryId: string) =>
     httpActions.get(API_ROUTES.product.getUniqueBrands(categoryId)),
+  rateProduct: (productId: number, userRating: number) =>
+    httpActions.post(API_ROUTES.product.rateProduct(productId, userRating)),
 };

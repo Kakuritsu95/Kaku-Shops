@@ -2,7 +2,6 @@ package com.kakuritsu.kaku_shops.service.order;
 
 import com.kakuritsu.kaku_shops.dto.OrderDto;
 import com.kakuritsu.kaku_shops.enums.OrderStatus;
-
 import com.kakuritsu.kaku_shops.event.EventPublisher;
 import com.kakuritsu.kaku_shops.exceptions.CartOperationException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
@@ -18,6 +17,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -81,7 +84,7 @@ private Address createSaveAndReturnAddress(AddressRequest address){
                 .user(cart.getUser())
                 .orderStatus(OrderStatus.PENDING)
                 .orderDate(LocalDate.now())
-                .firstName(orderRequest.getEmail())
+                .firstName(orderRequest.getFirstName())
                 .lastName(orderRequest.getLastName())
                 .email(orderRequest.getEmail())
                 .phoneNumber(orderRequest.getPhoneNumber())
@@ -111,8 +114,12 @@ private Address createSaveAndReturnAddress(AddressRequest address){
                 .orElseThrow(()->new ResourceNotFoundException("Order not found"));
     }
     @Override
-    public List<OrderDto> getUserOrders(Long userId){
-       return orderRepository.findByUserId(userId).stream().map(this::convertToDto).toList();
+    public Page<OrderDto> getByUserId(Long userId, int page){
+        PageRequest pageRequest = PageRequest.of(page-1,5, Sort.by(Sort.Direction.DESC, "orderDate"));
+        Page<Order> orders = orderRepository.findByUserId(userId,pageRequest);
+        return orders.map(this::convertToDto);
+
+
     }
 
     @Override

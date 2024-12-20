@@ -8,7 +8,7 @@ export default function OrderConfirmationDetails({
   return (
     <div className="rounded border-2 border-b-0 border-gray-100 font-medium text-gray-500">
       <div className="flex space-x-5 border-b-2 border-gray-100 p-4 py-5">
-        <h3>Contact</h3>
+        <h3>Details</h3>
       </div>
       <div className="flex space-x-5 border-b-2 border-gray-100 p-4 py-5">
         <h3>Address</h3>

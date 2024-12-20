@@ -7,9 +7,9 @@ axios.defaults.headers.options?.Accept?.toString();
 
 export default {
   get: (url: string) => axios.get(url).then((res) => res.data.data),
-  post: (url: string, data?: object | string) =>
+  post: (url: string, data?: object | string | number) =>
     axios.post(url, data).then((res) => res.data.data),
-  put: (url: string, data: object) =>
+  put: (url: string, data: object | number) =>
     axios.put(url, data).then((res) => res.data.data),
   patch: (url: string, data: object | string | number) =>
     axios.patch(url, data).then((res) => res.data.data),

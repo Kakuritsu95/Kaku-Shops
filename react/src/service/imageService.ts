@@ -6,6 +6,6 @@ export default {
     httpActions.post(API_ROUTES.productImage.upload, images),
   download: (imageId: number) =>
     httpActions.get(API_ROUTES.productImage.download(imageId)),
-  update: (imageId: number, image: File) =>
+  update: (imageId: string, image: File) =>
     httpActions.put(API_ROUTES.productImage.update(imageId), image),
 };

@@ -9,7 +9,7 @@ import Spinner from "../../ui/Spinner";
 export default function ProductOverview({ product }: { product: Product }) {
   const { addProductToCart, isAdding } = useUpdateCartItemQuantity();
   const { getCartItemQuantityByProductId } = useCart();
-  console.log(isAdding);
+
   const productQuantityInCart = getCartItemQuantityByProductId(product.id);
   return (
     <div className="mt-14 flex w-full flex-col items-center gap-10 md:flex-row md:items-start">
@@ -29,7 +29,7 @@ export default function ProductOverview({ product }: { product: Product }) {
           }
         >
           {isAdding ? (
-            <Spinner />
+            <Spinner size={20} />
           ) : (
             <>
               {productQuantityInCart && (

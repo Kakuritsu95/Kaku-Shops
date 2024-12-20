@@ -30,7 +30,7 @@ export default function UserOptions() {
             <span>My cart</span>
             <BsCart2 size={18} />
           </UserDropdownListOption>
-          <UserDropdownListOption to="/orderhistory">
+          <UserDropdownListOption to="/order-history?page=1">
             <span>Order history</span>
             <BsCart2 size={18} />
           </UserDropdownListOption>

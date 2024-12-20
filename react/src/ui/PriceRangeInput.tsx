@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
 
 export default function PriceRangeInput() {
-  const [searchParams, setSearchParams] = useSearchParams();
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(1000);
 

@@ -50,7 +50,8 @@ public class Product {
         double totalRating = ratings.stream()
                 .map(ProductRating::getRating)
                 .reduce(0.0, Double::sum);
-        this.setAverageRating(totalRating / ratings.size());
+        if(!ratings.isEmpty()) this.setAverageRating(totalRating / ratings.size());
+        else this.setAverageRating(totalRating);
     }
 
 }
