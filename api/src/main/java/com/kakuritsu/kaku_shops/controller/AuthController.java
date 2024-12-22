@@ -1,6 +1,6 @@
 package com.kakuritsu.kaku_shops.controller;
 
-import com.kakuritsu.kaku_shops.dto.UserDetailsDto;
+import com.kakuritsu.kaku_shops.dto.UserDetailsDTO;
 import com.kakuritsu.kaku_shops.exceptions.CookieException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.helpers.CookieManagementService;
@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,7 +37,7 @@ public class AuthController {
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
             String jwtToken = jwtUtils.generateTokenForUser(authentication);
-            UserDetailsDto userClaims =  jwtUtils.getUserDetailsFromToken(jwtToken);
+            UserDetailsDTO userClaims =  jwtUtils.getUserDetailsFromToken(jwtToken);
             cookieManagementService.generateAndReturnCookieByNameAndValue(response,"auth",jwtToken);
 
             return ResponseEntity.ok().body(new ApiResponse("Login Successful", userClaims));
@@ -51,7 +50,7 @@ public class AuthController {
     public ResponseEntity<ApiResponse> authenticateUserWithAuthCookie(HttpServletRequest request){
         try {
             String jwtToken = cookieManagementService.getCookieValueByName(request,"auth").orElseThrow(()-> new CookieException("Invalid or expired cookie login to renew authentication"));
-            UserDetailsDto userDetails = jwtUtils.getUserDetailsFromToken(jwtToken);
+            UserDetailsDTO userDetails = jwtUtils.getUserDetailsFromToken(jwtToken);
             return ResponseEntity.accepted().body(new ApiResponse("Authenticated",userDetails));
         } catch (CookieException e) {
            return ResponseEntity.status(UNAUTHORIZED).body(new ApiResponse(e.getMessage(),null));

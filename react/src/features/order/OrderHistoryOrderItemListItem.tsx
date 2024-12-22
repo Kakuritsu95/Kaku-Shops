@@ -26,7 +26,7 @@ export default function OrderHistoryOrderItemListItem({
   return (
     <li className="py-5">
       <div className="flex flex-col gap-8 sm:flex-row">
-        <div className="flex h-[12rem] w-[12rem] items-center rounded bg-gray-100">
+        <div className="flex h-[12rem] w-full items-center rounded bg-gray-100 sm:w-[12rem]">
           <div
             className="mx-auto h-[9rem] w-[9rem] bg-cover bg-center hover:cursor-pointer"
             style={{
@@ -41,7 +41,9 @@ export default function OrderHistoryOrderItemListItem({
               {formatPrice(orderItem.price)}
             </span>
           </div>
+
           <TextAccordion
+            toggleSmallScreensOnly={true}
             text={`${orderItem.product.description} hi guys this is something good to
             buy please buy hi guys this is something good to buy please buyhi
             guys this is something good to buy please buyhi guys this is
@@ -50,7 +52,7 @@ export default function OrderHistoryOrderItemListItem({
             guys this is something good to buy please buyhi guys this is
             something good to buy please buyhi guys this is something good to
             buy please buy `}
-          ></TextAccordion>
+          />
           <div className="flex h-full items-end justify-between pb-1 text-blue-500">
             {canRateProductsInOrder && (
               <RatingStars

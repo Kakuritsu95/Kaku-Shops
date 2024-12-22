@@ -81,7 +81,7 @@ export default function Pagination({
                 {pageNum}
               </PaginationButton>
             ) : (
-              <PaginationButton>...</PaginationButton>
+              <PaginationButton key={pageNum}>...</PaginationButton>
             ),
           )}
         <PaginationButton

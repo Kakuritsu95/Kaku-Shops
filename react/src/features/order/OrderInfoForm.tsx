@@ -136,6 +136,7 @@ export const OrderInfoForm = forwardRef<
           <ControllerInput
             name="postalCode"
             control={control}
+            defaultValue=""
             validationRules={ORDER_FORM_VALIDATION_RULES.postalCode}
             render={({ field }) => (
               <TextInput

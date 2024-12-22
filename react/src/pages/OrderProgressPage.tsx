@@ -17,7 +17,7 @@ export default function OrderProgressPage() {
 
   if (order)
     return (
-      <div className="space-y-5 rounded py-10 sm:bg-slate-50 sm:p-10">
+      <div className="mt-14 space-y-5 rounded py-10 sm:bg-slate-50 sm:p-10">
         <div>
           <div className="flex flex-col justify-between gap-1 text-sm font-semibold sm:flex-row">
             <div className="space-y-0.5">

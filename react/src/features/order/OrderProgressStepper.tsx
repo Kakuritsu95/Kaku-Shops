@@ -23,7 +23,7 @@ export default function OrderProgressStepper({
       {orderStatuses.map((status, i) => {
         const passedStatus = i <= indexOfOrderState;
         return (
-          <>
+          <div key={i} className="flex flex-1">
             {i == 0 && (
               <div
                 className={`h-3 w-3 rounded-full bg-orange-500 sm:h-7 sm:w-7`}
@@ -44,7 +44,7 @@ export default function OrderProgressStepper({
                 <span className="text-sm">{status.text.toLowerCase()}</span>
               </div>
             </div>
-          </>
+          </div>
         );
       })}
     </div>

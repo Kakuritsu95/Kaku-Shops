@@ -25,7 +25,7 @@ export default function OrderHistoryPage() {
         </span>
         <ul className="space-y-20">
           {orders.content.map((order) => (
-            <OrderHistoryListItem order={order} />
+            <OrderHistoryListItem key={order.id} order={order} />
           ))}
         </ul>
         <Pagination

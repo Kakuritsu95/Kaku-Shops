@@ -11,7 +11,7 @@ const LOGIN_FORM_VALIDATION_RULES: {
   email: {
     required: "required",
     maxLength: {
-      value: 16,
+      value: 30,
       message: "Mail must contain at least 5 characters",
     },
     minLength: {

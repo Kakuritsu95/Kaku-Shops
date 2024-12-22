@@ -35,6 +35,7 @@ export default function OrderHistoryListItem({ order }: { order: Order }) {
       <ul className="divide-y p-5 py-0">
         {order.orderItems.map((orderItem) => (
           <OrderHistoryOrderItemListItem
+            key={orderItem.id}
             orderItem={orderItem}
             canRateProductsInOrder={order.orderStatus == OrderStatus.DELIVERED}
           />
