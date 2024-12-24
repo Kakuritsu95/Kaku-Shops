@@ -60,40 +60,38 @@ export default function Pagination({
     generatePages,
   ]);
   return (
-    <div>
-      <div className="mx-auto flex w-full justify-center md:w-2/3">
-        <div className="space-x-3 pb-5">
-          <PaginationButton
-            onClick={() => {
-              if (currentPage == 1) return;
-              setPage(currentPage - 1);
-            }}
-          >
-            Previous
-          </PaginationButton>
-          {totalPages &&
-            pages.map((pageNum) =>
-              typeof pageNum == "number" ? (
-                <PaginationButton
-                  key={pageNum}
-                  onClick={() => setPage(pageNum)}
-                  isCurrentPage={currentPage == pageNum}
-                >
-                  {pageNum}
-                </PaginationButton>
-              ) : (
-                <PaginationButton>...</PaginationButton>
-              ),
-            )}
-          <PaginationButton
-            onClick={() => {
-              if (currentPage == totalPages) return;
-              setPage(currentPage + 1);
-            }}
-          >
-            Next
-          </PaginationButton>
-        </div>
+    <div className="mx-auto mt-5 flex w-full justify-center">
+      <div className="space-x-1 pb-5 sm:space-x-2 xl:space-x-2.5">
+        <PaginationButton
+          onClick={() => {
+            if (currentPage == 1) return;
+            setPage(currentPage - 1);
+          }}
+        >
+          Previous
+        </PaginationButton>
+        {totalPages &&
+          pages.map((pageNum) =>
+            typeof pageNum == "number" ? (
+              <PaginationButton
+                key={pageNum}
+                onClick={() => setPage(pageNum)}
+                isCurrentPage={currentPage == pageNum}
+              >
+                {pageNum}
+              </PaginationButton>
+            ) : (
+              <PaginationButton key={pageNum}>...</PaginationButton>
+            ),
+          )}
+        <PaginationButton
+          onClick={() => {
+            if (currentPage == totalPages) return;
+            setPage(currentPage + 1);
+          }}
+        >
+          Next
+        </PaginationButton>
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-import ContactUs from "../pages/ContactUsPage";
 import { createSearchQuery } from "../utils/urlHelpers";
 
 const API_BASE_URL = "http://localhost:8080/api/v1";
@@ -61,6 +60,8 @@ const API_ROUTES = {
       `${BASE_PATHS.product}/${createSearchQuery([{ category }, { brand }])}`,
     getUniqueBrands: (categoryId: string) =>
       `${BASE_PATHS.product}/brands/${categoryId}`,
+    rateProduct: (productId: number, userRating: number) =>
+      `${BASE_PATHS.product}/${productId}/rate?userRating=${userRating}`,
   },
 
   productImage: {
@@ -110,6 +111,8 @@ const API_ROUTES = {
   },
 
   order: {
+    getUserOrders: (page: string | null) =>
+      `${BASE_PATHS.order}/history?page=${page}`,
     getById: (orderId: string) => `${BASE_PATHS.order}/${orderId}`,
     getByRefCode: (refCode: string) =>
       `${BASE_PATHS.order}/ref-code/${refCode}`,

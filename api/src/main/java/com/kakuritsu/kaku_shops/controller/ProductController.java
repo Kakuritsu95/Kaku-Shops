@@ -83,7 +83,7 @@ public class ProductController {
         }
     }
     @PostMapping("/{id}/rate")
-    public ResponseEntity<ApiResponse> rateProduct(@PathVariable Long id, @Digits(integer = 1 ,fraction = 1) @DecimalMin("1.0") @DecimalMax("5.0") @RequestBody BigDecimal userRating){
+    public ResponseEntity<ApiResponse> rateProduct(@PathVariable Long id, @Digits(integer = 1 ,fraction = 1) @DecimalMin("1.0") @DecimalMax("5.0") @RequestParam BigDecimal userRating){
         User user = userService.getAuthenticatedUser();
         double rating = productService.addRating(id,user,userRating.doubleValue());
         return ResponseEntity.ok().body(new ApiResponse("good", rating));

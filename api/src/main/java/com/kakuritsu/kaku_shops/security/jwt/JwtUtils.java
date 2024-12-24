@@ -1,6 +1,6 @@
 package com.kakuritsu.kaku_shops.security.jwt;
 
-import com.kakuritsu.kaku_shops.dto.UserDetailsDto;
+import com.kakuritsu.kaku_shops.dto.UserDetailsDTO;
 import com.kakuritsu.kaku_shops.security.user.ShopUserDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -52,7 +52,7 @@ public class JwtUtils {
                 .getBody()
                 .getSubject();
     }
-    public UserDetailsDto getUserDetailsFromToken(String token) {
+    public UserDetailsDTO getUserDetailsFromToken(String token) {
         Claims claims = Jwts.parserBuilder().setSigningKey(key())
                 .build()
                 .parseClaimsJws(token)
@@ -61,7 +61,7 @@ public class JwtUtils {
         Long id = claims.get("id",Long.class);
         String firstName = claims.get("firstName", String.class);
         List<String> roles = claims.get("roles", List.class);
-        return new UserDetailsDto(id,firstName,email, roles);
+        return new UserDetailsDTO(id,firstName,email, roles);
     }
 
     public boolean validateToken(String token) {

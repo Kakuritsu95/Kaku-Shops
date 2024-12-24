@@ -4,7 +4,7 @@ import { InputProps } from "../types/inputTypes";
 export default function SelectDocumentTypeInput<T extends FieldValues>({
   value,
   field,
-  errorMessage,
+  error,
   labelName,
 }: InputProps<T>) {
   return (
@@ -18,8 +18,8 @@ export default function SelectDocumentTypeInput<T extends FieldValues>({
         type="radio"
       />
       <label className="text-[1rem] font-medium text-gray-700">
-        <span className={`${errorMessage && "text-red-500"}`}>
-          {errorMessage || labelName}
+        <span className={`${error && "text-red-500"}`}>
+          {error?.message || labelName}
         </span>
       </label>
     </div>

@@ -12,7 +12,7 @@ export default function Navbar() {
   useEffect(() => {
     async function authenticatedUser() {
       const data: User = await authService.authenticateUser();
-      console.log(data);
+
       initializeUser(data);
     }
     authenticatedUser();

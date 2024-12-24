@@ -14,7 +14,7 @@ export default function OrderConfirmationItemsSection({
       <div className="flex items-center space-x-2">
         <HiOutlineShoppingBag size={22} />
         <h2 className="text-xl">Your order</h2>
-        <span className="leading-2 mt-1 rounded-full bg-black px-2 py-0.5 text-sm font-medium text-white">
+        <span className="leading-2 mt-1 rounded-full bg-black px-[8px] py-[1px] text-sm font-medium text-white">
           {orderItems.length}
         </span>
       </div>

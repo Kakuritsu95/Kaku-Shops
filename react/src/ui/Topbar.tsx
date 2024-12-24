@@ -9,7 +9,10 @@ export default function Topbar() {
     <div className="flex items-center justify-center bg-orange-600 py-3 text-stone-200">
       <span className="hidden w-2/5 md:inline">(+30) 2103346732</span>
       <div className="flex space-x-2 divide-x divide-gray-300 text-center">
-        <Link className="px-4 duration-100 hover:text-stone-50" to="/">
+        <Link
+          className="px-4 duration-100 hover:text-stone-50"
+          to="/order-progress-form"
+        >
           Order progress
         </Link>
 

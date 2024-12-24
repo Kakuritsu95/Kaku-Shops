@@ -9,11 +9,11 @@ import Spinner from "../../ui/Spinner";
 export default function ProductOverview({ product }: { product: Product }) {
   const { addProductToCart, isAdding } = useUpdateCartItemQuantity();
   const { getCartItemQuantityByProductId } = useCart();
-  console.log(isAdding);
+
   const productQuantityInCart = getCartItemQuantityByProductId(product.id);
   return (
     <div className="mt-14 flex w-full flex-col items-center gap-10 md:flex-row md:items-start">
-      <div className="flex h-[40rem] w-full items-center rounded-md bg-gray-100 md:w-1/2">
+      <div className="mx-auto flex h-[30rem] w-full items-center rounded-md bg-gray-100 md:w-3/5 lg:w-2/5">
         <div
           className="mx-auto h-96 w-96 bg-cover bg-center"
           style={{
@@ -21,6 +21,7 @@ export default function ProductOverview({ product }: { product: Product }) {
           }}
         />
       </div>
+
       <div className="w-full space-y-10 md:w-1/2">
         <ProductOverviewInfo product={product} />
         <Button
@@ -29,7 +30,7 @@ export default function ProductOverview({ product }: { product: Product }) {
           }
         >
           {isAdding ? (
-            <Spinner />
+            <Spinner size={20} />
           ) : (
             <>
               {productQuantityInCart && (

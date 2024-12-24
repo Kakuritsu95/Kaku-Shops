@@ -111,9 +111,7 @@ export default function ContactUsForm({
               rows={4}
               placeholder="Please give us more details..."
               maxLength={2000}
-            >
-              asd
-            </textarea>
+            />
           </>
         )}
       />

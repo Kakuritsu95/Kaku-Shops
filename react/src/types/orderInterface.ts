@@ -3,10 +3,11 @@ import { User } from "./userInterface";
 
 export interface Order {
   id: number;
-  date: Date;
+  orderDate: string;
   totalAmount: number;
   orderStatus: OrderStatus;
   orderItems: Array<OrderItem>;
+  refCode: string;
   address: Address;
   user: User;
 }
@@ -25,7 +26,7 @@ export interface OrderRequest {
   address: Address;
 }
 
-enum OrderStatus {
+export enum OrderStatus {
   PENDING = "PENDING",
   PROCCESSING = "PROCCESSING",
   SHIPPING = "SHIPPING",
