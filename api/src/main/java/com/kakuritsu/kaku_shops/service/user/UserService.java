@@ -1,25 +1,26 @@
 package com.kakuritsu.kaku_shops.service.user;
 
-import com.kakuritsu.kaku_shops.dto.UserDto;
+import com.kakuritsu.kaku_shops.dto.UserDetailsDTO;
 import com.kakuritsu.kaku_shops.event.EventPublisher;
 import com.kakuritsu.kaku_shops.exceptions.AlreadyExistsException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
+import com.kakuritsu.kaku_shops.model.Role;
 import com.kakuritsu.kaku_shops.model.User;
 import com.kakuritsu.kaku_shops.repository.UserRepository;
 import com.kakuritsu.kaku_shops.request.CreateUserRequest;
 import com.kakuritsu.kaku_shops.request.UpdateUserRequest;
 import com.kakuritsu.kaku_shops.security.jwt.JwtUtils;
-import com.kakuritsu.kaku_shops.security.user.ShopUserDetails;
 import com.kakuritsu.kaku_shops.security.user.ShopUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -38,6 +39,7 @@ public class UserService implements IUserService{
 
     @Override
     public User createUser(CreateUserRequest request) {
+          Role role = new Role("ROLE_USER");
           User newUser = Optional.of(request)
                   .filter(req->!userRepository.existsByEmail(req.getEmail()))
                   .map(req->{
@@ -46,6 +48,7 @@ public class UserService implements IUserService{
                       user.setLastName(req.getLastName());
                       user.setEmail(req.getEmail());
                       user.setPassword(passwordEncoder.encode(req.getPassword()));
+                      user.setRoles(Set.of(role));
                       return userRepository.save(user);
                           }) .orElseThrow(()-> new AlreadyExistsException("Oops" + request.getEmail() +" already exists"));
           eventPublisher.publishAccountCreatedEvent(newUser);
@@ -68,8 +71,8 @@ public class UserService implements IUserService{
         });
     }
     @Override
-    public UserDto convertUserToDto(User user){
-        return mapper.map(user, UserDto.class);
+    public UserDetailsDTO convertUserToDto(User user){
+        return mapper.map(user, UserDetailsDTO.class);
     }
 
     public User getAuthenticatedUser() {

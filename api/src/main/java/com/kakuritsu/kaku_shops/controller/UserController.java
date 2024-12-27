@@ -1,8 +1,9 @@
 package com.kakuritsu.kaku_shops.controller;
 
-import com.kakuritsu.kaku_shops.dto.UserDto;
+import com.kakuritsu.kaku_shops.dto.UserDetailsDTO;
 import com.kakuritsu.kaku_shops.exceptions.AlreadyExistsException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
+import com.kakuritsu.kaku_shops.model.Role;
 import com.kakuritsu.kaku_shops.model.User;
 import com.kakuritsu.kaku_shops.request.CreateUserRequest;
 import com.kakuritsu.kaku_shops.request.UpdateUserRequest;
@@ -13,6 +14,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -26,7 +29,8 @@ public class UserController {
     public ResponseEntity<ApiResponse> getUserById(@PathVariable Long userId) {
          try {
              User user = userService.getUserById(userId);
-             UserDto userDto = userService.convertUserToDto(user);
+             UserDetailsDTO userDto = userService.convertUserToDto(user);
+             userDto.setRoles(user.getRoles().stream().map(Role::getName).collect(Collectors.toList()));
              return ResponseEntity.ok().body(new ApiResponse("Found",userDto));
          } catch (ResourceNotFoundException e) {
              return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
@@ -36,7 +40,7 @@ public class UserController {
      public ResponseEntity<ApiResponse> createUser(@RequestBody @Valid CreateUserRequest request){
          try {
              User user = userService.createUser(request);
-             UserDto userDto = userService.convertUserToDto(user);
+             UserDetailsDTO userDto = userService.convertUserToDto(user);
              return ResponseEntity.ok().body(new ApiResponse("User successfully created", userDto));
          } catch (AlreadyExistsException e) {
              return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(),null));
@@ -46,8 +50,8 @@ public class UserController {
     public ResponseEntity<ApiResponse> updateUser(@PathVariable Long userId, @RequestBody @Valid UpdateUserRequest request){
         try {
             User user = userService.updateUser(request, userId);
-            UserDto userDto = userService.convertUserToDto(user);
-            return ResponseEntity.ok().body(new ApiResponse("User successfully updated!", userDto));
+            UserDetailsDTO userDetailsDTO = userService.convertUserToDto(user);
+            return ResponseEntity.ok().body(new ApiResponse("User successfully updated!", userDetailsDTO));
         } catch (ResourceNotFoundException | ConstraintViolationException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
         }
@@ -62,5 +66,11 @@ public class UserController {
         }
     }
 
+    @GetMapping("details")
+    ResponseEntity<ApiResponse> getAuthUserDetails(){
+          User user = userService.getAuthenticatedUser();
+          UserDetailsDTO userDetailsDTO =  userService.convertUserToDto(user);
+        return ResponseEntity.ok(new ApiResponse("",userDetailsDTO));
+    }
 
 }
