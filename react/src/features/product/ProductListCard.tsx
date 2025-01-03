@@ -5,7 +5,7 @@ import API_ROUTES from "../../api-routes/apiRoutes";
 export default function ProductListCard({ product }: { product: Product }) {
   return (
     <li className="w-full sm:w-[48%] lg:w-[32%]">
-      <div className="flex h-[25rem] items-center rounded-md bg-gray-100">
+      <div className="flex h-[20rem] items-center rounded-md bg-gray-100">
         <div
           className="mx-auto h-64 w-64 bg-cover bg-center duration-300"
           style={{

@@ -9,30 +9,41 @@ import {
 } from "../../constants/GREEK_CITIES_WITH_POSTAL_CODES";
 import SelectDocumentTypeInput from "../../ui/SelectDocumentInput";
 import { forwardRef, PropsWithChildren, useEffect } from "react";
-import { ORDER_FORM_VALIDATION_RULES } from "../../constants/ORDER_FORM_VALIDATION_RULES";
-import { useUserDetails } from "../../context/UserDetailsContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import orderService from "../../service/orderService";
 import { AxiosError } from "axios";
 import { OrderRequest } from "../../types/orderInterface";
 import { useNavigate } from "react-router";
 import DropdownOptionsInput from "../../ui/DropdownOptionsInput";
+import { ORDER_FORM_VALIDATION_RULES } from "../../constants/FORM_VALIDATION_RULES";
+import useUserDetails from "../../hooks/useUserDetails";
 
 export const OrderInfoForm = forwardRef<
   HTMLFormElement,
   PropsWithChildren<{ setIsSubmitting: (value: boolean) => void }>
 >(function OrderInfoForm({ setIsSubmitting }, formRef) {
   const queryClient = useQueryClient();
-  const { email = "" } = useUserDetails();
+  const { userDetails } = useUserDetails();
 
   const {
     formState: { errors },
     control,
     watch,
+    reset,
     setValue,
     handleSubmit,
   } = useForm<OrderFormFields>({
-    defaultValues: { proofType: "RECEIPT", email, city: "" },
+    defaultValues: {
+      proofType: "RECEIPT",
+      email: "",
+      firstName: "",
+      lastName: "",
+      address: "",
+      city: "",
+      phoneNumber: "",
+      postalCode: "",
+      vatNumber: "",
+    },
   });
   const city = watch("city");
   const userWantsInvoice = watch("proofType") == "INVOICE";
@@ -46,6 +57,18 @@ export const OrderInfoForm = forwardRef<
       setValue("postalCode", postalCode);
     }
   }, [city, setValue, watch]);
+  useEffect(() => {
+    if (userDetails)
+      reset({
+        email: userDetails.email,
+        firstName: userDetails.firstName,
+        lastName: userDetails.lastName,
+        address: userDetails.address?.address,
+        city: userDetails.address?.city,
+        postalCode: userDetails.address?.postalCode,
+        phoneNumber: userDetails.phoneNumber,
+      });
+  }, [userDetails, reset]);
   const { mutate: placeOrder, data: orderRefCode } = useMutation<
     string,
     AxiosError,

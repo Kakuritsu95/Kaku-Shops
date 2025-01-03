@@ -14,8 +14,8 @@ export default function FilterByCategory({
     <div className="space-y-5">
       <h3 className="font-semibold">Categories</h3>
       <ul>
-        {categoryId ? (
-          categories?.map((category: Category) => (
+        {categories?.map((category: Category) =>
+          categoryId ? (
             <Link key={category.id} to={`/products/category/${category.id}`}>
               <FilterSortLabel
                 isChecked={category.id == Number(categoryId)}
@@ -23,19 +23,15 @@ export default function FilterByCategory({
                 type="checkbox"
               />
             </Link>
-          ))
-        ) : (
-          <ul>
-            {categories?.map((category) => (
-              <SearchParamToggle
-                name={category.name}
-                key={category.id}
-                urlParam="category"
-                value={category.name}
-                type="checkbox"
-              />
-            ))}
-          </ul>
+          ) : (
+            <SearchParamToggle
+              name={category.name}
+              key={category.id}
+              urlParam="category"
+              value={category.name}
+              type="checkbox"
+            />
+          ),
         )}
       </ul>
     </div>

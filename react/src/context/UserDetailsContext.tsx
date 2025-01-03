@@ -5,19 +5,22 @@ import {
   useContext,
   useReducer,
 } from "react";
-import { PartialUser } from "../types/userInterface";
-import authService from "../service/authService";
 
-interface ContextValues extends PartialUser {
-  initializeUser: (user: PartialUser) => void;
+import authService from "../service/authService";
+import { User } from "../types/userInterface";
+
+interface ContextValues extends Partial<User> {
+  initializeUser: (user: Partial<User>) => void;
+  updateFirstName: (firstName: Partial<User>) => void;
   logout: () => void;
 }
 interface ReducerAction {
   type: ReducerActionType;
-  payload?: PartialUser;
+  payload?: Partial<User>;
 }
 enum ReducerActionType {
   INITIALIZE = "INITIALIZE",
+  UPDATE_FIRSTNAME = "UPDATE_FIRSTNAME",
   LOGOUT = "LOGOUT",
 }
 const intialContextValues: ContextValues = {
@@ -25,17 +28,20 @@ const intialContextValues: ContextValues = {
   email: undefined,
   firstName: undefined,
   roles: [],
+  updateFirstName: () => {},
   initializeUser: () => {},
   logout: () => {},
 };
 const UserPrincipalContext = createContext<ContextValues>(intialContextValues);
-function userDetailsReducer(state: PartialUser, action: ReducerAction) {
+function userDetailsReducer(state: Partial<User>, action: ReducerAction) {
   const { type, payload } = action;
   switch (type) {
     case ReducerActionType.INITIALIZE:
       return payload ?? intialContextValues;
     case ReducerActionType.LOGOUT:
       return intialContextValues;
+    case ReducerActionType.UPDATE_FIRSTNAME:
+      return { ...state, firstName: payload?.firstName };
     default:
       return state;
   }
@@ -45,8 +51,11 @@ export function UserDetailsContext({ children }: { children: ReactNode }) {
     userDetailsReducer,
     intialContextValues,
   );
-  const initializeUser = useCallback((user: PartialUser) => {
+  const initializeUser = useCallback((user: Partial<User>) => {
     dispatch({ type: ReducerActionType.INITIALIZE, payload: user });
+  }, []);
+  const updateFirstName = useCallback((firstName: Partial<User>) => {
+    dispatch({ type: ReducerActionType.UPDATE_FIRSTNAME, payload: firstName });
   }, []);
   const logout = useCallback(() => {
     dispatch({ type: ReducerActionType.LOGOUT });
@@ -54,14 +63,22 @@ export function UserDetailsContext({ children }: { children: ReactNode }) {
   }, []);
   return (
     <UserPrincipalContext.Provider
-      value={{ userId, email, firstName, roles, initializeUser, logout }}
+      value={{
+        userId,
+        email,
+        firstName,
+        roles,
+        initializeUser,
+        logout,
+        updateFirstName,
+      }}
     >
       {children}
     </UserPrincipalContext.Provider>
   );
 }
 
-export function useUserDetails() {
+export function useUserContext() {
   const userDetails = useContext(UserPrincipalContext);
   if (!userDetails)
     throw new Error("Cannot access principals outside it's provider");

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useUserDetails } from "../../context/UserDetailsContext";
+import { useUserContext } from "../../context/UserDetailsContext";
 import useDetectClickOutside from "../../hooks/useDetectClickOutside";
 import { MdArrowDropDown } from "react-icons/md";
 import UserDropdownListOption from "./UserDropdownListOption";
@@ -9,7 +9,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 export default function UserOptions() {
   const [isDropDownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const ref = useDetectClickOutside(() => setIsDropdownOpen(false));
-  const { logout, firstName } = useUserDetails();
+  const { logout, firstName } = useUserContext();
   const username = firstName;
 
   return (

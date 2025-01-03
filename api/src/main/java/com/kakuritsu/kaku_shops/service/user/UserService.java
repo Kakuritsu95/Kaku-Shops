@@ -1,18 +1,23 @@
 package com.kakuritsu.kaku_shops.service.user;
 
+import com.kakuritsu.kaku_shops.dto.ChangeUserPasswordDto;
 import com.kakuritsu.kaku_shops.dto.UserDetailsDTO;
 import com.kakuritsu.kaku_shops.event.EventPublisher;
 import com.kakuritsu.kaku_shops.exceptions.AlreadyExistsException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
+import com.kakuritsu.kaku_shops.exceptions.UnauthorizedActionException;
 import com.kakuritsu.kaku_shops.model.Role;
 import com.kakuritsu.kaku_shops.model.User;
+import com.kakuritsu.kaku_shops.repository.AddressRepository;
 import com.kakuritsu.kaku_shops.repository.UserRepository;
 import com.kakuritsu.kaku_shops.request.CreateUserRequest;
 import com.kakuritsu.kaku_shops.request.UpdateUserRequest;
 import com.kakuritsu.kaku_shops.security.jwt.JwtUtils;
 import com.kakuritsu.kaku_shops.security.user.ShopUserDetailsService;
+import com.kakuritsu.kaku_shops.service.address.IAddressService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@RequiredArgsConstructor
+
 @Service
 public class UserService implements IUserService{
     private final UserRepository userRepository;
@@ -31,6 +36,26 @@ public class UserService implements IUserService{
     private final EventPublisher eventPublisher;
     private final JwtUtils jwtUtils;
     private final ShopUserDetailsService shopUserDetailsService;
+    private final ModelMapper nonEmptyFieldsMapper;
+    private final IAddressService addressService;
+    public UserService(UserRepository userRepository,
+                       ModelMapper mapper,
+                       PasswordEncoder passwordEncoder,
+                       EventPublisher eventPublisher,
+                       JwtUtils jwtUtils,
+                       ShopUserDetailsService shopUserDetailsService,
+                       IAddressService addressService,
+                       @Qualifier("skipEmptyPropertiesMapper") ModelMapper nonEmptyFieldsMapper) {
+        this.userRepository = userRepository;
+        this.mapper = mapper;
+        this.passwordEncoder = passwordEncoder;
+        this.eventPublisher = eventPublisher;
+        this.jwtUtils = jwtUtils;
+        this.shopUserDetailsService = shopUserDetailsService;
+        this.nonEmptyFieldsMapper = nonEmptyFieldsMapper;
+        this.addressService = addressService;
+    }
+
     @Override
     public User getUserById(Long userId) {
       return userRepository.findById(userId)
@@ -56,12 +81,20 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public User updateUser(UpdateUserRequest request, Long userId) {
-        return userRepository.findById(userId).map(existingUser-> {
-            existingUser.setFirstName(request.getFirstName());
-            existingUser.setLastName(request.getLastName());
-            return userRepository.save(existingUser);
-        }).orElseThrow(()-> new ResourceNotFoundException("User not found"));
+    public User updateUser(UserDetailsDTO userDetailsDTO) {
+        User user = getAuthenticatedUser();
+        nonEmptyFieldsMapper.map(userDetailsDTO,user);
+        addressService.save(userDetailsDTO.getAddress());
+        userRepository.save(user);
+        return user;
+        }
+
+    @Override
+    public void changeUserPassword(ChangeUserPasswordDto changeUserPasswordDto) {
+        User user  = getAuthenticatedUser();
+        if(!passwordEncoder.matches(changeUserPasswordDto.getOldPassword(), user.getPassword())) throw new UnauthorizedActionException("Password is incorrect");
+        user.setPassword(passwordEncoder.encode(changeUserPasswordDto.getNewPassword()));
+        userRepository.save(user);
     }
 
     @Override

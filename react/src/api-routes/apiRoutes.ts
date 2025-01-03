@@ -1,3 +1,4 @@
+import { UserDetails } from "../types/userInterface";
 import { createSearchQuery } from "../utils/urlHelpers";
 
 const API_BASE_URL = "http://localhost:8080/api/v1";
@@ -27,9 +28,11 @@ const API_ROUTES = {
   },
 
   user: {
+    getAuthenticatedUserDetails: `${BASE_PATHS.user}/details`,
     getUserById: (userId: string) => `${BASE_PATHS.user}/${userId}`,
     createUser: `${BASE_PATHS.user}`,
-    updateUser: (userId: string) => `${BASE_PATHS.user}/${userId}`,
+    updateUser: `${BASE_PATHS.user}/details`,
+    changePassword: `${BASE_PATHS.user}/password`,
     deleteUser: (userId: string) => `${BASE_PATHS.user}/${userId}`,
   },
 

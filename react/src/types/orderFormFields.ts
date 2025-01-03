@@ -7,5 +7,5 @@ export type OrderFormFields = {
   postalCode: string;
   phoneNumber: string;
   proofType: "RECEIPT" | "INVOICE";
-  vatNumber?: "string";
+  vatNumber?: string;
 };

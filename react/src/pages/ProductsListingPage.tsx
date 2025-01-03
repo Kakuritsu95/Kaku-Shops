@@ -37,7 +37,7 @@ export default function ProductsListingPage() {
   return (
     <div>
       <div className="flex gap-20">
-        <aside className="hidden w-52 md:block md:translate-x-0">
+        <aside className="hidden md:block md:translate-x-0">
           {categories && brands && (
             <ProductFilterSection categories={categories} brands={brands} />
           )}

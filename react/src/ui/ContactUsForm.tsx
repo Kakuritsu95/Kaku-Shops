@@ -3,12 +3,12 @@ import ControllerInput from "./ControllerInput";
 import contactUsService from "../service/contactUsService";
 import { ContactFormFields } from "../types/ContactFormInterface";
 import TextInput from "./TextInput";
-import { CONTACT_FORM_VALIDATION_RULES } from "../constants/CONTACT_FORM_VALIDATION_RULES";
 import DropdownOptionsInput from "./DropdownOptionsInput";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Button } from "./Button";
 import Spinner from "./Spinner";
 import { CONTACT_SUBJECTS } from "../constants/CONTACT_SUBJECTS";
+import { CONTACT_FORM_VALIDATION_RULES } from "../constants/FORM_VALIDATION_RULES";
 
 export default function ContactUsForm({
   captchaSiteKey,

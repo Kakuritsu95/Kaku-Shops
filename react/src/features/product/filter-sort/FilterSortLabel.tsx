@@ -18,7 +18,7 @@ export default function FilterSortLabel({
           (type == "radio" ? (
             <div className="ms-1.5 h-1.5 w-1.5 rounded-full bg-white" />
           ) : (
-            <FaCheck size={13} className="ms-0.5 font-bold text-white" />
+            <FaCheck size={13} className="ms-[3px] font-bold text-white" />
           ))}
       </div>
       <span>{name}</span>

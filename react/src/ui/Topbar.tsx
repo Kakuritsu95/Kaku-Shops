@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import { useUserDetails } from "../context/UserDetailsContext";
+import { useUserContext } from "../context/UserDetailsContext";
 import UserOptions from "../features/user/UserOptions";
 
 export default function Topbar() {
-  const { email } = useUserDetails();
+  const { email } = useUserContext();
 
   return (
     <div className="flex items-center justify-center bg-orange-600 py-3 text-stone-200">
