@@ -61,7 +61,7 @@ export default function Pagination({
   ]);
   return (
     <div className="mx-auto mt-5 flex w-full justify-center">
-      <div className="space-x-1 pb-5 sm:space-x-2 xl:space-x-2.5">
+      <div className="space-x-0.5 pb-5 sm:space-x-2 xl:space-x-2.5">
         <PaginationButton
           onClick={() => {
             if (currentPage == 1) return;

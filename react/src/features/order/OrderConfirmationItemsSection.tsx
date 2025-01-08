@@ -20,7 +20,7 @@ export default function OrderConfirmationItemsSection({
       </div>
       <ul className="h-96 divide-y-2 divide-gray-100 overflow-y-auto pr-5">
         {orderItems.map((orderItem) => (
-          <OrderConfirmationItemCard orderItem={orderItem} />
+          <OrderConfirmationItemCard key={orderItem.id} orderItem={orderItem} />
         ))}
       </ul>
       <div className="pr-5">

@@ -24,7 +24,6 @@ export default function ControllerInput<T extends FieldValues>({
   name,
   render,
   validationRules,
-  defaultValue,
   control,
 }: ControllerProps<T>) {
   return (
@@ -33,7 +32,6 @@ export default function ControllerInput<T extends FieldValues>({
         name={name}
         rules={validationRules}
         control={control}
-        defaultValue={defaultValue}
         render={render}
       />
     </div>

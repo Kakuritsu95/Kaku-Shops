@@ -10,5 +10,5 @@ public class SearchProductsRequest {
     private String sortBy;
     private boolean inStock;
     private int page = 1;
-    private int size = 10;
+    private int size = 9;
 }

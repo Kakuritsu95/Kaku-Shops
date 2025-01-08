@@ -36,11 +36,9 @@ export default function ProductsListingPage() {
 
   return (
     <div>
-      <div className="flex gap-20">
-        <aside className="hidden w-52 md:block md:translate-x-0">
-          {categories && brands && (
-            <ProductFilterSection categories={categories} brands={brands} />
-          )}
+      <div className="flex gap-10">
+        <aside className="hidden w-72 md:block md:translate-x-0">
+          {<ProductFilterSection categories={categories} brands={brands} />}
         </aside>
         {
           <MobileFilterSection

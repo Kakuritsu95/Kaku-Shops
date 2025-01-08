@@ -17,7 +17,7 @@ import java.util.Set;
 @Component
 @Transactional
 @RequiredArgsConstructor
-public class DataInitializer implements ApplicationListener<ApplicationReadyEvent> {
+public class UsersInitializer implements ApplicationListener<ApplicationReadyEvent> {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;

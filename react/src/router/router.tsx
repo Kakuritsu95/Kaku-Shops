@@ -15,6 +15,10 @@ import ContactUsPage from "../pages/ContactUsPage";
 import OrderHistoryPage from "../pages/OrderHistoryPage";
 import OrderProgressPage from "../pages/OrderProgressPage";
 import OrderSearchPage from "../pages/OrderSearchPage";
+import AccountSettingsPage from "../pages/AccountSettingsPage";
+import UserDetailsSettingsForm from "../features/user/UserDetailsSettingsForm";
+import UserAddressSettingsForm from "../features/user/UserAddressSettingsForm";
+import UserChangePasswordForm from "../features/user/UserChangePasswordForm";
 
 const router = createBrowserRouter([
   {
@@ -53,7 +57,7 @@ const router = createBrowserRouter([
         path: "/checkout",
         element: (
           <ProtectedRoute>
-            <CheckoutPage />,
+            <CheckoutPage />
           </ProtectedRoute>
         ),
       },
@@ -84,6 +88,28 @@ const router = createBrowserRouter([
       {
         path: "order-progress/:orderRefCode",
         element: <OrderProgressPage />,
+      },
+      {
+        path: "account",
+        element: <AccountSettingsPage />,
+        children: [
+          {
+            path: "",
+            element: <Navigate to="details" />,
+          },
+          {
+            path: "details",
+            element: <UserDetailsSettingsForm />,
+          },
+          {
+            path: "address",
+            element: <UserAddressSettingsForm />,
+          },
+          {
+            path: "change-password",
+            element: <UserChangePasswordForm />,
+          },
+        ],
       },
     ],
   },

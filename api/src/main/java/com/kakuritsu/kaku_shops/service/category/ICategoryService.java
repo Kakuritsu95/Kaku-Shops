@@ -1,6 +1,5 @@
 package com.kakuritsu.kaku_shops.service.category;
 
-import com.kakuritsu.kaku_shops.dto.CategoryDto;
 import com.kakuritsu.kaku_shops.model.Category;
 
 import java.util.List;

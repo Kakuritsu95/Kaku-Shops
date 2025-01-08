@@ -6,33 +6,38 @@ import com.kakuritsu.kaku_shops.request.SearchProductsRequest;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class ProductSpecs {
     public static Specification<Product> productFilterSpecification(FilterSortProductRequest request,Long categoryId) {
-        List<Predicate> predicates = new ArrayList<>();
+
         return ((root, query, cb) -> {
+            Predicate predicate = cb.conjunction();
+
             if(categoryId!=null){
-                predicates.add(cb.equal(root.get("category").get("id"),categoryId));
+                Predicate categoryEqualPredicate = cb.equal(root.get("category").get("id"),categoryId);
+                predicate = cb.and(predicate, categoryEqualPredicate);
             }
             if(request.getBrand()!=null){
-                predicates.add(cb.equal(root.get("brand"),request.getBrand()));
+                Predicate brandEqualsPredicate = cb.equal(root.get("brand"),request.getBrand());
+                predicate = cb.and(predicate, brandEqualsPredicate);
             }
             if(request.getMinPrice()!=null){
-                predicates.add(cb.greaterThanOrEqualTo(root.get("price"),request.getMinPrice()));
+                Predicate minPricePredicate = cb.greaterThanOrEqualTo(root.get("price"),request.getMinPrice());
+                predicate = cb.and(predicate, minPricePredicate);
             }
             if(request.getMaxPrice()!=null){
-                predicates.add(cb.lessThanOrEqualTo(root.get("price"),request.getMaxPrice()));
+               Predicate maxPricePredicate = cb.lessThanOrEqualTo(root.get("price"),request.getMaxPrice());
+               predicate = cb.and(predicate, maxPricePredicate);
             }
             if(request.isInStock()){
-                predicates.add(cb.greaterThan(root.get("inventory"),0));
+               Predicate inStockPredicate = cb.greaterThan(root.get("inventory"),0);
+               predicate = cb.and(predicate, inStockPredicate);
             }
 
-             Predicate andPredicate = cb.and(predicates.toArray(new Predicate[0]));
 
-            return cb.and(andPredicate);
+
+
+            return predicate;
 
         });
     }

@@ -21,24 +21,16 @@ public interface IProductService {
 
     Product updateProduct(UpdateProductRequest product, Long productId);
 
+    List<ProductDto> getBestSellerProducts();
+
     List<Product> getAllProducts();
 
     Page<ProductDto> getProductsByCategoryIdAndSearchParams(Long categoryId, FilterSortProductRequest request);
 
     Page<ProductDto> getProductsBySearchKeyword(String keyword);
     ProductsSearchResult getProductsByKeywordAndFilters(SearchProductsRequest searchRequest);
-    List<Product> getProductsByCategory(String category);
-
-    List<Product> getProductsByBrand(String brand);
-
-    List<Product> getProductsByCategoryAndBrand(String category, String brand);
-
-    List<Product> getProductsByName(String name);
-
-    List<Product> getProductsByBrandAndName(String brand, String name);
-
-    Long countProductsByBrandAndName(String brand, String name);
-
     double addRating(Long productId, User user, double rating);
+
+    List<ProductDto> getLatestProducts();
 
 }

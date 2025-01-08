@@ -3,7 +3,7 @@ package com.kakuritsu.kaku_shops.controller;
 import com.kakuritsu.kaku_shops.dto.UserDetailsDTO;
 import com.kakuritsu.kaku_shops.exceptions.CookieException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
-import com.kakuritsu.kaku_shops.helpers.CookieManagementService;
+import com.kakuritsu.kaku_shops.service.cookie.CookieManagementService;
 import com.kakuritsu.kaku_shops.request.LoginRequest;
 import com.kakuritsu.kaku_shops.response.ApiResponse;
 import com.kakuritsu.kaku_shops.security.jwt.JwtUtils;

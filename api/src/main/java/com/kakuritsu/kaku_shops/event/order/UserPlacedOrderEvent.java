@@ -1,6 +1,5 @@
 package com.kakuritsu.kaku_shops.event.order;
 
-import com.kakuritsu.kaku_shops.dto.OrderDto;
 import com.kakuritsu.kaku_shops.model.Order;
 import org.springframework.context.ApplicationEvent;
 

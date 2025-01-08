@@ -102,6 +102,19 @@ public class ProductService implements IProductService{
     }
 
     @Override
+    public List<ProductDto> getLatestProducts() {
+        final int numberOfLatestProductsToGet = 9;
+        List<Product> latestProducts = productRepository.findLatestProducts(numberOfLatestProductsToGet);
+        return latestProducts.stream().map(product -> mapper.map(product,ProductDto.class)).toList();
+    }
+    @Override
+    public List<ProductDto> getBestSellerProducts() {
+        final int numberOfBestSellerProductsToGet = 9;
+        List<Product> bestSellerProducts = productRepository.findBestSellerProducts(numberOfBestSellerProductsToGet);
+        return bestSellerProducts.stream().map(product -> mapper.map(product,ProductDto.class)).toList();
+    }
+
+    @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
@@ -146,37 +159,7 @@ public class ProductService implements IProductService{
         return new ProductsSearchResult(productDto,relevantBrands,relevantCategoriesDto);
 
     }
-    @Override
-    public List<Product> getProductsByCategory(String category) {
-        return productRepository.findByCategoryName(category);
-    }
-
-    @Override
-    public List<Product> getProductsByBrand(String brand) {
-        return productRepository.findByBrand(brand);
-    }
-
-    @Override
-    public List<Product> getProductsByCategoryAndBrand(String category, String brand) {
-       return productRepository.findByCategoryNameAndBrand(category, brand);
-    }
-
-    @Override
-    public List<Product> getProductsByName(String name) {
-        return productRepository.findByName(name);
-    }
-
-    @Override
-    public List<Product> getProductsByBrandAndName(String brand, String name) {
-       return productRepository.findByBrandAndName(brand,name);
-    }
-
-    @Override
-    public Long countProductsByBrandAndName(String brand, String name) {
-        return productRepository.countByBrandAndName(brand,name);
-    }
-
-    boolean productExists(AddProductRequest product){
+      boolean productExists(AddProductRequest product){
      return productRepository.existsByNameAndBrand(product.getName(),product.getBrand());
     }
 }

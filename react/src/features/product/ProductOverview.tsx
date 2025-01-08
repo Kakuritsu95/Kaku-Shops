@@ -30,7 +30,7 @@ export default function ProductOverview({ product }: { product: Product }) {
           }
         >
           {isAdding ? (
-            <Spinner size={20} />
+            <Spinner size={24} />
           ) : (
             <>
               {productQuantityInCart && (

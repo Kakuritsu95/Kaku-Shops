@@ -20,11 +20,11 @@ export default function ProductsListingPage() {
         searchParams.toString(),
       ),
   });
-  if (!searchResults) return <div className="h-dvh"></div>;
+
   return (
     <div>
-      <div className="flex gap-20">
-        <aside className="hidden md:block md:translate-x-0">
+      <div className="flex gap-10">
+        <aside className="hidden w-72 md:block md:translate-x-0">
           <ProductFilterSection
             categories={searchResults?.relevantCategories}
             brands={searchResults?.relevantBrands}
@@ -47,10 +47,12 @@ export default function ProductsListingPage() {
           />
         )}
       </div>
-      <Pagination
-        totalPages={searchResults.products.totalPages}
-        currentPage={searchResults.products.pageable.pageNumber + 1}
-      />
+      {searchResults && (
+        <Pagination
+          totalPages={searchResults.products.totalPages}
+          currentPage={searchResults.products.pageable.pageNumber + 1}
+        />
+      )}
     </div>
   );
 }

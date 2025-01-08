@@ -13,4 +13,5 @@ export interface InputProps<T extends FieldValues> {
   error: FieldError | undefined;
   value?: PathValue<T, Path<T>>;
   maxLength?: number;
+  disabled?: boolean;
 }
