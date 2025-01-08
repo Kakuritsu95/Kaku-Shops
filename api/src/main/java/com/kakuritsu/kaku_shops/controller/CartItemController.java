@@ -2,7 +2,7 @@ package com.kakuritsu.kaku_shops.controller;
 
 import com.kakuritsu.kaku_shops.dto.CartDto;
 import com.kakuritsu.kaku_shops.exceptions.CartOperationException;
-import com.kakuritsu.kaku_shops.helpers.CookieManagementService;
+import com.kakuritsu.kaku_shops.service.cookie.CookieManagementService;
 import com.kakuritsu.kaku_shops.model.Cart;
 import com.kakuritsu.kaku_shops.response.ApiResponse;
 import com.kakuritsu.kaku_shops.service.cart.CartItemService;

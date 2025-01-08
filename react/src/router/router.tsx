@@ -57,7 +57,7 @@ const router = createBrowserRouter([
         path: "/checkout",
         element: (
           <ProtectedRoute>
-            <CheckoutPage />,
+            <CheckoutPage />
           </ProtectedRoute>
         ),
       },

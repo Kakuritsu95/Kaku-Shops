@@ -12,19 +12,15 @@ import java.util.List;
 import java.util.Set;
 
 public interface ProductRepository extends JpaRepository<Product,Long>, JpaSpecificationExecutor<Product> {
-    List<Product> findByCategoryName(String category);
 
-    List<Product> findByBrand(String brand);
-
-    List<Product> findByCategoryNameAndBrand(String category, String brand);
-
-    List<Product> findByName(String name);
-
-    List<Product> findByBrandAndName(String brand, String name);
-
-    Long countByBrandAndName(String brand, String name);
 
     boolean existsByNameAndBrand(String name, String brand);
+
+    @Query(value = "SELECT * FROM product p ORDER BY p.created_at DESC LIMIT :numberOfLatestProductsToFind", nativeQuery = true)
+    List<Product> findLatestProducts(int numberOfLatestProductsToFind);
+
+    @Query(value = "SELECT * FROM product p ORDER BY p.sell_count DESC LIMIT :numberOfBestSellerProductsToFind", nativeQuery = true)
+    List<Product> findBestSellerProducts(int numberOfBestSellerProductsToFind);
 
     @Query(" SELECT DISTINCT brand" +
             " FROM Product p JOIN category c" +

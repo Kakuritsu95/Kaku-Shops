@@ -15,10 +15,10 @@ export function AppLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster />
-      <div className="space-y-5">
+      <div className="space-y-10">
         <UserDetailsContext>
           <Navbar />
-          <main className="px-2.5 xl:mx-auto xl:w-3/4">
+          <main className="min-h-[80dvh] px-2.5 xl:mx-auto xl:w-3/4">
             <Outlet />
           </main>
         </UserDetailsContext>

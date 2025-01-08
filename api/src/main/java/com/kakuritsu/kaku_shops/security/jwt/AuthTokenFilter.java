@@ -1,6 +1,6 @@
 package com.kakuritsu.kaku_shops.security.jwt;
 
-import com.kakuritsu.kaku_shops.helpers.CookieManagementService;
+import com.kakuritsu.kaku_shops.service.cookie.CookieManagementService;
 import com.kakuritsu.kaku_shops.security.user.ShopUserDetailsService;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;

@@ -1,6 +1,6 @@
 package com.kakuritsu.kaku_shops.security.config;
 
-import com.kakuritsu.kaku_shops.helpers.CookieManagementService;
+import com.kakuritsu.kaku_shops.service.cookie.CookieManagementService;
 import com.kakuritsu.kaku_shops.security.jwt.AuthTokenFilter;
 import com.kakuritsu.kaku_shops.security.jwt.JwtAuthEntryPoint;
 import com.kakuritsu.kaku_shops.security.jwt.JwtUtils;

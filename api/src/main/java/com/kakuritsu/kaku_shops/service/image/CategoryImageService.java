@@ -7,7 +7,6 @@ import com.kakuritsu.kaku_shops.model.CategoryImage;
 import com.kakuritsu.kaku_shops.repository.CategoryImageRepository;
 import com.kakuritsu.kaku_shops.service.category.ICategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

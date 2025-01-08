@@ -76,6 +76,7 @@ export default function UserDetailsSettingsForm() {
           <TextInput
             field={field}
             error={errors.phoneNumber}
+            maxLength={10}
             labelName="Phone number"
           />
         )}

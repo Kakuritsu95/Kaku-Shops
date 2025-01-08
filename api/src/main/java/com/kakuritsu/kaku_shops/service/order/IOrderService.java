@@ -6,9 +6,6 @@ import com.kakuritsu.kaku_shops.request.OrderRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-
-import java.util.List;
 
 public interface IOrderService {
     Order placeOrder(OrderRequest orderRequest,HttpServletRequest request, HttpServletResponse response);

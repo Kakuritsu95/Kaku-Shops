@@ -8,14 +8,11 @@ import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.exceptions.UnauthorizedActionException;
 import com.kakuritsu.kaku_shops.model.Role;
 import com.kakuritsu.kaku_shops.model.User;
-import com.kakuritsu.kaku_shops.repository.AddressRepository;
 import com.kakuritsu.kaku_shops.repository.UserRepository;
 import com.kakuritsu.kaku_shops.request.CreateUserRequest;
-import com.kakuritsu.kaku_shops.request.UpdateUserRequest;
 import com.kakuritsu.kaku_shops.security.jwt.JwtUtils;
 import com.kakuritsu.kaku_shops.security.user.ShopUserDetailsService;
 import com.kakuritsu.kaku_shops.service.address.IAddressService;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
@@ -23,7 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -84,7 +80,9 @@ public class UserService implements IUserService{
     public User updateUser(UserDetailsDTO userDetailsDTO) {
         User user = getAuthenticatedUser();
         nonEmptyFieldsMapper.map(userDetailsDTO,user);
-        addressService.save(userDetailsDTO.getAddress());
+        if(userDetailsDTO.getAddress()!=null){
+            addressService.save(userDetailsDTO.getAddress());
+        }
         userRepository.save(user);
         return user;
         }

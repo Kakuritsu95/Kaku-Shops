@@ -5,6 +5,7 @@ import ControllerInput from "../../ui/ControllerInput";
 import TextInput from "../../ui/TextInput";
 import userService from "../../service/userService";
 import { useEffect } from "react";
+import { Button } from "../../ui/Button";
 
 export default function UserChangePasswordForm() {
   const {
@@ -67,7 +68,11 @@ export default function UserChangePasswordForm() {
           />
         )}
       />
-      <button>Submit</button>
+      <div className="text-right">
+        <Button color="black" size="large">
+          Save
+        </Button>
+      </div>
     </form>
   );
 }

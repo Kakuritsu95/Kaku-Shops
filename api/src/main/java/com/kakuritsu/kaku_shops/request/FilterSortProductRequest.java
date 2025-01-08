@@ -12,5 +12,5 @@ public class FilterSortProductRequest {
     private boolean inStock;
     private String recent;
     private int page = 1;
-    private int size = 5;
+    private int size = 9;
 }

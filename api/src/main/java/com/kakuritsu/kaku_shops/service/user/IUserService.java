@@ -4,7 +4,6 @@ import com.kakuritsu.kaku_shops.dto.ChangeUserPasswordDto;
 import com.kakuritsu.kaku_shops.dto.UserDetailsDTO;
 import com.kakuritsu.kaku_shops.model.User;
 import com.kakuritsu.kaku_shops.request.CreateUserRequest;
-import com.kakuritsu.kaku_shops.request.UpdateUserRequest;
 
 public interface IUserService {
     User getUserById(Long userId);

@@ -1,4 +1,4 @@
-package com.kakuritsu.kaku_shops.helpers;
+package com.kakuritsu.kaku_shops.service.cookie;
 
 
 import jakarta.servlet.http.Cookie;

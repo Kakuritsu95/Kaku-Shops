@@ -1,5 +1,4 @@
 import { Category } from "../../types/categoryInterface";
-import PriceRangeInput from "../../ui/PriceRangeInput";
 import ExtraFilters from "./filter-sort/ExtraFilters";
 import FilterByBrand from "./filter-sort/FilterByBrand";
 import FilterByCategory from "./filter-sort/FilterByCategory";
@@ -19,7 +18,7 @@ export default function ProductFilterSortSection({
       <FilterByBrand brands={brands} />
       <SortByPrice />
       <ExtraFilters />
-      <PriceRangeInput />
+      {/* <PriceRangeInput /> */}
     </form>
   );
 }
