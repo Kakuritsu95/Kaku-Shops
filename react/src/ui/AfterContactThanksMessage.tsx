@@ -8,16 +8,18 @@ export default function AfterContactThanksMessage({
   firstName: string | undefined;
 }) {
   return (
-    <div className="mt-20 space-y-6">
+    <div className="mt-44 space-y-6">
       <div className="flex flex-col items-center justify-center gap-5 text-center md:flex-row md:text-start">
         <h2 className="text-[1.7rem] font-bold text-orange-500 xl:text-3xl">
           Thank you for reaching out to us {firstName && ", " + firstName}{" "}
           Thodoros!
         </h2>
-        <FaCheck
-          className="rounded-full border-2 border-green-600 p-3 text-green-600"
-          size={60}
-        />
+        <div>
+          <FaCheck
+            className="rounded-full border-2 border-green-600 p-3 text-green-600"
+            size={60}
+          />
+        </div>
       </div>
       <InfoMessageTip type="success" size="large">
         Your message has been received and will be reviewed by our team. We will
