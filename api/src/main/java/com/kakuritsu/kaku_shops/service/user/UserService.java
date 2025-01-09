@@ -60,7 +60,7 @@ public class UserService implements IUserService{
 
     @Override
     public User createUser(CreateUserRequest request) {
-          Role role = new Role("ROLE_USER");
+          Role role = new Role("ROLE_CUSTOMER");
           User newUser = Optional.of(request)
                   .filter(req->!userRepository.existsByEmail(req.getEmail()))
                   .map(req->{
