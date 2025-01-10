@@ -27,9 +27,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -140,7 +142,7 @@ public class ProductService implements IProductService{
         return products.map(productConverter::convertProductToProductDto);
     }
     @Override
-    public ProductsSearchResult getProductsByKeywordAndFilters(SearchProductsRequest searchRequest){
+    public ProductsSearchResult getSearchResultsWithFilters(SearchProductsRequest searchRequest){
         Sort sort = Sort.by(Sort.Direction.ASC,"price");
         if(searchRequest.getSortBy()!=null) {
             String[] sortParts = searchRequest.getSortBy().split("-");

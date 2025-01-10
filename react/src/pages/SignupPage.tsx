@@ -17,7 +17,11 @@ export default function SignupPage() {
   } = useForm<CreateUser>({
     defaultValues: { email: "user1@gmail.com", password: "11" },
   });
-  const { mutate: signup } = useMutation<void, AxiosError, CreateUser>({
+  const { mutate: signup, isPending: isSigning } = useMutation<
+    void,
+    AxiosError,
+    CreateUser
+  >({
     mutationFn: (credentials: CreateUser) => userService.register(credentials),
   });
   function onSubmit(userDetails: CreateUser) {
@@ -87,7 +91,12 @@ export default function SignupPage() {
             />
           </div>
 
-          <Button type="brand" color="brand" size="medium">
+          <Button
+            type="brand"
+            color="brand"
+            size="medium"
+            isSubmitting={isSigning}
+          >
             Sign up
           </Button>
         </form>

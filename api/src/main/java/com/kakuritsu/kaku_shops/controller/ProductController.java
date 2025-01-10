@@ -121,12 +121,12 @@ public class ProductController {
     }
     @GetMapping("/search")
     public ResponseEntity<ApiResponse> getProductsBySearchKeyword(@RequestParam String keyword){
-        Page<ProductDto> productDtos = productService.getProductsBySearchKeyword(keyword);
+        Page<ProductDto> productDtos = productService.getProductsBySearchKeyword(keyword.toLowerCase());
         return ResponseEntity.ok().body(new ApiResponse("search results",productDtos));
     }
     @GetMapping("/results")
-    public ResponseEntity<ApiResponse> getProductsSearchResultsByKeywordAndFilters(@ModelAttribute SearchProductsRequest searchRequest){
-        ProductsSearchResult result = productService.getProductsByKeywordAndFilters(searchRequest);
+    public ResponseEntity<ApiResponse> getSearchResultsWithFilters(@ModelAttribute SearchProductsRequest searchRequest){
+        ProductsSearchResult result = productService.getSearchResultsWithFilters(searchRequest);
         return ResponseEntity.ok().body(new ApiResponse("ok result", result));
 
     }

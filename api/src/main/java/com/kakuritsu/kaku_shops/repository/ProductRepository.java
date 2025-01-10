@@ -31,7 +31,7 @@ public interface ProductRepository extends JpaRepository<Product,Long>, JpaSpeci
     @Query("SELECT DISTINCT brand" +
             " FROM Product p" +
             " JOIN category c" +
-            " WHERE (p.name LIKE %:keyword% OR p.brand LIKE %:keyword% OR c.name LIKE %:keyword%)" +
+            " WHERE (p.name ILIKE %:keyword% OR p.brand ILIKE %:keyword% OR c.name ILIKE %:keyword%)" +
             " AND (:categoryName IS NULL OR c.name=:categoryName)")
     Set<String> findDistinctBrandsByKeyword(
             @Param("keyword") String keyword,
@@ -41,8 +41,6 @@ public interface ProductRepository extends JpaRepository<Product,Long>, JpaSpeci
     @Query("SELECT p" +
             " FROM Product p" +
             " JOIN category c" +
-            " WHERE p.name LIKE %:keyword% OR p.brand LIKE %:keyword% OR c.name LIKE %:keyword%")
+            " WHERE p.name ILIKE %:keyword% OR p.brand ILIKE %:keyword% OR c.name ILIKE %:keyword%")
     Page<Product> findProductsBySearchKeyword(@Param("keyword") String keyword, PageRequest page);
-    @Query("SELECT p FROM Product p JOIN category c WHERE p.name LIKE %:keyword% OR p.brand LIKE %:keyword% OR c.name LIKE %:keyword%")
-    Page<Product> findProductsByKeywordAndFilters(@Param("keyword") String keyword, PageRequest page);
 }

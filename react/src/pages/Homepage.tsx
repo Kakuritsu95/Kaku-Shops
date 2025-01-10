@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import CategoriesPreviewList from "../features/categories/CategoiesPreviewList";
+import CategoriesPreviewList from "../features/categories/CategoriesPreviewList";
 import HomepageSection from "../ui/HomepageSection";
 import { Product } from "../types/productInterface";
 import productService from "../service/productService";
@@ -21,12 +21,10 @@ export default function Homepage() {
         <CategoriesPreviewList />
       </HomepageSection>
       <HomepageSection title="Our Latest Products">
-        {latestProducts && <ProductsCarousel products={latestProducts} />}
+        {<ProductsCarousel products={latestProducts} />}
       </HomepageSection>
       <HomepageSection title="Best Sellers">
-        {bestSellerProducts && (
-          <ProductsCarousel products={bestSellerProducts} />
-        )}
+        {<ProductsCarousel products={bestSellerProducts} />}
       </HomepageSection>
       <HomepageSection title="Shop care-free">
         <FeaturesList />

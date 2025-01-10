@@ -4,12 +4,14 @@ import { useSlider } from "../../hooks/useSlider";
 import ProductListCard from "./ProductListCard";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
+import LoadingSkeletonsList from "../../ui/LoadingSkeletonsList";
+import LoadingSkeletonCard from "../../ui/ProductSkeletonCard";
 
 export default function ProductsCarousel({
   products,
   groupNumber = 3,
 }: {
-  products: Array<Product>;
+  products: Array<Product> | undefined;
   groupNumber?: number;
 }) {
   const {
@@ -18,7 +20,7 @@ export default function ProductsCarousel({
     setIndexOfItemsGroupToDisplay,
   } = useSlider();
 
-  const groupedProducts = products.reduce(
+  const groupedProducts = products?.reduce(
     (acc: Array<Array<Product>>, curr: Product, i) => {
       if (i == 0) acc.push([curr]);
       else if (i % groupNumber != 0) acc[acc.length - 1]?.push(curr);
@@ -31,8 +33,9 @@ export default function ProductsCarousel({
   return (
     <div className="relative space-y-5">
       <ul className="flex justify-center gap-5">
-        {groupedProducts.map((_, i) => (
-          <div
+        {groupedProducts?.map((_, i) => (
+          <li
+            key={i}
             className={`h-2 w-2 rounded-full ${i === indexOfItemsGroupToDisplay ? "bg-gray-600" : "bg-gray-200"}`}
           />
         ))}
@@ -46,26 +49,34 @@ export default function ProductsCarousel({
             <MdOutlineKeyboardArrowLeft size={24} />
           </button>
         )}
-        <ul ref={sliderContainerRef} className="flex w-full duration-700">
-          {groupedProducts.map((groupOfProducts, index) => (
-            <li key={index} className="flex flex-shrink-0 basis-full">
-              <ul className="flex flex-1 flex-shrink-0 flex-col justify-around text-center sm:flex-row sm:text-start">
-                {groupOfProducts.map((product) => (
-                  <ProductListCard key={product.id} product={product} />
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
-
-        {indexOfItemsGroupToDisplay < groupedProducts.length - 1 && (
-          <button
-            onClick={() => setIndexOfItemsGroupToDisplay((i) => i + 1)}
-            className="absolute -right-3 top-1/3 flex rounded-full bg-gray-50 p-2 text-gray-700 shadow-border hover:shadow-borderLg"
-          >
-            <MdOutlineKeyboardArrowRight size={24} />
-          </button>
+        {groupedProducts ? (
+          <ul ref={sliderContainerRef} className="flex w-full duration-700">
+            {groupedProducts.map((groupOfProducts, index) => (
+              <li key={index} className="flex flex-shrink-0 basis-full">
+                <ul className="flex flex-1 flex-shrink-0 flex-col justify-around text-center sm:flex-row sm:text-start">
+                  {groupOfProducts.map((product) => (
+                    <ProductListCard key={product.id} product={product} />
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <ul className="flex w-full flex-col gap-5 sm:flex-row">
+            <LoadingSkeletonsList numberOfSkeletonsToRender={3}>
+              <LoadingSkeletonCard />
+            </LoadingSkeletonsList>
+          </ul>
         )}
+        {groupedProducts &&
+          indexOfItemsGroupToDisplay < groupedProducts.length - 1 && (
+            <button
+              onClick={() => setIndexOfItemsGroupToDisplay((i) => i + 1)}
+              className="absolute -right-3 top-1/3 flex rounded-full bg-gray-50 p-2 text-gray-700 shadow-border hover:shadow-borderLg"
+            >
+              <MdOutlineKeyboardArrowRight size={24} />
+            </button>
+          )}
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import {
 
 import authService from "../service/authService";
 import { User } from "../types/userInterface";
+import { useNavigate } from "react-router";
 
 interface ContextValues extends Partial<User> {
   initializeUser: (user: Partial<User>) => void;
@@ -47,6 +48,7 @@ function userDetailsReducer(state: Partial<User>, action: ReducerAction) {
   }
 }
 export function UserDetailsContext({ children }: { children: ReactNode }) {
+  const navigate = useNavigate();
   const [{ userId, email, firstName, roles }, dispatch] = useReducer(
     userDetailsReducer,
     intialContextValues,
@@ -60,6 +62,7 @@ export function UserDetailsContext({ children }: { children: ReactNode }) {
   const logout = useCallback(() => {
     dispatch({ type: ReducerActionType.LOGOUT });
     authService.logout();
+    navigate("/");
   }, []);
   return (
     <UserPrincipalContext.Provider

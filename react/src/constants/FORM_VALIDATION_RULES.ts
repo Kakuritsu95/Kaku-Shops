@@ -1,7 +1,11 @@
 import { ContactFormFields } from "../types/ContactFormInterface";
 import { OrderFormFields } from "../types/orderFormFields";
 import { Address } from "../types/orderInterface";
-import { LoginCredentials, UserDetails } from "../types/userInterface";
+import {
+  LoginCredentials,
+  SignupCredentials,
+  UserDetails,
+} from "../types/userInterface";
 import { createValidationRulesByType } from "../utils/createValidationRulesByType";
 
 const ADDRESS_FORM_VALIDATION_RULES = createValidationRulesByType<Address>();
@@ -19,7 +23,7 @@ const LOGIN_FORM_VALIDATION_RULES =
   createValidationRulesByType<LoginCredentials>();
 
 const REGISTER_FORM_VALIDATION_RULES =
-  createValidationRulesByType<LoginCredentials>();
+  createValidationRulesByType<SignupCredentials>();
 
 export {
   ADDRESS_FORM_VALIDATION_RULES,
