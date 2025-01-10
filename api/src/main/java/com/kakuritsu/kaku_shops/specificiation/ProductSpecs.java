@@ -45,12 +45,12 @@ public class ProductSpecs {
         String keywordLikePattern = "%"+request.getKeyword()+"%";
         return (root, query, cb) -> {
             Predicate predicate;
-            Predicate nameLikePredicate = cb.like(root.get("name"),keywordLikePattern);
-            predicate = cb.like(root.get("name"),request.getKeyword());
+             predicate = cb.like(cb.lower(root.get("name")),keywordLikePattern);
+
             if(request.getKeyword()!=null){
-                Predicate brandLikePredicate = cb.like(root.get("brand"),keywordLikePattern);
-                Predicate categoryLikePredicate = cb.like(root.get("category").get("name"),keywordLikePattern);
-                predicate = cb.or(nameLikePredicate,brandLikePredicate,categoryLikePredicate);
+                Predicate brandLikePredicate = cb.like(cb.lower(root.get("brand")),keywordLikePattern);
+                Predicate categoryLikePredicate = cb.like(cb.lower(root.get("category").get("name")),keywordLikePattern);
+                predicate = cb.or(predicate,brandLikePredicate,categoryLikePredicate);
             }
             if(request.isInStock()){
                 Predicate isProductInStockPredicate = cb.greaterThan(root.get("inventory"),0);

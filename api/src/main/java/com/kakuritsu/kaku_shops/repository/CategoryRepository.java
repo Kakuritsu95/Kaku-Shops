@@ -14,7 +14,7 @@ public interface CategoryRepository extends JpaRepository<Category,Long> {
 
     @Query("SELECT c FROM Category c" +
             " JOIN products p" +
-            " WHERE (p.name LIKE %:keyword% OR p.brand LIKE %:keyword% OR c.name LIKE %:keyword%)" +
+            " WHERE (p.name ILIKE %:keyword% OR p.brand ILIKE %:keyword% OR c.name ILIKE %:keyword%)" +
             " AND (:brand IS NULL OR p.brand=:brand)")
     List<Category> findCategoriesByKeyword(
             @Param("keyword") String keyword,

@@ -40,12 +40,12 @@ export default function ProductsListingPage() {
           brands={searchResults?.relevantBrands}
         />
 
-        {searchResults && (
+        {
           <ProductsDisplay
-            products={searchResults.products}
+            products={searchResults?.products}
             breadCrumpRouteName={searchParams.get("keyword")}
           />
-        )}
+        }
       </div>
       {searchResults && (
         <Pagination

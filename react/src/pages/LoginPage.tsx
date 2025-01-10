@@ -21,7 +21,11 @@ export default function LoginPage() {
   } = useForm<LoginCredentials>({
     defaultValues: { email: "user1@gmail.com", password: "11" },
   });
-  const { mutate: login } = useMutation<User, AxiosError, LoginCredentials>({
+  const { mutate: login, isPending: isLoggingIn } = useMutation<
+    User,
+    AxiosError,
+    LoginCredentials
+  >({
     mutationFn: (credentials: LoginCredentials) =>
       authService.login(credentials),
     onSuccess: (data: User) => {
@@ -69,7 +73,12 @@ export default function LoginPage() {
             )}
           />
 
-          <Button type="brand" color="brand" size="medium">
+          <Button
+            type="brand"
+            color="brand"
+            size="medium"
+            isSubmitting={isLoggingIn}
+          >
             Sign in
           </Button>
         </form>

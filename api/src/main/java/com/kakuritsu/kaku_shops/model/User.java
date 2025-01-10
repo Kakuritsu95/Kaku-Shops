@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Setter
 @Getter
+@Table(name = "app_user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +36,6 @@ public class User {
     private Collection<Role> roles = new HashSet<>();
     @OneToOne
     private Address address;
-    @Column(columnDefinition="tinyint(1) default 0")
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean isEnabled;
 }

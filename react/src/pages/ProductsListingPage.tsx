@@ -50,12 +50,12 @@ export default function ProductsListingPage() {
             brands={brands}
           />
         }
-        {searchResults && (
+        {
           <ProductsDisplay
-            breadCrumpRouteName={searchResults.content[0].category.name}
+            breadCrumpRouteName={searchResults?.content[0].category.name}
             products={searchResults}
           />
-        )}
+        }
       </div>
       {searchResults && (
         <Pagination

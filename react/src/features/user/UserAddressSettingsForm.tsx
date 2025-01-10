@@ -15,7 +15,7 @@ import { ADDRESS_FORM_VALIDATION_RULES } from "../../constants/FORM_VALIDATION_R
 
 export default function UserDetailsSettingsForm() {
   const { userDetails } = useUserDetails();
-  const { updateUserDetails } = useUpdateUserDetails();
+  const { updateUserDetails, isUpdating } = useUpdateUserDetails();
   const {
     handleSubmit,
     formState: { errors },
@@ -86,7 +86,7 @@ export default function UserDetailsSettingsForm() {
       </div>
 
       <div className="text-right">
-        <Button color="black" size="large">
+        <Button color="black" size="large" isSubmitting={isUpdating}>
           Save
         </Button>
       </div>

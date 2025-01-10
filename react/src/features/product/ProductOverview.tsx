@@ -4,7 +4,6 @@ import { Product } from "../../types/productInterface";
 import { Button } from "../../ui/Button";
 import ProductOverviewInfo from "./ProductOverViewInfo";
 import useUpdateCartItemQuantity from "../../hooks/useUpdateCartItemQuantity";
-import Spinner from "../../ui/Spinner";
 
 export default function ProductOverview({ product }: { product: Product }) {
   const { addProductToCart, isAdding } = useUpdateCartItemQuantity();
@@ -28,10 +27,9 @@ export default function ProductOverview({ product }: { product: Product }) {
           onClick={() =>
             addProductToCart({ productId: product.id, quantity: 1 })
           }
+          isSubmitting={isAdding}
         >
-          {isAdding ? (
-            <Spinner size={24} />
-          ) : (
+          {
             <>
               {productQuantityInCart && (
                 <span className="inline-block w-6 rounded-full bg-lime-200 bg-opacity-20 py-0.5 text-sm font-semibold">
@@ -40,7 +38,7 @@ export default function ProductOverview({ product }: { product: Product }) {
               )}
               <span className="ml-2">Add To Cart</span>
             </>
-          )}
+          }
         </Button>
       </div>
     </div>

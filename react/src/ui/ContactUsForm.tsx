@@ -129,7 +129,7 @@ export default function ContactUsForm({
       />
 
       <Button isSubmitting={isSubmitting} color="sky" size="medium">
-        {isSubmitting ? <Spinner size={24} /> : "Send message"}
+        Send Message
       </Button>
     </form>
   );

@@ -5,7 +5,7 @@ import { useUserContext } from "../context/UserDetailsContext";
 import toast from "react-hot-toast";
 export default function useUpdateUserDetails() {
   const { updateFirstName } = useUserContext();
-  const { mutate: updateUserDetails } = useMutation({
+  const { mutate: updateUserDetails, isPending: isUpdating } = useMutation({
     mutationFn: (userInformation: Partial<User>) =>
       userService.update(userInformation),
     onSuccess: (userInformation: User) => {
@@ -16,5 +16,5 @@ export default function useUpdateUserDetails() {
       toast.error("Something went wrong");
     },
   });
-  return { updateUserDetails };
+  return { updateUserDetails, isUpdating };
 }

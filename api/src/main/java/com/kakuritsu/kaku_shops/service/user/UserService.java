@@ -71,7 +71,7 @@ public class UserService implements IUserService{
                       user.setPassword(passwordEncoder.encode(req.getPassword()));
                       user.setRoles(Set.of(role));
                       return userRepository.save(user);
-                          }) .orElseThrow(()-> new AlreadyExistsException("Oops" + request.getEmail() +" already exists"));
+                          }) .orElseThrow(()-> new AlreadyExistsException("Oops " + request.getEmail() +" already exists"));
           eventPublisher.publishAccountCreatedEvent(newUser);
           return newUser;
     }

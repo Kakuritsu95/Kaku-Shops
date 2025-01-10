@@ -9,6 +9,7 @@ const refCodeInvalidMessage =
 export default function OrderSearchPage() {
   const [orderRefCode, setOrderRefCode] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
+
   const navigate = useNavigate();
 
   return (
@@ -19,6 +20,7 @@ export default function OrderSearchPage() {
           setIsError(true);
           return;
         }
+
         navigate(`/order-progress/${orderRefCode}`);
       }}
       className="mx-auto mt-36 flex flex-col space-y-7 text-center sm:w-2/3 xl:w-2/5"

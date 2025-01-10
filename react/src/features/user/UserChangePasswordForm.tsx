@@ -9,7 +9,7 @@ import { Button } from "../../ui/Button";
 
 export default function UserChangePasswordForm() {
   const {
-    formState: { errors },
+    formState: { errors, isSubmitting: isUpdating },
     handleSubmit,
     control,
     setError,
@@ -69,7 +69,7 @@ export default function UserChangePasswordForm() {
         )}
       />
       <div className="text-right">
-        <Button color="black" size="large">
+        <Button color="black" size="large" isSubmitting={isUpdating}>
           Save
         </Button>
       </div>

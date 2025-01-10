@@ -12,7 +12,7 @@ import { USER_DETAILS_FORM_VALIDATION_RULES } from "../../constants/FORM_VALIDAT
 
 export default function UserDetailsSettingsForm() {
   const { userDetails } = useUserDetails();
-  const { updateUserDetails } = useUpdateUserDetails();
+  const { updateUserDetails, isUpdating } = useUpdateUserDetails();
 
   const {
     handleSubmit,
@@ -82,7 +82,7 @@ export default function UserDetailsSettingsForm() {
         )}
       />
       <div className="text-right">
-        <Button color="black" size="large">
+        <Button color="black" size="large" isSubmitting={isUpdating}>
           Save
         </Button>
       </div>

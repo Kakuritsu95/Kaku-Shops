@@ -28,7 +28,7 @@ public interface IProductService {
     Page<ProductDto> getProductsByCategoryIdAndSearchParams(Long categoryId, FilterSortProductRequest request);
 
     Page<ProductDto> getProductsBySearchKeyword(String keyword);
-    ProductsSearchResult getProductsByKeywordAndFilters(SearchProductsRequest searchRequest);
+    ProductsSearchResult getSearchResultsWithFilters(SearchProductsRequest searchRequest);
     double addRating(Long productId, User user, double rating);
 
     List<ProductDto> getLatestProducts();

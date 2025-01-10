@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
+import Spinner from "./Spinner";
 
 interface ButtonProps {
   urlPath?: string;
@@ -56,7 +57,7 @@ export function Button({
       disabled={isSubmitting}
       className={`${types[type]} ${colors[color]} ${sizes[size]} ${isSubmitting && "bg-gray-400 hover:cursor-not-allowed hover:bg-gray-400"} text-center duration-100`}
     >
-      {children}
+      {isSubmitting ? <Spinner size={24} /> : children}
     </button>
   );
 }
