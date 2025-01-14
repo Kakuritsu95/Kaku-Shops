@@ -10,9 +10,11 @@ import LoadingSkeletonCard from "../../ui/ProductSkeletonCard";
 export default function ProductsCarousel({
   products,
   groupNumber = 3,
+  isLoading,
 }: {
   products: Array<Product> | undefined;
   groupNumber?: number;
+  isLoading: boolean;
 }) {
   const {
     sliderContainerRef,
@@ -49,9 +51,15 @@ export default function ProductsCarousel({
             <MdOutlineKeyboardArrowLeft size={24} />
           </button>
         )}
-        {groupedProducts ? (
+        {isLoading ? (
+          <ul className="flex w-full flex-col gap-5 sm:flex-row">
+            <LoadingSkeletonsList numberOfSkeletonsToRender={3}>
+              <LoadingSkeletonCard />
+            </LoadingSkeletonsList>
+          </ul>
+        ) : (
           <ul ref={sliderContainerRef} className="flex w-full duration-700">
-            {groupedProducts.map((groupOfProducts, index) => (
+            {groupedProducts?.map((groupOfProducts, index) => (
               <li key={index} className="flex flex-shrink-0 basis-full">
                 <ul className="flex flex-1 flex-shrink-0 flex-col justify-around text-center sm:flex-row sm:text-start">
                   {groupOfProducts.map((product) => (
@@ -60,12 +68,6 @@ export default function ProductsCarousel({
                 </ul>
               </li>
             ))}
-          </ul>
-        ) : (
-          <ul className="flex w-full flex-col gap-5 sm:flex-row">
-            <LoadingSkeletonsList numberOfSkeletonsToRender={3}>
-              <LoadingSkeletonCard />
-            </LoadingSkeletonsList>
           </ul>
         )}
         {groupedProducts &&

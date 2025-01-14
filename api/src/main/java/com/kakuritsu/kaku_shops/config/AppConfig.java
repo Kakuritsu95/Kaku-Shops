@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Primary;
 
 
 @Configuration
-public class AppConfig {
+public class AppConfig  {
    @Primary
    @Bean("vanillaMapper")
    public ModelMapper modelMapper(){

@@ -7,7 +7,10 @@
 <body>
 <h1 style="font-size:1.3rem; color: rgb(249, 115, 22)">Thank you for choosing Kaku-shops for your shopping!</h1>
 <p style="color:blue; font-weight:600;">Please find bellow the verification link to activate your shopping account </p>
-<a style="background-color:coral; padding:0.6rem; border-radius:3px; display:block; cursor:pointer; width:8rem; text-align:center; margin-top:20px;" th:href="@{http://localhost:5173/auth/verification/{verificationToken}(verificationToken=${verificationToken})}">Verify my account</a>
+<a style="background-color:coral; padding:0.6rem; border-radius:3px; display:block; cursor:pointer; width:8rem; text-align:center; margin-top:20px;"
+   th:href="${serverDomain + '/auth/verification/' + verificationToken}">
+    Verify my account
+</a>
 
 </body>
 </html>

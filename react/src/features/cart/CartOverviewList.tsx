@@ -1,7 +1,7 @@
 import { CartItem } from "../../types/cartItemInterface";
 import CartItemOverviewCard from "./CartItemOverviewCard";
 
-export default function CartOverview({
+export default function CartOverviewList({
   cartItems,
 }: {
   cartItems: Array<CartItem>;

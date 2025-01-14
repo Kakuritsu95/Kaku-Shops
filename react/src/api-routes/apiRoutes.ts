@@ -1,6 +1,7 @@
 import { createSearchQuery } from "../utils/urlHelpers";
 
-const API_BASE_URL = "http://localhost:8080/api/v1";
+// const API_BASE_URL = "http://localhost:8080/api/v1"; //development
+const API_BASE_URL = "/api/v1"; //production
 
 const BASE_PATHS = {
   user: "users",

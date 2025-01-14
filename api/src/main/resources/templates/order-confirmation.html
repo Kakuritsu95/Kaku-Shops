@@ -150,17 +150,16 @@
                 </tr>
                 <tr>
                     <td style="padding: 20px;">
-                        <!-- Use a table to align buttons side by side in Gmail -->
                         <table>
                             <tr>
                                 <td style="width: 50%">
-                                    <a th:href="@{http://localhost:5173/order-progress/{orderRefCode}(orderRefCode=${order.refCode})}"
+                                    <a th:href="${serverDomain + '/order-progress/' + order.refCode}"
                                        style="background-color: #125fbc; color: #ffffff; text-decoration: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 14px; display: inline-block;">
                                         Track Your Order
                                     </a>
                                 </td>
                                 <td style="width: 50%; text-align: center;">
-                                    <a href="http://localhost:5173"
+                                    <a th:href="${serverDomain}"
                                        style="background-color: #ffffff; color: #000000; text-decoration: none; padding: 10px 20px; border: 1px solid #eaeaea; border-radius: 8px; font-weight: 600; font-size: 14px; display: inline-block;">
                                         Continue shopping
                                     </a>

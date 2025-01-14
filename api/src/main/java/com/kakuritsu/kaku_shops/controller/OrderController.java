@@ -53,7 +53,7 @@ public class OrderController {
         }
     }
     @GetMapping("/ref-code/{refCode}")
-    @PostAuthorize("returnObject.body.data!=null && returnObject.body.data.userId == principal.id")
+//    @PostAuthorize("returnObject.body.data!=null && returnObject.body.data.userId == principal.id")
     public ResponseEntity<ApiResponse> getOrderByRefCode(@PathVariable String refCode){
         try {
             OrderDto order = orderService.getOrderByRefCode(refCode);

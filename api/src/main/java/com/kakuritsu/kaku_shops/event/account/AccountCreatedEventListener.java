@@ -13,7 +13,7 @@ public class AccountCreatedEventListener implements ApplicationListener<AccountC
     private final JwtUtils jwtUtils;
     @Override
     public void onApplicationEvent(AccountCreatedEvent event) {
-        String verificationToken = jwtUtils.generateAccountActivationToken(event.getUser().getEmail());
-        emailService.sendAccountVerificationEmail(event.getUser(), verificationToken);
+        String verificationToken = jwtUtils.generateAccountActivationToken(event.getNewUser().getEmail());
+        emailService.sendAccountVerificationEmail(event.getNewUser(),event.getServerDomain(), verificationToken);
     }
 }

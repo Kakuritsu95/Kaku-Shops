@@ -8,7 +8,9 @@ import TextInput from "../ui/TextInput";
 import { Button } from "../ui/Button";
 import { Link } from "react-router-dom";
 import { REGISTER_FORM_VALIDATION_RULES } from "../constants/FORM_VALIDATION_RULES";
-
+import { AxiosErrorResponse } from "../types/axiosErrorResponse";
+import InfoMessageTip from "../ui/InfoMessageTip";
+import APP_ROUTES from "../app-routes/appRoutes";
 export default function SignupPage() {
   const {
     formState: { errors },
@@ -17,11 +19,12 @@ export default function SignupPage() {
   } = useForm<CreateUser>({
     defaultValues: { email: "user1@gmail.com", password: "11" },
   });
-  const { mutate: signup, isPending: isSigning } = useMutation<
-    void,
-    AxiosError,
-    CreateUser
-  >({
+  const {
+    mutate: signup,
+    isPending: isSigning,
+    isSuccess: isSignupSuccess,
+    error,
+  } = useMutation<void, AxiosError<AxiosErrorResponse>, CreateUser>({
     mutationFn: (credentials: CreateUser) => userService.register(credentials),
   });
   function onSubmit(userDetails: CreateUser) {
@@ -29,11 +32,24 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="h-[40rem] w-full rounded-xl sm:bg-[url('https://images.unsplash.com/photo-1536059540012-f2ed455bc0b1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] sm:bg-cover sm:bg-center sm:pt-12">
+    <div className="h-[40rem] w-full rounded-xl sm:bg-[url('https://images.unsplash.com/photo-1536059540012-f2ed455bc0b1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] sm:bg-cover sm:bg-center sm:pt-6">
       <div className="mx-auto w-full space-y-10 rounded-xl bg-white p-5 opacity-95 sm:w-8/12 sm:px-10 sm:py-12 sm:shadow-border md:w-5/12 lg:w-4/12">
         <div className="space-y-3">
           <h2 className="text-2xl font-semibold">Register shopping account</h2>
-          <p className="text-gray-500">Please enter your details</p>
+          {!isSignupSuccess && (
+            <p className="text-gray-500">Please enter your details</p>
+          )}
+          {error && (
+            <InfoMessageTip type="fail">
+              {error?.response?.data.message}
+            </InfoMessageTip>
+          )}
+          {isSignupSuccess && (
+            <InfoMessageTip type="success">
+              Thank you for signing up! Please check your email and verify your
+              account.
+            </InfoMessageTip>
+          )}
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -102,7 +118,7 @@ export default function SignupPage() {
         </form>
         <div className="space-x-2">
           <span>Already have an account?</span>
-          <Link to="/auth/login" className="text-sky-600 underline">
+          <Link to={APP_ROUTES.LOGIN} className="text-sky-600 underline">
             Sign in
           </Link>
         </div>

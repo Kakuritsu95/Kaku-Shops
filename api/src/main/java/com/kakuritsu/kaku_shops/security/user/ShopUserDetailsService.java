@@ -3,6 +3,7 @@ package com.kakuritsu.kaku_shops.security.user;
 import com.kakuritsu.kaku_shops.model.User;
 import com.kakuritsu.kaku_shops.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,7 @@ public class ShopUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = Optional.ofNullable(userRepository.findByEmail(email)).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+        if(!user.isEnabled()) throw new DisabledException("Account is not verified yet. Please check your email.");
         Collection<GrantedAuthority> authorities = user.getRoles().stream().map(role->new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
         return new ShopUserDetails(user.getId(),user.getEmail(),user.getPassword(),user.getFirstName(),user.isEnabled(),authorities);
     }

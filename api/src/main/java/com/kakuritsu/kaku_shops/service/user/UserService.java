@@ -6,13 +6,16 @@ import com.kakuritsu.kaku_shops.event.EventPublisher;
 import com.kakuritsu.kaku_shops.exceptions.AlreadyExistsException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.exceptions.UnauthorizedActionException;
+import com.kakuritsu.kaku_shops.helpers.DomainHelper;
 import com.kakuritsu.kaku_shops.model.Role;
 import com.kakuritsu.kaku_shops.model.User;
+import com.kakuritsu.kaku_shops.repository.RoleRepository;
 import com.kakuritsu.kaku_shops.repository.UserRepository;
 import com.kakuritsu.kaku_shops.request.CreateUserRequest;
 import com.kakuritsu.kaku_shops.security.jwt.JwtUtils;
 import com.kakuritsu.kaku_shops.security.user.ShopUserDetailsService;
 import com.kakuritsu.kaku_shops.service.address.IAddressService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
@@ -30,6 +33,7 @@ public class UserService implements IUserService{
     private final ModelMapper mapper;
     private final PasswordEncoder passwordEncoder;
     private final EventPublisher eventPublisher;
+    private final RoleRepository roleRepository;
     private final JwtUtils jwtUtils;
     private final ShopUserDetailsService shopUserDetailsService;
     private final ModelMapper nonEmptyFieldsMapper;
@@ -38,6 +42,7 @@ public class UserService implements IUserService{
                        ModelMapper mapper,
                        PasswordEncoder passwordEncoder,
                        EventPublisher eventPublisher,
+                       RoleRepository roleRepository,
                        JwtUtils jwtUtils,
                        ShopUserDetailsService shopUserDetailsService,
                        IAddressService addressService,
@@ -46,6 +51,7 @@ public class UserService implements IUserService{
         this.mapper = mapper;
         this.passwordEncoder = passwordEncoder;
         this.eventPublisher = eventPublisher;
+        this.roleRepository=roleRepository;
         this.jwtUtils = jwtUtils;
         this.shopUserDetailsService = shopUserDetailsService;
         this.nonEmptyFieldsMapper = nonEmptyFieldsMapper;
@@ -59,9 +65,9 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public User createUser(CreateUserRequest request) {
-          Role role = new Role("ROLE_CUSTOMER");
-          User newUser = Optional.of(request)
+    public User createUser(CreateUserRequest createUserRequest, HttpServletRequest request) {
+          Role role = roleRepository.findByName("ROLE_CUSTOMER");
+          User newUser = Optional.of(createUserRequest)
                   .filter(req->!userRepository.existsByEmail(req.getEmail()))
                   .map(req->{
                       User user = new User();
@@ -71,8 +77,9 @@ public class UserService implements IUserService{
                       user.setPassword(passwordEncoder.encode(req.getPassword()));
                       user.setRoles(Set.of(role));
                       return userRepository.save(user);
-                          }) .orElseThrow(()-> new AlreadyExistsException("Oops " + request.getEmail() +" already exists"));
-          eventPublisher.publishAccountCreatedEvent(newUser);
+                          }) .orElseThrow(()-> new AlreadyExistsException("Oops " + createUserRequest.getEmail() +" already exists"));
+          String serverDomain = DomainHelper.getServerDomain(request);
+          eventPublisher.publishAccountCreatedEvent(newUser, serverDomain);
           return newUser;
     }
 

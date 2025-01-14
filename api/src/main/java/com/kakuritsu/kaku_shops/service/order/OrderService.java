@@ -4,7 +4,9 @@ import com.kakuritsu.kaku_shops.dto.OrderDto;
 import com.kakuritsu.kaku_shops.enums.OrderStatus;
 import com.kakuritsu.kaku_shops.event.EventPublisher;
 import com.kakuritsu.kaku_shops.exceptions.CartOperationException;
+import com.kakuritsu.kaku_shops.exceptions.ProductOutOfStockException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
+import com.kakuritsu.kaku_shops.helpers.DomainHelper;
 import com.kakuritsu.kaku_shops.model.*;
 import com.kakuritsu.kaku_shops.repository.OrderRepository;
 import com.kakuritsu.kaku_shops.repository.ProductRepository;
@@ -59,7 +61,8 @@ public class OrderService implements IOrderService {
             order.setOrderItems(new HashSet<>(orderItems));
             order.setTotalAmount(calculateTotalAmount(orderItems));
             cartService.clearCart(cart.getId());
-            eventPublisher.publishOrderEvent(order);
+            String serverDomain = DomainHelper.getServerDomain(request);
+            eventPublisher.publishOrderEvent(order,serverDomain);
             return orderRepository.save(order);
         }
 
@@ -94,6 +97,7 @@ private Address createSaveAndReturnAddress(AddressRequest address){
     private List<OrderItem> createOrderItems(Order order, Cart cart) {
         return cart.getCartItems().stream().map(item -> {
             Product product = item.getProduct();
+            if(item.getQuantity() > product.getInventory()) throw new ProductOutOfStockException("Product stock is limited only " + product.getInventory()+ " are available of " + product.getName());
             product.setInventory(product.getInventory()-item.getQuantity());
             product.setSellCount(product.getSellCount() + item.getQuantity());
             productRepository.save(product);

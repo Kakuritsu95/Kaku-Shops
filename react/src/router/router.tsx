@@ -19,6 +19,8 @@ import AccountSettingsPage from "../pages/AccountSettingsPage";
 import UserDetailsSettingsForm from "../features/user/UserDetailsSettingsForm";
 import UserAddressSettingsForm from "../features/user/UserAddressSettingsForm";
 import UserChangePasswordForm from "../features/user/UserChangePasswordForm";
+import PageNotFound from "../pages/PageNotFound";
+import APP_ROUTES from "../app-routes/appRoutes";
 
 const router = createBrowserRouter([
   {
@@ -26,35 +28,35 @@ const router = createBrowserRouter([
     element: <AppLayout />,
     children: [
       {
-        element: <Navigate to={"/homepage"} />,
+        element: <Navigate to={APP_ROUTES.HOME_PAGE} />,
         path: "",
       },
       {
+        element: <Homepage />,
+        path: APP_ROUTES.HOME_PAGE,
+      },
+      {
         element: <OrderConfirmationPage />,
-        path: "order/:orderRefCode",
+        path: `${APP_ROUTES.ORDER}/:orderRefCode`,
       },
       {
         element: <SearchResultsPage />,
-        path: "/search",
+        path: APP_ROUTES.SEARCH,
       },
       {
-        element: <Homepage />,
-        path: "/homepage",
-      },
-      {
-        path: "/products/category/:categoryId",
+        path: `${APP_ROUTES.PRODUCT_LISTING}/:categoryId`,
         element: <ProductsListingPage />,
       },
       {
-        path: "/product/:productId",
+        path: `${APP_ROUTES.PRODUCT_OVERVIEW}/:productId`,
         element: <ProductOverviewPage />,
       },
       {
-        path: "/cart",
+        path: APP_ROUTES.CART,
         element: <CartPage />,
       },
       {
-        path: "/checkout",
+        path: APP_ROUTES.CHECKOUT,
         element: (
           <ProtectedRoute>
             <CheckoutPage />
@@ -62,56 +64,60 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "auth/login",
+        path: APP_ROUTES.LOGIN,
         element: <LoginPage />,
       },
       {
-        path: "signup",
+        path: APP_ROUTES.SIGNUP,
         element: <SignupPage />,
       },
       {
-        path: "auth/verification/:verificationToken",
+        path: `${APP_ROUTES.ACCOUNT_VERIFICATION}/:verificationToken`,
         element: <AccountVerificationPage />,
       },
       {
-        path: "contact",
+        path: APP_ROUTES.CONTACT_US,
         element: <ContactUsPage />,
       },
       {
-        path: "order-history",
+        path: APP_ROUTES.ORDER_HISTORY,
         element: <OrderHistoryPage />,
       },
       {
-        path: "order-progress-form",
+        path: APP_ROUTES.ORDER_SEARCH,
         element: <OrderSearchPage />,
       },
       {
-        path: "order-progress/:orderRefCode",
+        path: `${APP_ROUTES.ORDER_PROGRESSS}/:orderRefCode`,
         element: <OrderProgressPage />,
       },
       {
-        path: "account",
+        path: APP_ROUTES.ACCOUNT,
         element: <AccountSettingsPage />,
         children: [
           {
             path: "",
-            element: <Navigate to="details" />,
+            element: <Navigate to={APP_ROUTES.ACCOUNT_DETAILS} />,
           },
           {
-            path: "details",
+            path: APP_ROUTES.ACCOUNT_DETAILS,
             element: <UserDetailsSettingsForm />,
           },
           {
-            path: "address",
+            path: APP_ROUTES.ACCOUNT_ADDRESS,
             element: <UserAddressSettingsForm />,
           },
           {
-            path: "change-password",
+            path: APP_ROUTES.ACCOUNT_PASSWORD,
             element: <UserChangePasswordForm />,
           },
         ],
       },
     ],
+  },
+  {
+    path: "*",
+    element: <PageNotFound />,
   },
 ]);
 

@@ -3,7 +3,7 @@ import cartService from "../service/cartService";
 import { Cart } from "../types/cartInterface";
 
 export function useCart() {
-  const { data: cart } = useQuery<Cart>({
+  const { data: cart, isLoading } = useQuery<Cart>({
     queryKey: ["cart"],
     queryFn: cartService.getByCookieId,
   });
@@ -17,5 +17,10 @@ export function useCart() {
     cart?.cartItems.find((cartItem) => cartItem.product.id == productId)
       ?.quantity;
 
-  return { cart, totalCartItems, getCartItemQuantityByProductId };
+  return {
+    cart,
+    totalCartItems,
+    isLoading,
+    getCartItemQuantityByProductId,
+  };
 }

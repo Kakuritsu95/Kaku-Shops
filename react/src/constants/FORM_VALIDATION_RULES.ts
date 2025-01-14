@@ -1,4 +1,4 @@
-import { ContactFormFields } from "../types/ContactFormInterface";
+import { ContactFormFields } from "../types/contactFormInterface";
 import { OrderFormFields } from "../types/orderFormFields";
 import { Address } from "../types/orderInterface";
 import {

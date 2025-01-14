@@ -6,6 +6,12 @@ import com.kakuritsu.kaku_shops.request.SearchProductsRequest;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.Date;
+
 
 public class ProductSpecs {
     public static Specification<Product> productFilterSpecification(FilterSortProductRequest request,Long categoryId) {
@@ -32,6 +38,15 @@ public class ProductSpecs {
             if(request.isInStock()){
                Predicate inStockPredicate = cb.greaterThan(root.get("inventory"),0);
                predicate = cb.and(predicate, inStockPredicate);
+            }
+            if(request.isPopular()){
+                Predicate isPopularPredicate = cb.greaterThan(root.get("sellCount"),300);
+                predicate = cb.and(predicate,isPopularPredicate);
+            }
+            if(request.isNewArrivals()){
+                LocalDate startOfYear = LocalDate.of(LocalDate.now().getYear(), Month.JANUARY, 1);
+                Predicate isNewArrivalsPredicate = cb.greaterThanOrEqualTo(root.get("createdAt"),startOfYear);
+                predicate = cb.and(predicate,isNewArrivalsPredicate);
             }
 
 
@@ -63,6 +78,23 @@ public class ProductSpecs {
             if(request.getCategory()!=null && !request.getCategory().isEmpty()){
                 Predicate categoryEqualPredicate = cb.equal(root.get("category").get("name"),request.getCategory());
                 predicate = cb.and(predicate, categoryEqualPredicate);
+            }
+            if(request.getMinPrice()!=null){
+                Predicate minPricePredicate = cb.greaterThanOrEqualTo(root.get("price"),request.getMinPrice());
+                predicate = cb.and(predicate, minPricePredicate);
+            }
+            if(request.getMaxPrice()!=null){
+                Predicate maxPricePredicate = cb.lessThanOrEqualTo(root.get("price"),request.getMaxPrice());
+                predicate = cb.and(predicate, maxPricePredicate);
+            }
+            if(request.isPopular()){
+                Predicate isPopularPredicate = cb.greaterThan(root.get("sellCount"),300);
+                predicate = cb.and(predicate,isPopularPredicate);
+            }
+            if(request.isNewArrivals()){
+                LocalDate startOfYear = LocalDate.of(LocalDate.now().getYear(), Month.JANUARY, 1);
+                Predicate isNewArrivalsPredicate = cb.greaterThanOrEqualTo(root.get("createdAt"),startOfYear);
+                predicate = cb.and(predicate,isNewArrivalsPredicate);
             }
 
             return predicate;

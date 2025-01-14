@@ -22,7 +22,7 @@ export default function MobileFilterSection({
     <>
       {
         <div
-          className={`fixed left-0 z-10 h-screen w-full bg-stone-50 px-3 py-3 shadow duration-300 md:hidden ${isFilterSectionOpen ? "bottom-0" : "-bottom-full"}`}
+          className={`fixed left-0 z-10 h-screen w-full overflow-y-scroll bg-stone-50 px-3 py-3 shadow duration-300 md:hidden ${isFilterSectionOpen ? "bottom-0" : "-bottom-full"}`}
         >
           <ProductFilterSortSection categories={categories} brands={brands} />
           <button

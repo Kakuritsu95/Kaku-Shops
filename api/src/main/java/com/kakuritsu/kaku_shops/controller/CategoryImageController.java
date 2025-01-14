@@ -10,6 +10,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +28,7 @@ public class CategoryImageController {
     private final IImageService categoryImageService;
 
     @PostMapping("/upload")
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse> saveImages(@RequestParam MultipartFile file, Long categoryId){
         try {
             List<ImageDto> imageDtos = categoryImageService.saveImages(List.of(file),categoryId);
@@ -46,6 +47,7 @@ public class CategoryImageController {
 
     }
     @PutMapping("/{imageId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse> updateImage(@PathVariable Long imageId, @RequestBody MultipartFile file){
         try {
             Image image = categoryImageService.getImageById(imageId);
@@ -59,6 +61,7 @@ public class CategoryImageController {
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Update failed!", INTERNAL_SERVER_ERROR));
     }
     @DeleteMapping("/{imageId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse> updateImage(@PathVariable Long imageId){
         try {
             Image image = categoryImageService.getImageById(imageId);

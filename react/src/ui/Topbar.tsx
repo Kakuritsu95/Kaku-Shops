@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useUserContext } from "../context/UserDetailsContext";
 import UserOptions from "../features/user/UserOptions";
+import APP_ROUTES from "../app-routes/appRoutes";
 
 export default function Topbar() {
   const { email } = useUserContext();
@@ -11,12 +12,15 @@ export default function Topbar() {
       <div className="flex space-x-2 divide-x divide-gray-300 text-center">
         <Link
           className="px-4 duration-100 hover:text-stone-50"
-          to="/order-progress-form"
+          to={APP_ROUTES.ORDER_SEARCH}
         >
           Order progress
         </Link>
 
-        <Link to="/contact" className="px-4 duration-100 hover:text-stone-50">
+        <Link
+          to={APP_ROUTES.CONTACT_US}
+          className="px-4 duration-100 hover:text-stone-50"
+        >
           Contact us
         </Link>
         <div className="px-4 duration-100 hover:text-stone-50">
@@ -25,7 +29,7 @@ export default function Topbar() {
           ) : (
             <Link
               className="pr-4 duration-100 hover:text-stone-50"
-              to="/auth/login"
+              to={APP_ROUTES.LOGIN}
             >
               Login/Signup
             </Link>

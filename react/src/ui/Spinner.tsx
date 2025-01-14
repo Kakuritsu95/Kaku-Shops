@@ -1,15 +1,17 @@
 import { CgSpinner } from "react-icons/cg";
 export default function Spinner({
   absoluteCenter,
-  size,
+  displayStart,
+  size = 24,
 }: {
   absoluteCenter?: boolean;
-  size: number;
+  displayStart?: boolean;
+  size?: number;
 }) {
   return (
     <CgSpinner
       size={size}
-      className={`mx-auto animate-spin ${absoluteCenter && "absolute left-1/2 top-1/2"}`}
+      className={`animate-spin ${absoluteCenter && "absolute left-1/2 top-1/2"} ${!displayStart && "mx-auto"}`}
     />
   );
 }

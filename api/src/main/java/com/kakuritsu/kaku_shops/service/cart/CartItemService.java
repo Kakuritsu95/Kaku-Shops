@@ -1,6 +1,7 @@
 package com.kakuritsu.kaku_shops.service.cart;
 
 import com.kakuritsu.kaku_shops.exceptions.CartOperationException;
+import com.kakuritsu.kaku_shops.exceptions.ProductOutOfStockException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Cart;
 import com.kakuritsu.kaku_shops.model.CartItem;
@@ -21,8 +22,9 @@ public class CartItemService implements ICartItemService {
 
     @Override
     public Cart addItemToCart(String cartSessionId, Long productId, int quantity) {
-        Cart cart = cartService.getCartBySessionId(cartSessionId).orElseGet(()->cartService.initializeNewCart(cartSessionId));
         Product product = productService.getProductById(productId);
+        if(product.getInventory()<quantity) throw new ProductOutOfStockException("Product stock is limited only " + product.getInventory()+ " are available of " + product.getName());;
+        Cart cart = cartService.getCartBySessionId(cartSessionId).orElseGet(()->cartService.initializeNewCart(cartSessionId));
         CartItem cartItem = cart.getCartItems().stream().filter(item -> item.getProduct().getId().equals(productId)).findFirst().orElse(new CartItem());
         if(cartItem.getId()==null){
             cartItem.setCart(cart);
@@ -52,6 +54,8 @@ public class CartItemService implements ICartItemService {
 
     @Override
     public void updateItemQuantity(String cartSessionId, Long productId, int quantity) {
+        Product product = productService.getProductById(productId);
+        if(product.getInventory()<quantity) throw new ProductOutOfStockException("Product stock is limited only " + product.getInventory()+ " are available of " + product.getName());;
         Cart cart = cartService.getCartBySessionId(cartSessionId).orElseThrow(()-> new ResourceNotFoundException("Cart was not found"));
         CartItem cartItem = this.getCartItem(cart,productId);
         cartItem.setQuantity(quantity);

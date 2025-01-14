@@ -9,6 +9,7 @@ import com.kakuritsu.kaku_shops.service.category.ICategoryService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class CategoryController {
         }
     }
    @PostMapping
+   @PreAuthorize("hasRole('ROLE_ADMIN')")
    public ResponseEntity<ApiResponse> addCategory(@RequestBody Category category){
        try {
            Category savedCategory = categoryService.addCategory(category);
@@ -52,19 +54,9 @@ public class CategoryController {
        }
 
    }
-    @GetMapping("/by-name")
-    public ResponseEntity<ApiResponse> getCategoryByName(@RequestParam String name){
-        try {
-            Category category = categoryService.getCategoryByName(name);
-            return ResponseEntity.ok().body(new ApiResponse("Found!",category));
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
-        }
-
-    }
-
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse> deleteCategoryById(@PathVariable Long id){
         try {
              categoryService.deleteCategory(id);
@@ -75,6 +67,7 @@ public class CategoryController {
 
     }
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse> updateCategoryById(@PathVariable Long id, @RequestBody Category category){
         try {
             Category updatedCategory = categoryService.updateCategory(category,id);

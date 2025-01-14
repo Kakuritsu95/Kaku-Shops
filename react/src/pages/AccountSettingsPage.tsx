@@ -1,6 +1,8 @@
 import { Outlet } from "react-router";
 import { NavLink } from "react-router-dom";
 
+import APP_ROUTES from "../app-routes/appRoutes";
+
 export default function AccountSettingsPage() {
   return (
     <div className="mx-auto w-full md:w-2/3">
@@ -9,7 +11,7 @@ export default function AccountSettingsPage() {
           <li>
             <NavLink
               className="block rounded px-3 py-1.5 duration-300 hover:bg-violet-500 hover:text-white"
-              to="details"
+              to={APP_ROUTES.ACCOUNT_DETAILS}
             >
               Details
             </NavLink>
@@ -17,7 +19,7 @@ export default function AccountSettingsPage() {
           <li>
             <NavLink
               className="block rounded px-3 py-1.5 duration-300 hover:bg-violet-500 hover:text-white"
-              to="address"
+              to={APP_ROUTES.ACCOUNT_ADDRESS}
             >
               Address
             </NavLink>
@@ -25,7 +27,7 @@ export default function AccountSettingsPage() {
           <li>
             <NavLink
               className="block rounded px-3 py-1.5 duration-300 hover:bg-violet-500 hover:text-white"
-              to="change-password"
+              to={APP_ROUTES.ACCOUNT_PASSWORD}
             >
               Change password
             </NavLink>

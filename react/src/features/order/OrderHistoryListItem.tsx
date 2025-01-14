@@ -1,3 +1,4 @@
+import APP_ROUTES from "../../app-routes/appRoutes";
 import { Order, OrderStatus } from "../../types/orderInterface";
 import { Button } from "../../ui/Button";
 import { formatPrice } from "../../utils/priceFormat";
@@ -23,7 +24,7 @@ export default function OrderHistoryListItem({ order }: { order: Order }) {
         </div>
         <div className="ml-auto">
           <Button
-            urlPath={`/order/${order.refCode}`}
+            urlPath={`${APP_ROUTES.ORDER}/${order.refCode}`}
             size="small"
             color="transparent"
             type="transparent"

@@ -18,6 +18,9 @@ export default {
       animation: {
         shake: "shake 1s",
       },
+      fontSize: {
+        "5xl": "5rem",
+      },
     },
   },
   plugins: [],

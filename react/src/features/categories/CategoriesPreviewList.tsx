@@ -5,25 +5,27 @@ import { MdOutlineArrowRightAlt } from "react-icons/md";
 import LoadingSkeletonsList from "../../ui/LoadingSkeletonsList";
 
 import CategorySkeletonCard from "../../ui/CategorySkeletonCard";
+import APP_ROUTES from "../../app-routes/appRoutes";
 
 export default function CategoriesPreviewList() {
-  const categories = useCategories();
+  const { categories, isLoadingCategories } = useCategories();
   return (
     <ul className="flex flex-col flex-wrap justify-between gap-y-4 sm:flex-row">
-      {categories ? (
+      {isLoadingCategories ? (
+        <LoadingSkeletonsList numberOfSkeletonsToRender={6}>
+          <CategorySkeletonCard />
+        </LoadingSkeletonsList>
+      ) : (
+        categories &&
         categories
           .slice(0, 9)
           .map((category) => (
             <CategoryPreviewCard key={category.id} category={category} />
           ))
-      ) : (
-        <LoadingSkeletonsList numberOfSkeletonsToRender={6}>
-          <CategorySkeletonCard />
-        </LoadingSkeletonsList>
       )}
 
       <Link
-        to="/search?keyword="
+        to={`${APP_ROUTES.SEARCH}?keyword=""`}
         className="ml-auto text-blue-500 hover:underline"
       >
         <span>Explore all</span>

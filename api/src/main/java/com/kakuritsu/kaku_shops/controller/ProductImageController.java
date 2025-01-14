@@ -10,6 +10,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,8 +28,8 @@ public class ProductImageController {
     private final IImageService productImageService;
 
      @PostMapping("/upload")
-     
-    public ResponseEntity<ApiResponse> saveImages(@RequestParam List<MultipartFile> files, Long productId){
+     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ApiResponse> uploadImages(@RequestParam List<MultipartFile> files, Long productId){
         try {
             List<ImageDto> imageDtos = productImageService.saveImages(files,productId);
             return ResponseEntity.ok(new ApiResponse("success", imageDtos));
@@ -46,6 +47,7 @@ public class ProductImageController {
 
     }
     @PutMapping("/{imageId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse> updateImage(@PathVariable Long imageId, @RequestBody MultipartFile file){
         try {
             Image image = productImageService.getImageById(imageId);
@@ -59,7 +61,8 @@ public class ProductImageController {
      return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Update failed!", INTERNAL_SERVER_ERROR));
     }
     @DeleteMapping("/{imageId}")
-    public ResponseEntity<ApiResponse> updateImage(@PathVariable Long imageId){
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ApiResponse> deleteImage(@PathVariable Long imageId){
         try {
             Image image = productImageService.getImageById(imageId);
             if(image!=null){
