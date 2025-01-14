@@ -1,6 +1,5 @@
 package com.kakuritsu.kaku_shops.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
@@ -9,8 +8,9 @@ public class FilterSortProductRequest {
     private String sortBy;
     private Integer minPrice;
     private Integer maxPrice;
+    private boolean popular;
     private boolean inStock;
-    private String recent;
+    private boolean newArrivals;
     private int page = 1;
     private int size = 9;
 }

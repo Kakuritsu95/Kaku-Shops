@@ -5,19 +5,21 @@ import ProductListCard from "./ProductListCard";
 
 export default function ProductList({
   products,
+  isLoadingProducts,
 }: {
   products: Array<Product> | undefined;
+  isLoadingProducts: boolean;
 }) {
   return (
     <ul className="flex flex-wrap sm:gap-3">
-      {products ? (
-        products.map((product) => (
-          <ProductListCard product={product} key={product.id} />
-        ))
-      ) : (
+      {isLoadingProducts ? (
         <LoadingSkeletonsList>
           <ProductSkeletonCard />
         </LoadingSkeletonsList>
+      ) : (
+        products?.map((product) => (
+          <ProductListCard product={product} key={product.id} />
+        ))
       )}
     </ul>
   );

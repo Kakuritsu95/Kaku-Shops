@@ -5,9 +5,9 @@ import com.kakuritsu.kaku_shops.model.User;
 import com.kakuritsu.kaku_shops.request.GuestContactUsRequest;
 
 public interface IEmailService {
-   void sendOrderConfirmationEmail(Order order);
+   void sendOrderConfirmationEmail(Order order, String serverDomain);
 
-   void sendAccountVerificationEmail(User user, String verificationToken);
+   void sendAccountVerificationEmail(User user,String serverDomain, String verificationToken);
 
    void sendGuestContactUsMessage(GuestContactUsRequest request);
 }

@@ -28,7 +28,7 @@ export default function BeforeOrderSummary({
         isSubmitting={isSubmittingOrder}
         size="medium"
       >
-        {isSubmittingOrder ? <Spinner size={24} /> : <span>Confirm order</span>}
+        {isSubmittingOrder ? <Spinner /> : <span>Confirm order</span>}
       </Button>
     </div>
   );

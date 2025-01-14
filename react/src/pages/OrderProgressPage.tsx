@@ -7,14 +7,15 @@ import OrderConfirmationDetails from "../features/order/OrderConfirmationDetails
 import { addDaysToDate } from "../utils/dateFormat";
 
 import OrderProgressStepper from "../features/order/OrderProgressStepper";
+import Spinner from "../ui/Spinner";
 
 export default function OrderProgressPage() {
   const { orderRefCode = "" } = useParams();
-  const { data: order } = useQuery<Order>({
+  const { data: order, isLoading } = useQuery<Order>({
     queryKey: ["order", orderRefCode],
     queryFn: () => orderService.getByRefCode(orderRefCode),
   });
-
+  if (isLoading) return <Spinner absoluteCenter={true} />;
   if (order)
     return (
       <div className="mt-14 space-y-5 rounded py-10 sm:bg-slate-50 sm:p-10">

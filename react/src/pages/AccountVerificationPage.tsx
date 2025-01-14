@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import axios, { AxiosResponse } from "axios";
 import InfoMessageTip from "../ui/InfoMessageTip";
 import { Link } from "react-router-dom";
+import APP_ROUTES from "../app-routes/appRoutes";
 
 export default function AccountVerificationPage() {
   const { verificationToken } = useParams<string>();
@@ -29,7 +30,7 @@ export default function AccountVerificationPage() {
 
       <p className="text-2xl text-gray-700">
         <span>You can now </span>
-        <Link className="text-sky-700 underline" to="/auth/login">
+        <Link className="text-sky-700 underline" to={APP_ROUTES.LOGIN}>
           login
         </Link>
         <span> and fullfill your orders!</span>

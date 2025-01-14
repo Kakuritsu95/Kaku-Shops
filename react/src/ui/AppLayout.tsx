@@ -18,7 +18,7 @@ export function AppLayout() {
       <div className="space-y-10">
         <UserDetailsContext>
           <Navbar />
-          <main className="min-h-[80dvh] px-2.5 xl:mx-auto xl:w-3/4">
+          <main className="min-h-[80dvh] px-2.5 xl:mx-auto xl:w-4/5">
             <Outlet />
           </main>
         </UserDetailsContext>

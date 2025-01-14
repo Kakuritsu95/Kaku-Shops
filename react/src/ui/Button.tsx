@@ -57,7 +57,7 @@ export function Button({
       disabled={isSubmitting}
       className={`${types[type]} ${colors[color]} ${sizes[size]} ${isSubmitting && "bg-gray-400 hover:cursor-not-allowed hover:bg-gray-400"} text-center duration-100`}
     >
-      {isSubmitting ? <Spinner size={24} /> : children}
+      {isSubmitting ? <Spinner /> : children}
     </button>
   );
 }

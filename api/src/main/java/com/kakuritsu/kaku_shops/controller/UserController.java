@@ -5,14 +5,17 @@ import com.kakuritsu.kaku_shops.dto.UserDetailsDTO;
 import com.kakuritsu.kaku_shops.exceptions.AlreadyExistsException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.exceptions.UnauthorizedActionException;
+import com.kakuritsu.kaku_shops.helpers.DomainHelper;
 import com.kakuritsu.kaku_shops.model.Role;
 import com.kakuritsu.kaku_shops.model.User;
 import com.kakuritsu.kaku_shops.request.CreateUserRequest;
 import com.kakuritsu.kaku_shops.response.ApiResponse;
 import com.kakuritsu.kaku_shops.service.user.IUserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
@@ -26,6 +29,7 @@ public class UserController {
     private final IUserService userService;
 
     @GetMapping("/{userId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse> getUserById(@PathVariable Long userId) {
          try {
              User user = userService.getUserById(userId);
@@ -37,9 +41,9 @@ public class UserController {
          }
      }
      @PostMapping
-     public ResponseEntity<ApiResponse> createUser(@RequestBody @Valid CreateUserRequest request){
+     public ResponseEntity<ApiResponse> createUser(@RequestBody @Valid CreateUserRequest createUserRequest, HttpServletRequest request){
          try {
-             User user = userService.createUser(request);
+             User user = userService.createUser(createUserRequest, request);
              UserDetailsDTO userDto = userService.convertUserToDto(user);
              return ResponseEntity.ok().body(new ApiResponse("User successfully created", userDto));
          } catch (AlreadyExistsException e) {
@@ -48,6 +52,7 @@ public class UserController {
      }
 
     @DeleteMapping("/{userId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable Long userId){
         try {
             userService.deleteUser(userId);
@@ -65,7 +70,7 @@ public class UserController {
     }
 
     @PatchMapping("details")
-    ResponseEntity<ApiResponse> updateUserDetails(@RequestBody UserDetailsDTO userDetailsDTO){
+    ResponseEntity<ApiResponse> updateAuthenticatedUserDetails(@RequestBody UserDetailsDTO userDetailsDTO){
          User user = userService.getAuthenticatedUser();
          User updatedUser =  userService.updateUser(userDetailsDTO);
          System.out.println(user);

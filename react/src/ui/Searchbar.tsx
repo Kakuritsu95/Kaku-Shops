@@ -13,7 +13,9 @@ export default function Searchbar({ smallScreen }: { smallScreen?: boolean }) {
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const navigate = useNavigate();
   const debouncedKeyword = useDebounceKeyword(searchKeyword);
-  const { data: searchResults } = useQuery<PagedData<Product>>({
+  const { data: searchResults, isFetching: isSearching } = useQuery<
+    PagedData<Product>
+  >({
     queryKey: ["searchResults", debouncedKeyword],
     queryFn: () => {
       return productService.getBySearchKeyword(debouncedKeyword);
@@ -56,6 +58,7 @@ export default function Searchbar({ smallScreen }: { smallScreen?: boolean }) {
           products={searchResults?.content}
           closeDropdown={() => setIsDropdownOpen(false)}
           searchKeyword={searchKeyword}
+          isSearching={isSearching}
         />
       )}
     </div>

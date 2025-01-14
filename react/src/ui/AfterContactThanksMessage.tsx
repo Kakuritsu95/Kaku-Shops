@@ -11,8 +11,7 @@ export default function AfterContactThanksMessage({
     <div className="mt-44 space-y-6">
       <div className="flex flex-col items-center justify-center gap-5 text-center md:flex-row md:text-start">
         <h2 className="text-[1.7rem] font-bold text-orange-500 xl:text-3xl">
-          Thank you for reaching out to us {firstName && ", " + firstName}{" "}
-          Thodoros!
+          Thank you for reaching out to us {firstName && ", " + firstName}
         </h2>
         <div>
           <FaCheck

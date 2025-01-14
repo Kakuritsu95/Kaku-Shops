@@ -3,11 +3,13 @@ import categoryService from "../service/categoryService";
 import { Category } from "../types/categoryInterface";
 
 export default function useCategories() {
-  const { data: categories } = useQuery<Array<Category>>({
+  const { data: categories, isLoading: isLoadingCategories } = useQuery<
+    Array<Category>
+  >({
     queryKey: ["categories"],
     queryFn: () => {
       return categoryService.getAll();
     },
   });
-  return categories;
+  return { categories, isLoadingCategories };
 }

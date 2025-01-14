@@ -6,6 +6,7 @@ import { useCart } from "../../hooks/useCart";
 import { Button } from "../../ui/Button";
 import { formatPrice } from "../../utils/priceFormat";
 import { CartPreview } from "./CartPreview";
+import APP_ROUTES from "../../app-routes/appRoutes";
 export default function NavbarCart() {
   const [showCartProducts, setShowCartProducts] = useState<boolean>(false);
   const { cart, totalCartItems } = useCart();
@@ -36,20 +37,20 @@ export default function NavbarCart() {
         </div>
       </div>
       <div
-        className={`absolute -bottom-[7.5rem] right-0 z-10 w-auto duration-300 md:w-96 ${showCartProducts ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+        className={`absolute -bottom-[7.5rem] right-0 z-10 w-64 duration-300 sm:w-96 ${showCartProducts ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
       >
         {showCartProducts && (
           <div className="z-50 mt-6 flex h-24 flex-col">
             <div className="relative rounded-lg border bg-gray-50 shadow">
               <div className="p-5">
-                <h3 className="text-lg font-semibold">
+                <h3 className="font-semibold sm:text-lg">
                   {`${cart && cart?.cartItems?.length > 0 ? `Your cart (${cart?.cartItems?.length})` : "Your cart is empty, add products and keep on shopping!"}`}
                 </h3>
                 {cart && <CartPreview cart={cart} />}
               </div>
               {cart && cart.cartItems.length > 0 && (
                 <div className="w-full bg-white px-5 py-5">
-                  <Button urlPath={"/cart"} size="medium" color="blue">
+                  <Button urlPath={APP_ROUTES.CART} size="medium" color="blue">
                     Jumb to Cart
                   </Button>
                 </div>

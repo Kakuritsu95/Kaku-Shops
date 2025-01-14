@@ -13,7 +13,7 @@ export default function ProductsListingPage() {
   const [searchParams] = useSearchParams();
   const [isFilterSectionOpen, setIsFilterSectionOpen] =
     useState<boolean>(false);
-  const { data: searchResults } = useQuery<SearchProductsResult>({
+  const { data: searchResults, isLoading } = useQuery<SearchProductsResult>({
     queryKey: ["searchResults", ...Array.from(searchParams.entries()).sort()],
     queryFn: () =>
       productService.getSearchResultsWithFiltersBySearchParams(
@@ -22,12 +22,14 @@ export default function ProductsListingPage() {
   });
 
   return (
-    <div>
+    <>
       <div className="flex gap-10">
         <aside className="hidden w-72 md:block md:translate-x-0">
           <ProductFilterSection
             categories={searchResults?.relevantCategories}
             brands={searchResults?.relevantBrands}
+            isLoadingCategories={isLoading}
+            isLoadingBrands={isLoading}
           />
         </aside>
 
@@ -40,19 +42,27 @@ export default function ProductsListingPage() {
           brands={searchResults?.relevantBrands}
         />
 
-        {
+        {searchResults && searchResults.products.content.length > 0 && (
           <ProductsDisplay
-            products={searchResults?.products}
+            searchResults={searchResults?.products}
             breadCrumpRouteName={searchParams.get("keyword")}
+            isLoadingProducts={isLoading}
           />
-        }
+        )}
+        {!searchResults ||
+          (searchResults.products.content.length == 0 && !isLoading && (
+            <p className="text-center font-semibold text-gray-700">
+              No results available for the given filters
+            </p>
+          ))}
       </div>
-      {searchResults && (
+
+      {searchResults && searchResults.products.content.length > 0 && (
         <Pagination
           totalPages={searchResults.products.totalPages}
           currentPage={searchResults.products.pageable.pageNumber + 1}
         />
       )}
-    </div>
+    </>
   );
 }

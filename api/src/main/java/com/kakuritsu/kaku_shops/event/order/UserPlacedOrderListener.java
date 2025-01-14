@@ -12,6 +12,6 @@ public class UserPlacedOrderListener implements ApplicationListener<UserPlacedOr
     private final IEmailService emailService;
     @Override
     public void onApplicationEvent(UserPlacedOrderEvent event) {
-        emailService.sendOrderConfirmationEmail(event.getOrder());
+        emailService.sendOrderConfirmationEmail(event.getOrder(), event.getServerDomain());
     }
 }

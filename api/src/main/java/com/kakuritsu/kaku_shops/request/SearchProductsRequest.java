@@ -11,6 +11,10 @@ public class SearchProductsRequest {
     private String brand;
     private String sortBy;
     private boolean inStock;
+    private boolean popular;
+    private boolean newArrivals;
+    private Integer minPrice;
+    private Integer maxPrice;
     private int page = 1;
     private int size = 9;
     @JsonSetter("keyword")

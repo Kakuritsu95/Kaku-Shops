@@ -15,8 +15,10 @@ export default function ProductsListingPage() {
   const [isFilterSectionOpen, setIsFilterSectionOpen] =
     useState<boolean>(false);
   const { categoryId = "" } = useParams();
-  const categories = useCategories();
-  const { data: searchResults } = useQuery<PagedData<Product>>({
+  const { categories, isLoadingCategories } = useCategories();
+  const { data: searchResults, isLoading: isLoadingProducts } = useQuery<
+    PagedData<Product>
+  >({
     queryKey: [
       "productsListing",
       categoryId,
@@ -28,7 +30,7 @@ export default function ProductsListingPage() {
         searchParams.toString(),
       ),
   });
-  const { data: brands } = useQuery<Array<string>>({
+  const { data: brands, isLoading: isLoadingBrands } = useQuery<Array<string>>({
     queryKey: [categoryId, "brands"],
     queryFn: () =>
       productService.getUniqueBrandsByCategoryId(String(categoryId)),
@@ -36,9 +38,16 @@ export default function ProductsListingPage() {
 
   return (
     <div>
-      <div className="flex gap-10">
+      <div className="flex gap-20">
         <aside className="hidden w-72 md:block md:translate-x-0">
-          {<ProductFilterSection categories={categories} brands={brands} />}
+          {
+            <ProductFilterSection
+              categories={categories}
+              brands={brands}
+              isLoadingCategories={isLoadingCategories}
+              isLoadingBrands={isLoadingBrands}
+            />
+          }
         </aside>
         {
           <MobileFilterSection
@@ -50,14 +59,21 @@ export default function ProductsListingPage() {
             brands={brands}
           />
         }
-        {
+        {searchResults && searchResults.content.length > 0 && (
           <ProductsDisplay
             breadCrumpRouteName={searchResults?.content[0].category.name}
-            products={searchResults}
+            searchResults={searchResults}
+            isLoadingProducts={isLoadingProducts}
           />
-        }
+        )}
+        {!searchResults ||
+          (searchResults.content.length == 0 && !isLoadingProducts && (
+            <p className="text-center font-semibold text-gray-700">
+              No products available for the given filters
+            </p>
+          ))}
       </div>
-      {searchResults && (
+      {searchResults && searchResults.content.length > 0 && (
         <Pagination
           totalPages={searchResults?.totalPages}
           currentPage={searchResults?.pageable?.pageNumber + 1}

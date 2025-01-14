@@ -7,24 +7,37 @@ import ProductsCarousel from "../features/product/ProductsCarousel";
 import FeaturesList from "../ui/FeaturesList";
 
 export default function Homepage() {
-  const { data: latestProducts } = useQuery<Array<Product>>({
+  const { data: latestProducts, isLoading: isLoadingLatestProducts } = useQuery<
+    Array<Product>
+  >({
     queryKey: ["latestProducts"],
     queryFn: () => productService.getLatestProducts(),
   });
-  const { data: bestSellerProducts } = useQuery<Array<Product>>({
-    queryKey: ["bestSellerProducts"],
-    queryFn: () => productService.getBestSellerProducts(),
-  });
+  const { data: bestSellerProducts, isLoading: isLoadingBestSellerProducts } =
+    useQuery<Array<Product>>({
+      queryKey: ["bestSellerProducts"],
+      queryFn: () => productService.getBestSellerProducts(),
+    });
   return (
     <div className="space-y-16">
       <HomepageSection title="Explore Categories">
         <CategoriesPreviewList />
       </HomepageSection>
       <HomepageSection title="Our Latest Products">
-        {<ProductsCarousel products={latestProducts} />}
+        {
+          <ProductsCarousel
+            isLoading={isLoadingLatestProducts}
+            products={latestProducts}
+          />
+        }
       </HomepageSection>
       <HomepageSection title="Best Sellers">
-        {<ProductsCarousel products={bestSellerProducts} />}
+        {
+          <ProductsCarousel
+            isLoading={isLoadingBestSellerProducts}
+            products={bestSellerProducts}
+          />
+        }
       </HomepageSection>
       <HomepageSection title="Shop care-free">
         <FeaturesList />

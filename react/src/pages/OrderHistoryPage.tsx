@@ -6,16 +6,17 @@ import OrderHistoryListItem from "../features/order/OrderHistoryListItem";
 import Pagination from "../ui/Pagination";
 import { useSearchParams } from "react-router-dom";
 import { PagedData } from "../types/PagedData";
+import Spinner from "../ui/Spinner";
 
 export default function OrderHistoryPage() {
   const [searchParams] = useSearchParams();
   const pageNum = searchParams.get("page");
 
-  const { data: orders } = useQuery<PagedData<Order>>({
+  const { data: orders, isLoading } = useQuery<PagedData<Order>>({
     queryKey: ["userOrders", pageNum],
     queryFn: () => orderService.getUserOrderHistory(pageNum),
   });
-
+  if (isLoading) return <Spinner absoluteCenter />;
   if (orders)
     return (
       <div>

@@ -10,6 +10,9 @@ import { Link } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { LOGIN_FORM_VALIDATION_RULES } from "../constants/FORM_VALIDATION_RULES";
+import InfoMessageTip from "../ui/InfoMessageTip";
+import { AxiosErrorResponse } from "../types/axiosErrorResponse";
+import APP_ROUTES from "../app-routes/appRoutes";
 
 export default function LoginPage() {
   const { userId, initializeUser } = useUserContext();
@@ -21,11 +24,11 @@ export default function LoginPage() {
   } = useForm<LoginCredentials>({
     defaultValues: { email: "user1@gmail.com", password: "11" },
   });
-  const { mutate: login, isPending: isLoggingIn } = useMutation<
-    User,
-    AxiosError,
-    LoginCredentials
-  >({
+  const {
+    mutate: login,
+    isPending: isLoggingIn,
+    error,
+  } = useMutation<User, AxiosError<AxiosErrorResponse>, LoginCredentials>({
     mutationFn: (credentials: LoginCredentials) =>
       authService.login(credentials),
     onSuccess: (data: User) => {
@@ -36,12 +39,18 @@ export default function LoginPage() {
     login(loginCredentials);
   }
   if (userId) return <Navigate to="/" />;
+
   return (
-    <div className="h-[40rem] w-full rounded-xl sm:bg-[url('https://images.unsplash.com/photo-1536059540012-f2ed455bc0b1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] sm:bg-cover sm:bg-center sm:pt-24">
+    <div className="h-[40rem] w-full rounded-xl sm:bg-[url('https://images.unsplash.com/photo-1536059540012-f2ed455bc0b1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] sm:bg-cover sm:bg-center sm:pt-16">
       <div className="mx-auto h-full w-full space-y-10 rounded-xl bg-white p-5 opacity-95 sm:h-auto sm:w-8/12 sm:px-10 sm:py-12 sm:shadow-border md:w-5/12 lg:w-4/12">
         <div className="space-y-3">
           <h2 className="text-2xl font-semibold">Welcome back</h2>
           <p className="text-gray-500">Please enter your details</p>
+          {error && (
+            <InfoMessageTip type="fail">
+              {error?.response?.data.message}
+            </InfoMessageTip>
+          )}
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -84,7 +93,7 @@ export default function LoginPage() {
         </form>
         <div className="space-x-2">
           <span>Dont have an account?</span>
-          <Link to="/signup" className="text-sky-600 underline">
+          <Link to={APP_ROUTES.SIGNUP} className="text-sky-600 underline">
             Sign up
           </Link>
         </div>

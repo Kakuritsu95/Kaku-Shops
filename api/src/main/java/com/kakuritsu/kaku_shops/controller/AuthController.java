@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -42,9 +43,13 @@ public class AuthController {
 
             return ResponseEntity.ok().body(new ApiResponse("Login Successful", userClaims));
 
-        } catch (AuthenticationException e) {
-            return ResponseEntity.status(UNAUTHORIZED).body(new ApiResponse(e.getMessage(), "null"));
         }
+
+        catch (AuthenticationException e) {
+            return ResponseEntity.status(UNAUTHORIZED).body(new ApiResponse(e.getMessage(), null));
+        }
+
+
     }
     @PostMapping("/authenticate")
     public ResponseEntity<ApiResponse> authenticateUserWithAuthCookie(HttpServletRequest request){

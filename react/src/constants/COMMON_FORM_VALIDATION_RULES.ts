@@ -35,11 +35,11 @@ export const COMMON_FORM_VALIDATION_RULES: {
     },
     minLength: {
       value: 3,
-      message: "Please enter a longer Firstname",
+      message: "Firstname is too short",
     },
     maxLength: {
       value: 16,
-      message: "Please enter a longer Firstname",
+      message: "Firstname is too long",
     },
   },
   lastName: {
@@ -51,11 +51,11 @@ export const COMMON_FORM_VALIDATION_RULES: {
     },
     minLength: {
       value: 3,
-      message: "Last name must contain at least 3 characters",
+      message: "Last name is too short",
     },
     maxLength: {
       value: 16,
-      message: "Last name can hold a maximum of 16 characters",
+      message: "Last name is too long",
     },
   },
   proofType: { required: true },

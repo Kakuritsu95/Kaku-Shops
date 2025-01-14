@@ -1,0 +1,21 @@
+const APP_ROUTES = {
+  HOME_PAGE: "/homepage",
+  ORDER: "/order",
+  SEARCH: "/search",
+  PRODUCT_LISTING: "/products/category",
+  PRODUCT_OVERVIEW: "/product",
+  CART: "/cart",
+  CHECKOUT: "/checkout",
+  LOGIN: "/auth/login",
+  SIGNUP: "/signup",
+  ACCOUNT_VERIFICATION: "auth/verification",
+  CONTACT_US: "/contact-us",
+  ORDER_HISTORY: "/order-history",
+  ORDER_SEARCH: "/order-progress-form",
+  ORDER_PROGRESSS: "/order-progress",
+  ACCOUNT: "/account",
+  ACCOUNT_DETAILS: "details",
+  ACCOUNT_ADDRESS: "address",
+  ACCOUNT_PASSWORD: "password",
+};
+export default APP_ROUTES;

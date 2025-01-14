@@ -1,20 +1,27 @@
 import { useRef } from "react";
-import useUpdateCartItemQuantity from "../../hooks/useUpdateCartItemQuantity";
 
 interface SelectCartItemQuantityProps {
   productId: number;
   maxQuantity?: number;
   initialQuantity: number;
+  updateCartItemQuantity: ({
+    productId,
+    quantity,
+  }: {
+    productId: number;
+    quantity: number;
+  }) => void;
 }
 
 export default function SelectCartItemQuantity({
   productId,
   maxQuantity = 100,
   initialQuantity,
+  updateCartItemQuantity,
 }: SelectCartItemQuantityProps) {
-  const { updateCartItemQuantity } = useUpdateCartItemQuantity();
   const selectRef = useRef<HTMLSelectElement>(null);
   const quantityRangeArray = Array.from(Array(maxQuantity), (_, i) => i + 1);
+
   return (
     <select
       ref={selectRef}

@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,12 +36,12 @@ public class CartItemController {
             HttpServletResponse response)
     {
 
-        String guestCartId = cookieManagementService.getCookieValueByName(request, "cart")
-                .orElseGet(() -> cookieManagementService.generateAndReturnCookieByNameAndValue(response, "cart", null));
+            String guestCartId = cookieManagementService.getCookieValueByName(request, "cart")
+                    .orElseGet(() -> cookieManagementService.generateAndReturnCookieByNameAndValue(response, "cart", null));
 
-        Cart cart =  cartItemService.addItemToCart(guestCartId,productId,quantity);
-        CartDto cartDto = mapper.map(cart,CartDto.class);
-        return ResponseEntity.ok().body(new ApiResponse("found", 5));
+            Cart cart = cartItemService.addItemToCart(guestCartId, productId, quantity);
+            CartDto cartDto = mapper.map(cart, CartDto.class);
+            return ResponseEntity.ok().body(new ApiResponse("found", cartDto));
 
     }
 
@@ -64,14 +65,12 @@ public class CartItemController {
             HttpServletRequest request,
             HttpServletResponse response
     ){
-        try {
+
             cartService.checkIfUserHasCartCookie(request);
             String cartSessionId = cartService.generateCartCookieOrGetIfExists(request,response);
             cartItemService.updateItemQuantity(cartSessionId,productId,quantity);
             return ResponseEntity.ok().body(new ApiResponse("Success",null));
-        } catch (CartOperationException e) {
-            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
-        }
+
     }
 
 

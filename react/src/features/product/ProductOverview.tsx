@@ -23,23 +23,25 @@ export default function ProductOverview({ product }: { product: Product }) {
 
       <div className="w-full space-y-10 md:w-1/2">
         <ProductOverviewInfo product={product} />
-        <Button
-          onClick={() =>
-            addProductToCart({ productId: product.id, quantity: 1 })
-          }
-          isSubmitting={isAdding}
-        >
-          {
-            <>
-              {productQuantityInCart && (
-                <span className="inline-block w-6 rounded-full bg-lime-200 bg-opacity-20 py-0.5 text-sm font-semibold">
-                  {productQuantityInCart}
-                </span>
-              )}
-              <span className="ml-2">Add To Cart</span>
-            </>
-          }
-        </Button>
+        {product.inventory > 0 && (
+          <Button
+            onClick={() =>
+              addProductToCart({ productId: product.id, quantity: 1 })
+            }
+            isSubmitting={isAdding}
+          >
+            {
+              <>
+                {productQuantityInCart && (
+                  <span className="inline-block w-6 rounded-full bg-lime-200 bg-opacity-20 py-0.5 text-sm font-semibold">
+                    {productQuantityInCart}
+                  </span>
+                )}
+                <span className="ml-2">Add To Cart</span>
+              </>
+            }
+          </Button>
+        )}
       </div>
     </div>
   );

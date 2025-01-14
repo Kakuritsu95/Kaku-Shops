@@ -25,15 +25,16 @@ public class EmailService implements IEmailService {
 
     @Override
     @Async
-    public void sendOrderConfirmationEmail(Order order) {
+    public void sendOrderConfirmationEmail(Order order, String serverDomain) {
         try {
-            ClassPathResource logoImagePath = new ClassPathResource("static/image/logo.png");
+            ClassPathResource logoImagePath = new ClassPathResource("static/logo.png");
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message,true, "UTF-8");
             helper.setFrom(applicationEmailAddress);
             helper.setTo(order.getEmail());
             helper.setSubject("Order confirmation - Kakushops.com");
             Context context = new Context();
+            context.setVariable("serverDomain",serverDomain);
             context.setVariable("order", order);
             String process = templateEngine.process("order-confirmation.html",context);
             helper.setText(process,true);
@@ -46,7 +47,7 @@ public class EmailService implements IEmailService {
 
     @Override
     @Async
-    public void sendAccountVerificationEmail(User user, String verificationToken) {
+    public void sendAccountVerificationEmail(User user, String serverDomain, String verificationToken) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -55,6 +56,7 @@ public class EmailService implements IEmailService {
             helper.setSubject("Account verification - Kakushops.com");
             Context context = new Context();
             context.setVariable("user", user);
+            context.setVariable("serverDomain",serverDomain);
             context.setVariable("verificationToken", verificationToken);
             String process = templateEngine.process("account-verification.html",context);
             helper.setText(process,true);
