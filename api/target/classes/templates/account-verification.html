@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1 style="font-size:1.3rem; color: rgb(249, 115, 22)">Thank you for choosing Kaku-shops for your shopping!</h1>
+<p style="color:blue; font-weight:600;">Please find bellow the verification link to activate your shopping account </p>
+<a style="background-color:coral; padding:0.6rem; border-radius:3px; display:block; cursor:pointer; width:8rem; text-align:center; margin-top:20px;"
+   th:href="${serverDomain + '/auth/verification/' + verificationToken}">
+    Verify my account
+</a>
+
+</body>
+</html>

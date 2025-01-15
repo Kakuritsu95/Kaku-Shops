@@ -9,9 +9,7 @@ logs/
 # Spring Boot specific files
 spring-boot-devtools.jar
 
-# Build directories
-/build/
-target/
+
 
 # Maven files
 .mvn/
