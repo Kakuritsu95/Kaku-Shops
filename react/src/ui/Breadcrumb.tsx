@@ -14,7 +14,7 @@ export default function Breadcrumb({
       <MdKeyboardArrowRight size={16} className="mt-0.5" />
       {routes.map((route, i) => {
         return (
-          <div key={i} className="flex items-center">
+          <div key={i} className="flex items-center text-sm sm:text-base">
             {route?.path ? (
               <>
                 <Link className="hover:text-black" to={"/" + route.path}>

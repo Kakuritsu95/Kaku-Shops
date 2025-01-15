@@ -11,7 +11,7 @@ export default function Topbar() {
       <span className="hidden w-2/5 md:inline">(+30) 2103346732</span>
       <div className="flex space-x-2 divide-x divide-gray-300 text-center">
         <Link
-          className="px-4 duration-100 hover:text-stone-50"
+          className="px-2 duration-100 hover:text-stone-50 sm:px-4"
           to={APP_ROUTES.ORDER_SEARCH}
         >
           Order progress
@@ -19,11 +19,11 @@ export default function Topbar() {
 
         <Link
           to={APP_ROUTES.CONTACT_US}
-          className="px-4 duration-100 hover:text-stone-50"
+          className="px-2 duration-100 hover:text-stone-50 sm:px-4"
         >
           Contact us
         </Link>
-        <div className="px-4 duration-100 hover:text-stone-50">
+        <div className="px-2 duration-100 hover:text-stone-50 sm:px-4">
           {email ? (
             <UserOptions />
           ) : (
