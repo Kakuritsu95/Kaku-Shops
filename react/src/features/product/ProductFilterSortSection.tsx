@@ -18,7 +18,7 @@ export default function ProductFilterSortSection({
 }) {
   return (
     <form className="space-y-10">
-      <h2 className="text-lg">Filters</h2>
+      <h2 className="text-lg font-semibold text-gray-700">Filters</h2>
       <FilterByCategory
         categories={categories}
         isLoadingCategories={isLoadingCategories}
