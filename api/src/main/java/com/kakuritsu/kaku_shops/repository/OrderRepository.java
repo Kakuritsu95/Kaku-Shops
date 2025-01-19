@@ -19,7 +19,7 @@ public interface OrderRepository extends JpaRepository<Order,Long>  {
             SELECT EXISTS
             (
             SELECT 1
-            FROM `order` o
+            FROM "order" o
             JOIN order_item oi ON oi.order_id = o.id
             WHERE o.user_id = :userId
             AND o.order_status = 'DELIVERED'
@@ -27,7 +27,7 @@ public interface OrderRepository extends JpaRepository<Order,Long>  {
             )
             """,
             nativeQuery = true)
-Long userHasPurchasedAndReceivedTheProduct(@Param("userId") Long userId, @Param("productId") Long productId);
+boolean userHasPurchasedAndReceivedTheProduct(@Param("userId") Long userId, @Param("productId") Long productId);
 
 }
 

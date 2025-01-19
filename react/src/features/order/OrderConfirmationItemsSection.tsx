@@ -10,11 +10,11 @@ export default function OrderConfirmationItemsSection({
   orderTotalAmount: number;
 }) {
   return (
-    <div className="w-full space-y-3 overflow-y-auto rounded-md border-gray-100 font-semibold text-gray-800 lg:w-1/2 lg:border-l-2 lg:px-9 xl:w-1/3">
+    <div className="w-full space-y-3 overflow-y-auto rounded-md border-gray-100 font-semibold text-gray-800 lg:w-1/2 lg:border-l-2 lg:px-9 2xl:w-1/3">
       <div className="flex items-center space-x-2">
         <HiOutlineShoppingBag size={22} />
         <h2 className="text-xl">Your order</h2>
-        <span className="leading-2 mt-1 rounded-full bg-black px-[8px] py-[1px] text-sm font-medium text-white">
+        <span className="leading-2 mt-1 rounded-full bg-black px-2 py-[1px] text-sm font-medium text-white">
           {orderItems.length}
         </span>
       </div>

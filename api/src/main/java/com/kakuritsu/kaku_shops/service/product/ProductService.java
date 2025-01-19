@@ -27,11 +27,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -85,10 +83,9 @@ public class ProductService implements IProductService{
 
     @Override
     public double addRating(Long productId, User user, double userRating) {
-        Long userHasPurchasedAndReceivedTheProduct = orderRepository.userHasPurchasedAndReceivedTheProduct(user.getId(),productId);
-        if(userHasPurchasedAndReceivedTheProduct < 1){
-            throw new UnauthorizedActionException("User has not received the product");
-        }
+        boolean userHasPurchasedAndReceivedTheProduct = orderRepository.userHasPurchasedAndReceivedTheProduct(user.getId(),productId);
+        if(!userHasPurchasedAndReceivedTheProduct) throw new UnauthorizedActionException("User has not received the product");
+
         Product product = this.getProductById(productId);
         ProductRating rating = productRatingRepository.findByProductIdAndUserId(productId,user.getId()).orElseGet(()-> {
             ProductRating newRating = new ProductRating();

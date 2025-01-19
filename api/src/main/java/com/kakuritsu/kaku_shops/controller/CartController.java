@@ -1,6 +1,7 @@
 package com.kakuritsu.kaku_shops.controller;
 
 import com.kakuritsu.kaku_shops.dto.CartDto;
+import com.kakuritsu.kaku_shops.exceptions.CartOperationException;
 import com.kakuritsu.kaku_shops.exceptions.ResourceNotFoundException;
 import com.kakuritsu.kaku_shops.model.Cart;
 import com.kakuritsu.kaku_shops.response.ApiResponse;
@@ -38,6 +39,8 @@ public class CartController {
             return ResponseEntity.ok().body(new ApiResponse("Success", cartDto));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
+        } catch (CartOperationException e) {
+            return null;
         }
     }
     @GetMapping("user/{userId}")

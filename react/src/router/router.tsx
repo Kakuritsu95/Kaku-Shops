@@ -24,7 +24,7 @@ import APP_ROUTES from "../app-routes/appRoutes";
 
 const router = createBrowserRouter([
   {
-    path: "",
+    path: "/",
     element: <AppLayout />,
     children: [
       {

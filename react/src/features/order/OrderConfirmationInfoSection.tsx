@@ -13,7 +13,7 @@ export default function OrderConfirmationInfoSection({
   address,
 }: OrderConfirmationInfoSectionProps) {
   return (
-    <div className="w-full space-y-9 lg:w-1/2 xl:w-2/3">
+    <div className="w-full space-y-9 lg:w-1/2 2xl:w-2/3">
       <h1 className="text-xl font-semibold">Order confirmation</h1>
       <OrderThankYouMessage orderId={orderId} />
       <OrderUserUpdateNotificationBox />

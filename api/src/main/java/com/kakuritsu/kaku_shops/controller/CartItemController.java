@@ -65,11 +65,15 @@ public class CartItemController {
             HttpServletRequest request,
             HttpServletResponse response
     ){
-
+        try {
             cartService.checkIfUserHasCartCookie(request);
             String cartSessionId = cartService.generateCartCookieOrGetIfExists(request,response);
             cartItemService.updateItemQuantity(cartSessionId,productId,quantity);
             return ResponseEntity.ok().body(new ApiResponse("Success",null));
+        } catch (CartOperationException e) {
+            return ResponseEntity.badRequest().body(new ApiResponse(e.getMessage(),null));
+        }
+
 
     }
 

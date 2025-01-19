@@ -22,7 +22,7 @@ export default function OrderConfirmationItemCard({
           <span>{orderItem.quantity}</span>
         </div>
       </div>
-      <span className="sm:self-end">{formatPrice(orderItem.price)}</span>
+      <span className="lg:self-end">{formatPrice(orderItem.price)}</span>
     </li>
   );
 }
