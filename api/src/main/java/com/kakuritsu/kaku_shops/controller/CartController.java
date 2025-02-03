@@ -37,10 +37,8 @@ public class CartController {
             Cart cart = cartService.getCartBySessionId(cartSessionId).orElseThrow(()->new ResourceNotFoundException("Cart was not found"));
             CartDto cartDto = mapper.map(cart,CartDto.class);
             return ResponseEntity.ok().body(new ApiResponse("Success", cartDto));
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
-        } catch (CartOperationException e) {
-            return null;
+        } catch (ResourceNotFoundException | CartOperationException e) {
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
     }
     @GetMapping("user/{userId}")

@@ -9,6 +9,7 @@ export default function ProductOverviewInfo({ product }: { product: Product }) {
       <h1 className="mb-3 text-3xl font-semibold">{product?.name}</h1>
       <span className="text-2xl font-medium">{product?.price} €</span>
       <RatingStars defaultRating={product.averageRating} readOnly={true} />
+
       <InfoMessageTip type={isProductAvailable ? "success" : "fail"}>
         {isProductAvailable
           ? "Product is available!"

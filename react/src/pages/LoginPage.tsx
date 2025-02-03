@@ -1,7 +1,7 @@
 import authService from "../service/authService";
 import { LoginCredentials, User } from "../types/userInterface";
 import { useUserContext } from "../context/UserDetailsContext";
-import { Navigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import ControllerInput from "../ui/ControllerInput";
 import TextInput from "../ui/TextInput";
@@ -15,7 +15,8 @@ import { AxiosErrorResponse } from "../types/axiosErrorResponse";
 import APP_ROUTES from "../app-routes/appRoutes";
 
 export default function LoginPage() {
-  const { userId, initializeUser } = useUserContext();
+  const { initializeUser } = useUserContext();
+  const navigate = useNavigate();
 
   const {
     formState: { errors },
@@ -33,12 +34,12 @@ export default function LoginPage() {
       authService.login(credentials),
     onSuccess: (data: User) => {
       initializeUser(data);
+      navigate(-1);
     },
   });
   function onSubmit(loginCredentials: LoginCredentials) {
     login(loginCredentials);
   }
-  if (userId) return <Navigate to="/" />;
 
   return (
     <div className="h-[40rem] w-full rounded-xl sm:bg-[url('https://images.unsplash.com/photo-1536059540012-f2ed455bc0b1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] sm:bg-cover sm:bg-center sm:pt-16">

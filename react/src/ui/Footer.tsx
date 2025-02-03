@@ -3,7 +3,7 @@ export default function Footer() {
     <footer className="bg-stone-50 shadow dark:bg-gray-900">
       <div className="mx-auto w-full max-w-screen-xl p-4 md:py-6">
         <div className="sm:flex sm:items-center sm:justify-between">
-          <img src="logo.png" className="w-40" />
+          <img src="/logo.png" className="w-40" />
           <ul className="mb-6 flex flex-wrap items-center text-sm font-medium text-gray-700 sm:mb-0 dark:text-gray-400">
             <li>
               <a className="me-4 hover:underline md:me-6">About</a>

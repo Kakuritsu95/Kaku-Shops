@@ -59,19 +59,12 @@ export default function ProductsListingPage() {
             brands={brands}
           />
         }
-        {searchResults && searchResults.content.length > 0 && (
-          <ProductsDisplay
-            breadCrumpRouteName={searchResults?.content[0].category.name}
-            searchResults={searchResults}
-            isLoadingProducts={isLoadingProducts}
-          />
-        )}
-        {!searchResults ||
-          (searchResults.content.length == 0 && !isLoadingProducts && (
-            <p className="text-center font-semibold text-gray-700">
-              No products available for the given filters
-            </p>
-          ))}
+
+        <ProductsDisplay
+          breadCrumpRouteName={searchResults?.content[0]?.category.name}
+          searchResults={searchResults}
+          isLoadingProducts={isLoadingProducts}
+        />
       </div>
       {searchResults && searchResults.content.length > 0 && (
         <Pagination

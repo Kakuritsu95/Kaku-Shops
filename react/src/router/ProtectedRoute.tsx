@@ -5,6 +5,6 @@ import APP_ROUTES from "../app-routes/appRoutes";
 
 export default function ProtectedRoute({ children }: { children: ReactNode }) {
   const { userId } = useUserContext();
-  if (!userId) return <Navigate to={APP_ROUTES.LOGIN} />;
+  if (!userId) return <Navigate to={APP_ROUTES.LOGIN} replace={true} />;
   return children;
 }

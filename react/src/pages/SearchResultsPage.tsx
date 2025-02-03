@@ -42,19 +42,11 @@ export default function ProductsListingPage() {
           brands={searchResults?.relevantBrands}
         />
 
-        {searchResults && searchResults.products.content.length > 0 && (
-          <ProductsDisplay
-            searchResults={searchResults?.products}
-            breadCrumpRouteName={searchParams.get("keyword")}
-            isLoadingProducts={isLoading}
-          />
-        )}
-        {!searchResults ||
-          (searchResults.products.content.length == 0 && !isLoading && (
-            <p className="text-center font-semibold text-gray-700">
-              No results available for the given filters
-            </p>
-          ))}
+        <ProductsDisplay
+          searchResults={searchResults?.products}
+          breadCrumpRouteName={searchParams.get("keyword")}
+          isLoadingProducts={isLoading}
+        />
       </div>
 
       {searchResults && searchResults.products.content.length > 0 && (
